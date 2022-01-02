@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
 
@@ -26,6 +26,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install
-    - run: npm run deploy
-    - run: npm test
+    - name: Install
+      run: yarn install
+    - name: Deploy
+      env:
+        NODE_ENV: production
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: | 
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/bdnkl/react-test.git
+          npm run deploy
+    - name: Test
+      run: npm test
