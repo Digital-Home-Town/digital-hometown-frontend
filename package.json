@@ -1,5 +1,6 @@
 {
   "name": "digital-hometown-frontend",
+  "homepage": "https://bdnkl.github.io/digital-hometown-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
