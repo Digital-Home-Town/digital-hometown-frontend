@@ -1,6 +1,6 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "../logo.svg";
+import "./App.css";
 
 function App() {
   return (
@@ -9,6 +9,8 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Digital Hometown Frontend
+          {/* <br /> */}
+          {/* {new Date().toLocaleString()} */}
         </p>
         <a
           className="App-link"
