@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Hosted on [Netlify](https://digitalhometown.netlify.app/)
+Hosted on [Github Pages](https://digital-home-town.github.io/digital-hometown-frontend/)
 
 ## React Tutorial
 
