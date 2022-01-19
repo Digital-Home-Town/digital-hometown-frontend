@@ -36,6 +36,8 @@ Typen werden beim Kompilieren überprüft, so können Fehler erkannt werden
 
 In the project directory, you can run:
 
+Install packages with `yarn`
+
 ### `yarn start`
 
 Runs the app in the development mode.\
