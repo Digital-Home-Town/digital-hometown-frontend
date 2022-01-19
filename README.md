@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Hosted on [Netlify](https://digitalhometown.netlify.app/)
+
 ## React Tutorial
 
 ### Was ist React.js
