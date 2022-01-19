@@ -1,6 +1,8 @@
-import React from "react";
-import logo from "../logo.svg";
-import "./App.css";
+import "./App.css"
+
+import React from "react"
+
+import logo from "../logo.svg"
 
 function App() {
   return (
@@ -12,17 +14,13 @@ function App() {
           {/* <br /> */}
           {/* {new Date().toLocaleString()} */}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
           Learn React
         </a>
+        <a href="https://www.google.com">Jonas was here</a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
