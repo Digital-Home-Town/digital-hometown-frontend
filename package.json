@@ -6,7 +6,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
+    "test:watch": "react-scripts test --watchAll",
     "fix": "run-s fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "prettier --write \"**/*.{ts,js,css,scss,html,json,md}\"",
