@@ -37,16 +37,16 @@ function App() {
         <div className="Navbar">
           <ul>
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/digital-hometown-frontend/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/health">Backend Health</NavLink>
+              <NavLink to="/digital-hometown-frontend/health">Backend Health</NavLink>
             </li>
           </ul>
         </div>
         <Routes>
-          <Route path="/" element={<ReactStartPage />} />
-          <Route path="/health" element={<BackendHealth />} />
+          <Route path="/digital-hometown-frontend/" element={<ReactStartPage />} />
+          <Route path="/digital-hometown-frontend/health" element={<BackendHealth />} />
         </Routes>
       </BrowserRouter>
     </div>
