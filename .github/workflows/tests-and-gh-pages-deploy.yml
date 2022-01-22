@@ -30,7 +30,7 @@ jobs:
       - name: Check code style
         run: yarn lint
       - name: Test
-        run: yarn test
+        run: yarn test --coverage
       - name: Deploy
         env:
           NODE_ENV: production
