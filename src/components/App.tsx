@@ -1,7 +1,7 @@
 import "./App.css"
 
 import React from "react"
-import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom"
+import { HashRouter, NavLink, Route, Routes } from "react-router-dom"
 
 import logo from "../logo.svg"
 import { useBackendHealth } from "../hooks/useBackendHealth"
@@ -33,22 +33,23 @@ function BackendHealth() {
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      {/* HashRouter only needed because github pages put the root to github.io/<name> */}
+      <HashRouter>
         <div className="Navbar">
           <ul>
             <li>
-              <NavLink to="/digital-hometown-frontend/">Home</NavLink>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/digital-hometown-frontend/health">Backend Health</NavLink>
+              <NavLink to="/health">Backend Health</NavLink>
             </li>
           </ul>
         </div>
         <Routes>
-          <Route path="/digital-hometown-frontend/" element={<ReactStartPage />} />
-          <Route path="/digital-hometown-frontend/health" element={<BackendHealth />} />
+          <Route path="/" element={<ReactStartPage />} />
+          <Route path="/health" element={<BackendHealth />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   )
 }
