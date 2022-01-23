@@ -3,6 +3,7 @@ import axios from "axios"
 
 import { getBackendHealth, useBackendHealth } from "./useBackendHealth"
 import { create, ReactTestRendererJSON } from "react-test-renderer"
+import { API_URL } from "../global"
 
 jest.mock("axios")
 const mockedAxios = axios as jest.Mocked<typeof axios>
@@ -10,7 +11,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>
 describe("getBackendHealth request", () => {
   it("should fetch the backend health data", async () => {
     const expectedData = { status: "UP" }
-    const healthUrl = "/api/health"
+    const healthUrl = `${API_URL}/api/health`
 
     mockedAxios.get.mockReturnValueOnce(Promise.resolve({ data: expectedData }))
 

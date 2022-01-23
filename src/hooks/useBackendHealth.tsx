@@ -4,7 +4,6 @@ import { API_URL } from "../global"
 
 export async function getBackendHealth() {
   const resp = await axios.get(`${API_URL}/api/health`)
-  console.log("/api/health", resp)
   return resp.data
 }
 
