@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { API_URL } from "../global"
 
 export async function getBackendHealth() {
-  const resp = await axios.get(`/api/health`)
+  const resp = await axios.get(`${API_URL}/api/health`)
   console.log("/api/health", resp)
   return resp.data
 }
