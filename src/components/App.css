@@ -47,7 +47,7 @@
 
 .Navbar li {
   float: left;
-  color: #282c34;
+  color: rgba(0, 0, 0, 0);
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
