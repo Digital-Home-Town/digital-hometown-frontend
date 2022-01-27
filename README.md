@@ -30,7 +30,7 @@ Javascript Bibliothek, die mit vielen Bibliotheken erweiterbar ist.
 
 ### Vorteil Typeskript statt Javascript
 
-Typen werden beim Kompilieren überprüft, so können Fehler erkannt werden...
+Typen werden beim Kompilieren überprüft, so können Fehler erkannt werden....
 
 ## Available Scripts
 
