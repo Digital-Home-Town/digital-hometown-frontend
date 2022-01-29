@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { KeyboardEvent, useState } from "react"
 
 import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
@@ -221,7 +221,7 @@ function FormDialog() {
             label="Email Address"
             type="email"
             fullWidth
-            onKeyPress={(event) => {
+            onKeyPress={(event: KeyboardEvent) => {
               if (event.key === "Enter") {
                 handleSubmit()
               }
@@ -250,7 +250,7 @@ function MuiPlayground() {
       <DifferentButtons />
       <FormDialog />
       <RecipeReviewCard />
-      <TextField autoFocus label="Textfeld" />
+      <TextField label="Textfeld" />
     </Container>
   )
 }
