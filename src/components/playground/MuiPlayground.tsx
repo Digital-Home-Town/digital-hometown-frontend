@@ -17,7 +17,6 @@ import {
   TextField,
 } from "@mui/material"
 import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
-import logo from "../../img/logo.png"
 import paellaImg from "../../img/paella.png"
 import dummyAvatar from "../../img/dummy-avatar.jpg"
 import { styled } from "@mui/material/styles"
