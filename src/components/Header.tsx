@@ -2,12 +2,7 @@ import * as React from "react"
 
 import { NavLink } from "react-router-dom"
 
-import {
-  Biotech,
-  HealthAndSafety,
-  Home,
-  Login,
-} from "@mui/icons-material"
+import { Biotech, HealthAndSafety, Home, Login } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
 import Avatar from "@mui/material/Avatar"

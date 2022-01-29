@@ -2,17 +2,8 @@ import React from "react"
 
 import { Link } from "react-router-dom"
 
-import {
-  CalendarToday,
-  Chat,
-  Group,
-} from "@mui/icons-material"
-import {
-  Button,
-  Grid,
-  SvgIconTypeMap,
-  Typography,
-} from "@mui/material"
+import { CalendarToday, Chat, Group } from "@mui/icons-material"
+import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 
 interface StartElementInterface {

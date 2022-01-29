@@ -2,17 +2,9 @@ import "./App.css"
 
 import React from "react"
 
-import {
-  HashRouter,
-  Route,
-  Routes,
-} from "react-router-dom"
+import { HashRouter, Route, Routes } from "react-router-dom"
 
-import {
-  Box,
-  ThemeProvider,
-  Typography,
-} from "@mui/material"
+import { Box, ThemeProvider, Typography } from "@mui/material"
 import Container from "@mui/material/Container"
 
 import { useBackendHealth } from "../hooks/useBackendHealth"
