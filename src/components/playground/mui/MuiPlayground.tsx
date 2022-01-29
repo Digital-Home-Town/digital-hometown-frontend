@@ -1,4 +1,14 @@
 import React, { useState } from "react"
+
+import {
+  Edit,
+  LocationOn,
+  ShoppingCartRounded,
+} from "@mui/icons-material"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import MoreVertIcon from "@mui/icons-material/MoreVert"
+import ShareIcon from "@mui/icons-material/Share"
 import {
   Alert,
   AlertColor,
@@ -16,25 +26,21 @@ import {
   Switch,
   TextField,
 } from "@mui/material"
-import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
-import paellaImg from "../../img/paella.png"
-import dummyAvatar from "../../img/dummy-avatar.jpg"
-import { styled } from "@mui/material/styles"
+import Avatar from "@mui/material/Avatar"
 import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
 import CardHeader from "@mui/material/CardHeader"
 import CardMedia from "@mui/material/CardMedia"
-import CardContent from "@mui/material/CardContent"
-import CardActions from "@mui/material/CardActions"
 import Collapse from "@mui/material/Collapse"
-import Avatar from "@mui/material/Avatar"
-import IconButton, { IconButtonProps } from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
 import { red } from "@mui/material/colors"
-import FavoriteIcon from "@mui/icons-material/Favorite"
-import ShareIcon from "@mui/icons-material/Share"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
 import Container from "@mui/material/Container"
+import IconButton, { IconButtonProps } from "@mui/material/IconButton"
+import { styled } from "@mui/material/styles"
+import Typography from "@mui/material/Typography"
+
+import dummyAvatar from "../../../img/dummy-avatar.jpg"
+import paellaImg from "../../../img/paella.png"
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean
@@ -215,12 +221,10 @@ function FormDialog() {
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
             id="name"
             label="Email Address"
             type="email"
             fullWidth
-            variant="standard"
             onKeyPress={(event) => {
               if (event.key === "Enter") {
                 handleSubmit()
@@ -250,6 +254,7 @@ function MuiPlayground() {
       <DifferentButtons />
       <FormDialog />
       <RecipeReviewCard />
+      <TextField autoFocus label="Textfeld" />
     </Container>
   )
 }

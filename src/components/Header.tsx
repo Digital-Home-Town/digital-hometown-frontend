@@ -1,20 +1,28 @@
 import * as React from "react"
-import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
-import Toolbar from "@mui/material/Toolbar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import Menu from "@mui/material/Menu"
-import MenuIcon from "@mui/icons-material/Menu"
-import Container from "@mui/material/Container"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import Tooltip from "@mui/material/Tooltip"
-import MenuItem from "@mui/material/MenuItem"
+
 import { NavLink } from "react-router-dom"
-import logo from "../img/logo.png"
+
+import {
+  Biotech,
+  HealthAndSafety,
+  Home,
+  Login,
+} from "@mui/icons-material"
+import MenuIcon from "@mui/icons-material/Menu"
+import AppBar from "@mui/material/AppBar"
+import Avatar from "@mui/material/Avatar"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Container from "@mui/material/Container"
+import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
+import Toolbar from "@mui/material/Toolbar"
+import Tooltip from "@mui/material/Tooltip"
+import Typography from "@mui/material/Typography"
+
 import dummyAvatar from "../img/dummy-avatar.jpg"
-import { Biotech, HealthAndSafety, Home, Login } from "@mui/icons-material"
+import logo from "../img/logo.png"
 
 const pages = [
   { name: "Home", url: "/", icon: <Home /> },
@@ -24,10 +32,10 @@ const pages = [
 ]
 const settings = ["Profile", "Account", "Dashboard", "Logout"]
 
-function Logo({ big }: { big: boolean }) {
+function Logo({ bigScreen }: { bigScreen: boolean }) {
   let display = { xs: "flex", md: "none" }
   let flexGrow: number | null = 1
-  if (big) {
+  if (bigScreen) {
     display = { xs: "none", md: "flex" }
     flexGrow = null
   }
@@ -65,7 +73,7 @@ const Header = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Logo big={true} />
+          <Logo bigScreen={true} />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -97,19 +105,21 @@ const Header = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <NavLink to={page.url}>
-                    <Typography textAlign="center">{page.name}</Typography>
+                  <NavLink to={page.url} style={{ textDecoration: "none" }}>
+                    <Typography textAlign="center" color="textPrimary">
+                      {page.name}
+                    </Typography>
                   </NavLink>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <Logo big={false} />
+          <Logo bigScreen={false} />
 
           <Box sx={{ flexGrow: 2, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <NavLink key={page.name} to={page.url}>
+              <NavLink key={page.name} to={page.url} style={{ textDecoration: "none" }}>
                 <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white" }} startIcon={page.icon}>
                   {page.name}
                 </Button>
