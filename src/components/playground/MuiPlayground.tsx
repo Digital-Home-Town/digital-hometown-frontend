@@ -19,6 +19,7 @@ import {
 import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
 import logo from "../../img/logo.png"
 import paellaImg from "../../img/paella.png"
+import dummyAvatar from "../../img/dummy-avatar.jpg"
 import { styled } from "@mui/material/styles"
 import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
@@ -61,11 +62,7 @@ function RecipeReviewCard() {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={dummyAvatar} />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
@@ -122,7 +119,7 @@ function ProfileOverview() {
   return (
     <Card>
       <Box sx={{ p: 2, display: "flex" }}>
-        <Avatar variant="rounded" src={logo} />
+        <Avatar variant="rounded" src={dummyAvatar} />
         <Stack spacing={0.5}>
           <Typography fontWeight={700}>Michael Scott</Typography>
           <Typography variant="body2" color="text.secondary">
