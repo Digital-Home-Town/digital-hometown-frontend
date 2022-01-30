@@ -31,7 +31,6 @@ function ReactStartPage() {
 function BackendHealthNoAuth({ loggedInUser, setLoggedInUser }: AuthContextValues) {
   const { status } = useBackendHealth("LOADING")
 
-  console.log("user")
   return loggedInUser !== undefined ? (
     <div>
       <p>Backend status is {status.status}</p>
