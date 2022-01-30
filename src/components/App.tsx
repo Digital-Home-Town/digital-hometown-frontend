@@ -5,6 +5,9 @@ import { HashRouter, NavLink, Route, Routes } from "react-router-dom"
 
 import logo from "../logo.svg"
 import { useBackendHealth } from "../hooks/useBackendHealth"
+import withAuth from "../hocs/withAuth"
+import { AuthContextValues } from "../contexts/AuthContext"
+import { INITIAL_LOGGED_IN_USER } from "../types/User"
 
 function ReactStartPage() {
   return (
@@ -25,11 +28,39 @@ function ReactStartPage() {
   )
 }
 
-function BackendHealth() {
+function BackendHealthNoAuth({ loggedInUser, setLoggedInUser }: AuthContextValues) {
   const { status } = useBackendHealth("LOADING")
 
-  return <div className="App-body">Backend status is {status.status}</div>
+  console.log("user")
+  return loggedInUser !== undefined ? (
+    <div>
+      <p>Backend status is {status.status}</p>
+      <p>
+        {loggedInUser.name.first} {loggedInUser.name.last} is logged in as {loggedInUser.role}
+      </p>
+      <button
+        onClick={() => {
+          setLoggedInUser(undefined)
+        }}
+      >
+        Logout
+      </button>
+    </div>
+  ) : (
+    <div>
+      <p>Not authenticated</p>
+      <button
+        onClick={() => {
+          setLoggedInUser(INITIAL_LOGGED_IN_USER)
+        }}
+      >
+        Login
+      </button>
+    </div>
+  )
 }
+
+const BackendHealth = withAuth(BackendHealthNoAuth)
 
 function App() {
   return (
