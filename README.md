@@ -2,7 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Hosted on [Github Pages](https://digital-home-town.github.io/digital-hometown-frontend/)
+Main branch hosted on [Github Pages](https://digital-home-town.github.io/digital-hometown-frontend/)
+Dev branch hostend on [Heroku](https://hometown-frontend-dev.herokuapp.com/)
 
 ## React Tutorial
 
