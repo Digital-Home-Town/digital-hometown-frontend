@@ -3,10 +3,14 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./components/App"
 import reportWebVitals from "./reportWebVitals"
+import { AuthProvider } from "./contexts/AuthContext"
+import { INITIAL_LOGGED_IN_USER } from "./types/User"
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider initialLoggedInUser={undefined}>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 )
