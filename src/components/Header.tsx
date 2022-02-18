@@ -41,31 +41,61 @@ function Logo({ bigScreen }: { bigScreen: boolean }) {
   )
 }
 
-function Header({ loggedInUser, setLoggedInUser, setLoggedOut }: AuthContextProps) {
+const menuItems = [
+  { name: "Home", url: "/", icon: <Home /> },
+  { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
+  { name: "Mui", url: "/mui", icon: <Biotech /> },
+]
+
+const profileItems = [
+  { name: "Profile", event: () => {} },
+  { name: "Account", event: () => {} },
+  { name: "Dashboard", event: () => {} },
+]
+
+function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
+  return (
+    <MenuItem onClick={onClick}>
+      {url !== undefined ? (
+        <NavLink to={url} style={{ textDecoration: "none" }}>
+          <Typography textAlign="center" color="textPrimary">
+            {name}
+          </Typography>
+        </NavLink>
+      ) : (
+        <Typography textAlign="center" color="textPrimary">
+          {name}
+        </Typography>
+      )}
+    </MenuItem>
+  )
+}
+
+function CustomNavItem({
+  url,
+  name,
+  icon,
+  onClick,
+}: {
+  url: string
+  name: string
+  icon: React.ReactElement
+  onClick: () => void
+}) {
+  return (
+    <NavLink to={url} style={{ textDecoration: "none" }}>
+      <Button onClick={onClick} sx={{ my: 2, color: "white" }} startIcon={icon} variant="text">
+        {name}
+      </Button>
+    </NavLink>
+  )
+}
+
+function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const { colorMode, toggleColorMode } = useThemeContext()
   const navigate = useNavigate()
-
-  const pages = [
-    { name: "Home", url: "/", icon: <Home /> },
-    { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
-    { name: "Mui", url: "/mui", icon: <Biotech /> },
-  ]
-
-  const menuItems = [
-    { name: "Profile", event: () => {} },
-    { name: "Account", event: () => {} },
-    { name: "Dashboard", event: () => {} },
-  ]
-
-  if (loggedInUser === undefined) {
-    pages.push({ name: "Login", url: "/sign-in", icon: <Login /> })
-    menuItems.push({ name: "Login", event: () => navigate("/sign-in") })
-  } else {
-    pages.push({ name: "Logout", url: "/sign-out", icon: <Logout /> })
-    menuItems.push({ name: "Logout", event: () => setLoggedOut() })
-  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -116,14 +146,8 @@ function Header({ loggedInUser, setLoggedInUser, setLoggedOut }: AuthContextProp
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <NavLink to={page.url} style={{ textDecoration: "none" }}>
-                    <Typography textAlign="center" color="textPrimary">
-                      {page.name}
-                    </Typography>
-                  </NavLink>
-                </MenuItem>
+              {menuItems.map((page) => (
+                <CustomMenuItem key={page.name} name={page.name} url={page.url} onClick={handleCloseNavMenu} />
               ))}
             </Menu>
           </Box>
@@ -131,17 +155,14 @@ function Header({ loggedInUser, setLoggedInUser, setLoggedOut }: AuthContextProp
           <Logo bigScreen={false} />
 
           <Box sx={{ flexGrow: 2, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLink key={page.name} to={page.url} style={{ textDecoration: "none" }}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white" }}
-                  startIcon={page.icon}
-                  variant="text"
-                >
-                  {page.name}
-                </Button>
-              </NavLink>
+            {menuItems.map((page) => (
+              <CustomNavItem
+                key={page.name}
+                name={page.name}
+                url={page.url}
+                icon={page.icon}
+                onClick={handleCloseNavMenu}
+              />
             ))}
           </Box>
 
@@ -172,17 +193,27 @@ function Header({ loggedInUser, setLoggedInUser, setLoggedOut }: AuthContextProp
                 {colorMode === "light" ? <DarkMode /> : <LightMode />}
                 {/* </IconButton> */}
               </MenuItem>
-              {menuItems.map((item) => (
-                <MenuItem
+              {profileItems.map((item) => (
+                <CustomMenuItem
                   key={item.name}
+                  name={item.name}
                   onClick={() => {
                     handleCloseUserMenu()
                     item.event()
                   }}
-                >
-                  <Typography textAlign="center">{item.name}</Typography>
-                </MenuItem>
+                />
               ))}
+              <CustomMenuItem
+                name={userLoggedIn ? "Logout" : "Login"}
+                url={userLoggedIn ? "sign-out" : "sign-out"}
+                onClick={() => {
+                  if (userLoggedIn) {
+                    navigate("sign-out")
+                  } else {
+                    navigate("sign-in")
+                  }
+                }}
+              />
             </Menu>
           </Box>
         </Toolbar>

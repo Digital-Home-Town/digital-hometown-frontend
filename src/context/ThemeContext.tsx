@@ -1,7 +1,6 @@
 import React, { createContext, ReactNode, useContext, useMemo, useState } from "react"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { PaletteMode } from "@mui/material"
-import { palette } from "@mui/system"
 
 interface ThemeContextType {
   colorMode: PaletteMode

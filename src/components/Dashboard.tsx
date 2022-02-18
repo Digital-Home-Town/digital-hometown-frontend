@@ -34,9 +34,9 @@ function Dashboard({ loggedInUser }: AuthContextProps) {
     <div>
       Logged in as {loggedInUser?.name.first} {loggedInUser?.name.last}
       <Grid container direction="row" alignItems="center" justifyContent="center">
-        <StartElement url="/health" text="Gruppen" icon={Group} />
-        <StartElement url="/mui" text="Chat" icon={Chat} />
-        <StartElement url="/sign-in" text="Termin" icon={CalendarToday} />
+        <StartElement url="/" text="Gruppen" icon={Group} />
+        <StartElement url="/" text="Chat" icon={Chat} />
+        <StartElement url="/" text="Termin" icon={CalendarToday} />
       </Grid>
     </div>
   )
