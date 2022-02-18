@@ -11,8 +11,18 @@ import Box from "@mui/material/Box"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
+import withAuth from "../auth/withAuth"
+import { AuthContextProps } from "../auth/AuthContext"
+import { useNavigate } from "react-router"
+import { INITIAL_LOGGED_IN_USER } from "../auth/Auth"
 
-export default function SignIn() {
+function SignIn({ loggedInUser, setLoggedInUser }: AuthContextProps) {
+  const navigate = useNavigate()
+
+  if (loggedInUser !== undefined) {
+    navigate("/")
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -21,6 +31,9 @@ export default function SignIn() {
       email: data.get("email"),
       password: data.get("password"),
     })
+
+    setLoggedInUser(INITIAL_LOGGED_IN_USER)
+    navigate("/")
   }
 
   return (
@@ -82,3 +95,5 @@ export default function SignIn() {
     </Container>
   )
 }
+
+export default withAuth(SignIn)

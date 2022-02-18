@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { NavLink } from "react-router-dom"
 
-import { Biotech, HealthAndSafety, Home, Login } from "@mui/icons-material"
+import { Biotech, DarkMode, HealthAndSafety, Home, LightMode, Login, Logout } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
 import Avatar from "@mui/material/Avatar"
@@ -18,14 +18,10 @@ import Typography from "@mui/material/Typography"
 
 import dummyAvatar from "../img/dummy-avatar.jpg"
 import logo from "../img/logo.png"
-
-const pages = [
-  { name: "Home", url: "/", icon: <Home /> },
-  { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
-  { name: "Mui", url: "/mui", icon: <Biotech /> },
-  { name: "Login", url: "/sign-in", icon: <Login /> },
-]
-const settings = ["Profile", "Account", "Dashboard", "Logout"]
+import { useThemeContext } from "../context/ThemeContext"
+import withAuth from "../auth/withAuth"
+import { AuthContextProps } from "../auth/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 function Logo({ bigScreen }: { bigScreen: boolean }) {
   let display = { xs: "flex", md: "none" }
@@ -37,7 +33,7 @@ function Logo({ bigScreen }: { bigScreen: boolean }) {
   return (
     <Box sx={{ flexGrow: flexGrow, display: display }}>
       <NavLink to="/">
-        <Button>
+        <Button variant="text">
           <Avatar src={logo} />
         </Button>
       </NavLink>
@@ -45,9 +41,31 @@ function Logo({ bigScreen }: { bigScreen: boolean }) {
   )
 }
 
-const Header = () => {
+function Header({ loggedInUser, setLoggedInUser, setLoggedOut }: AuthContextProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+  const { colorMode, toggleColorMode } = useThemeContext()
+  const navigate = useNavigate()
+
+  const pages = [
+    { name: "Home", url: "/", icon: <Home /> },
+    { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
+    { name: "Mui", url: "/mui", icon: <Biotech /> },
+  ]
+
+  const menuItems = [
+    { name: "Profile", event: () => {} },
+    { name: "Account", event: () => {} },
+    { name: "Dashboard", event: () => {} },
+  ]
+
+  if (loggedInUser === undefined) {
+    pages.push({ name: "Login", url: "/sign-in", icon: <Login /> })
+    menuItems.push({ name: "Login", event: () => navigate("/sign-in") })
+  } else {
+    pages.push({ name: "Logout", url: "/sign-out", icon: <Logout /> })
+    menuItems.push({ name: "Logout", event: () => setLoggedOut() })
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -115,7 +133,12 @@ const Header = () => {
           <Box sx={{ flexGrow: 2, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <NavLink key={page.name} to={page.url} style={{ textDecoration: "none" }}>
-                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: "white" }} startIcon={page.icon}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white" }}
+                  startIcon={page.icon}
+                  variant="text"
+                >
                   {page.name}
                 </Button>
               </NavLink>
@@ -144,9 +167,20 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              <MenuItem onClick={toggleColorMode}>
+                {/* <IconButton sx={{ ml: 1 }}  color="inherit"> */}
+                {colorMode === "light" ? <DarkMode /> : <LightMode />}
+                {/* </IconButton> */}
+              </MenuItem>
+              {menuItems.map((item) => (
+                <MenuItem
+                  key={item.name}
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    item.event()
+                  }}
+                >
+                  <Typography textAlign="center">{item.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -156,4 +190,4 @@ const Header = () => {
     </AppBar>
   )
 }
-export default Header
+export default withAuth(Header)

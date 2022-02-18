@@ -4,8 +4,8 @@ import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
 import Typography from "@mui/material/Typography"
-
-import customTheme from "../theme/customTheme"
+import { Divider, useTheme } from "@mui/material"
+import { useThemeContext } from "../context/ThemeContext"
 
 function Copyright() {
   return (
@@ -23,13 +23,12 @@ export default function Footer() {
   return (
     <Box
       sx={{
-        py: 2,
         mt: "auto",
         width: "100%",
-        backgroundColor: customTheme.palette.grey[200],
       }}
     >
-      <Container maxWidth="lg">
+      <Divider />
+      <Container maxWidth="lg" sx={{ py: 2 }}>
         <Copyright />
       </Container>
     </Box>
