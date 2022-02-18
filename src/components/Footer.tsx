@@ -4,8 +4,7 @@ import Box from "@mui/material/Box"
 import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
 import Typography from "@mui/material/Typography"
-import { Divider, useTheme } from "@mui/material"
-import { useThemeContext } from "../context/ThemeContext"
+import { Divider } from "@mui/material"
 
 function Copyright() {
   return (

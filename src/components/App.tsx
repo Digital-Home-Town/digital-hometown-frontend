@@ -59,4 +59,4 @@ function App() {
   )
 }
 
-export default withAuth(App)
+export default App
