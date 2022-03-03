@@ -18,7 +18,7 @@ function ReactStartPage() {
       <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
         Learn React
       </a>
-      <a href="https://startpage.com">Hi Jan</a>
+      <a href="https://startpage.com">Hey Jan</a>
       <a href="https://www.google.com">Jonas was here</a>
       <a href="https://github.com/bdnkl">Der hier auch</a>
     </header>
