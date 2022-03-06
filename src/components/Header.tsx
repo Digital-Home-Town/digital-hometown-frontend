@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography"
 
 import dummyAvatar from "../img/dummy-avatar.jpg"
 import logo from "../img/logo.png"
-import { useThemeContext } from "../context/ThemeContext"
+import { useThemeContext } from "../contexts/ThemeContext"
 import withAuth from "../auth/withAuth"
 import { AuthContextProps } from "../auth/AuthContext"
 import { useNavigate } from "react-router-dom"
