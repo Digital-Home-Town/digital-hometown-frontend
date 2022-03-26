@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { NavLink } from "react-router-dom"
 
-import { Biotech, DarkMode, HealthAndSafety, Home, LightMode, Login, Logout } from "@mui/icons-material"
+import { Biotech, DarkMode, HealthAndSafety, Home, LightMode } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
 import Avatar from "@mui/material/Avatar"
