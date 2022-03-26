@@ -12,8 +12,7 @@ import Container from "@mui/material/Container"
 import withAuth from "../../auth/withAuth"
 import { AuthContextProps } from "../../auth/AuthContext"
 import { useNavigate } from "react-router"
-import { INITIAL_LOGGED_IN_USER } from "../../auth/Auth"
-import { IconButton, Input, InputAdornment } from "@mui/material"
+import { IconButton, InputAdornment } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 
 function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
