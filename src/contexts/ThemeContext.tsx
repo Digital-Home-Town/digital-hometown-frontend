@@ -28,6 +28,7 @@ export function ThemeContextProvider({ children, defaultColor }: ThemeContextPro
   const theme = useMemo(
     () =>
       createTheme({
+        ...customThemeOptions,
         palette: {
           mode: paletteMode,
           ...customThemeOptions.palette,
@@ -69,14 +70,18 @@ export const customThemeOptions = {
     },
     MuiButton: {
       defaultProps: {
-        variant: "outlined" as const,
+        variant: "contained" as const,
       },
     },
     MuiTextField: {
       defaultProps: {
-        margin: "dense" as const,
+        // margin: "dense" as const,
         variant: "standard" as const,
+        label: "TextField" as const,
       },
+    },
+    MuiPaper: {
+      defaultProps: {},
     },
     // MuiCardMedia: {
     //   defaultProps: {
