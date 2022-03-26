@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { NavLink } from "react-router-dom"
 
-import { Biotech, DarkMode, HealthAndSafety, Home, LightMode, Login, Logout } from "@mui/icons-material"
+import { Biotech, DarkMode, HealthAndSafety, Home, LightMode } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
 import Avatar from "@mui/material/Avatar"
@@ -208,9 +208,9 @@ function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProp
                 url={userLoggedIn ? "sign-out" : "sign-out"}
                 onClick={() => {
                   if (userLoggedIn) {
-                    navigate("sign-out")
+                    navigate("/sign-out")
                   } else {
-                    navigate("sign-in")
+                    navigate("/sign-in")
                   }
                 }}
               />

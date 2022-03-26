@@ -11,12 +11,12 @@ import { useBackendHealth } from "../hooks/useBackendHealth"
 import Footer from "./Footer"
 import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import SignIn from "./SignIn"
-import SignOut from "./SignOut"
+import SignIn from "./profile/SignIn"
+import SignOut from "./profile/SignOut"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import { AuthProvider } from "../auth/AuthContext"
 import Start from "./Start"
-import { INITIAL_LOGGED_IN_USER } from "../auth/Auth"
+import Register from "./profile/Register"
 
 function BackendHealth() {
   const { status } = useBackendHealth("LOADING")
@@ -26,8 +26,8 @@ function BackendHealth() {
 
 function App() {
   return (
-    <AuthProvider initialLoggedInUser={INITIAL_LOGGED_IN_USER}>
-      <ThemeContextProvider defaultColor={"dark" as const}>
+    <AuthProvider initialLoggedInUser={undefined}>
+      <ThemeContextProvider defaultColor={"light" as const}>
         <Box
           sx={{
             display: "flex",
@@ -48,6 +48,7 @@ function App() {
                   <Route path="/mui" element={<MuiPlayground />} />
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
+                  <Route path="/register" element={<Register />} />
                 </Routes>
               </Box>
             </Container>
