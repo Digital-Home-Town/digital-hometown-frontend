@@ -1,5 +1,5 @@
 import { AuthContextProps } from "../contexts/AuthContext"
-import withAuth from "../hocs/withAuth"
+import withAuth from "../auth/withAuth"
 import { INITIAL_LOGGED_IN_USER } from "../types/User"
 
 function LogInOut({ loggedInUser, setLoggedInUser }: AuthContextProps) {

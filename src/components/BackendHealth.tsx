@@ -1,6 +1,6 @@
 import React from "react"
 import { useBackendHealth } from "../hooks/useBackendHealth"
-import withAuth from "../hocs/withAuth"
+import withAuth from "../auth/withAuth"
 import { AuthContextProps } from "../contexts/AuthContext"
 
 function BackendHealthNoAuth({ loggedInUser }: AuthContextProps) {
