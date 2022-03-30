@@ -17,6 +17,8 @@ import { ThemeContextProvider } from "../contexts/ThemeContext"
 import { AuthProvider } from "../auth/AuthContext"
 import Start from "./Start"
 import Register from "./profile/Register"
+import SignInOrg from "./profile/SignInOrg"
+import RegisterOrg from "./profile/RegisterOrg"
 
 function BackendHealth() {
   const { status } = useBackendHealth("LOADING")
@@ -49,6 +51,10 @@ function App() {
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/organization">
+                    <Route path="sign-in" element={<SignInOrg />} />
+                    <Route path="register" element={<RegisterOrg />} />
+                  </Route>
                 </Routes>
               </Box>
             </Container>
