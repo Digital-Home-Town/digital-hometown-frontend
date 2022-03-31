@@ -15,6 +15,11 @@ import { useNavigate } from "react-router"
 import { IconButton, InputAdornment } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 
+function validateEmail(email: string) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(email)
+}
+
 function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
   const navigate = useNavigate()
 
@@ -45,13 +50,13 @@ function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
       [name]: value,
     })
   }
-  const checkPasswordMatch = () => userInput.password === userInput.passwordConfirm && userInput.password !== ""
-  const checkPassword = () => userInput.password !== ""
+  const checkPasswordMatch = () => userInput.password === userInput.passwordConfirm || userInput.passwordConfirm === ""
+  const checkPassword = () => userInput.password.length > 5 || userInput.password === ""
   const checkUserName = () => {
-    return userInput.username.length >= 4
+    return userInput.username.length >= 4 || userInput.username === ""
   }
 
-  const checkEmail = () => userInput.email !== ""
+  const checkEmail = () => validateEmail(userInput.email) || userInput.email === ""
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -118,8 +123,8 @@ function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={showPassword}>
-                    {userInput.hidePassword ? <VisibilityOff /> : <Visibility />}
+                  <IconButton aria-label="toggle password visibility" onClick={showPassword} tabIndex={-1}>
+                    {userInput.hidePassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -138,8 +143,8 @@ function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={showPasswordConfirm}>
-                    {userInput.hidePasswordConfirm ? <VisibilityOff /> : <Visibility />}
+                  <IconButton aria-label="toggle password visibility" onClick={showPasswordConfirm} tabIndex={-1}>
+                    {userInput.hidePasswordConfirm ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               ),
