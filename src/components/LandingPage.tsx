@@ -145,6 +145,7 @@ function ControlElements() {
 function LandingPage() {
   return (
     <div>
+      <h1>Öffentliche Landing-Page</h1>
       <ControlElements />
       <Divider />
       <WhyDht />
