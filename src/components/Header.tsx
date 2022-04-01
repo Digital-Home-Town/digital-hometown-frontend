@@ -1,7 +1,3 @@
-import * as React from "react"
-
-import { NavLink } from "react-router-dom"
-
 import { Biotech, DarkMode, HealthAndSafety, Home, LightMode } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppBar from "@mui/material/AppBar"
@@ -15,13 +11,14 @@ import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
+import { getAuth } from "firebase/auth"
+import * as React from "react"
+import { NavLink, useNavigate } from "react-router-dom"
 
+import { useThemeContext } from "../contexts/ThemeContext"
+import { app } from "../firebase-config"
 import dummyAvatar from "../img/dummy-avatar.jpg"
 import logo from "../img/logo.png"
-import { useThemeContext } from "../contexts/ThemeContext"
-import withAuth from "../auth/withAuth"
-import { AuthContextProps } from "../auth/AuthContext"
-import { useNavigate } from "react-router-dom"
 
 function Logo({ bigScreen }: { bigScreen: boolean }) {
   let display = { xs: "flex", md: "none" }
@@ -40,18 +37,6 @@ function Logo({ bigScreen }: { bigScreen: boolean }) {
     </Box>
   )
 }
-
-const menuItems = [
-  { name: "Home", url: "/", icon: <Home /> },
-  { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
-  { name: "Mui", url: "/mui", icon: <Biotech /> },
-]
-
-const profileItems = [
-  { name: "Profile", event: () => {} },
-  { name: "Account", event: () => {} },
-  { name: "Dashboard", event: () => {} },
-]
 
 function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
   return (
@@ -91,11 +76,29 @@ function CustomNavItem({
   )
 }
 
-function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProps) {
+function Header() {
+  const navigate = useNavigate()
+  const auth = getAuth(app)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const { colorMode, toggleColorMode } = useThemeContext()
-  const navigate = useNavigate()
+
+  const menuItems = [
+    { name: "Home", url: "/", icon: <Home /> },
+    { name: "Backend Health", url: "/health", icon: <HealthAndSafety /> },
+    { name: "Mui", url: "/mui", icon: <Biotech /> },
+  ]
+
+  const profileItems = [
+    { name: "Profile", event: () => {} },
+    { name: "Account", event: () => {} },
+    {
+      name: "Dashboard",
+      event: () => {
+        navigate("/dashboard")
+      },
+    },
+  ]
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -204,10 +207,10 @@ function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProp
                 />
               ))}
               <CustomMenuItem
-                name={userLoggedIn ? "Logout" : "Login"}
-                url={userLoggedIn ? "sign-out" : "sign-out"}
+                name={auth.currentUser ? "Logout" : "Login"}
+                url={auth.currentUser ? "sign-out" : "sign-out"}
                 onClick={() => {
-                  if (userLoggedIn) {
+                  if (auth.currentUser) {
                     navigate("/sign-out")
                   } else {
                     navigate("/sign-in")
@@ -221,4 +224,4 @@ function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProp
     </AppBar>
   )
 }
-export default withAuth(Header)
+export default Header

@@ -1,37 +1,36 @@
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
-import Typography from "@mui/material/Typography"
+import Avatar from "@mui/material/Avatar"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
-import withAuth from "../../auth/withAuth"
-import { AuthContextProps } from "../../auth/AuthContext"
+import CssBaseline from "@mui/material/CssBaseline"
+import Grid from "@mui/material/Grid"
+import Link from "@mui/material/Link"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import React from "react"
 import { useNavigate } from "react-router"
-import { INITIAL_LOGGED_IN_USER } from "../../auth/Auth"
 
-function SignIn({ loggedInUser, setLoggedInUser }: AuthContextProps) {
+import { app } from "../../firebase-config"
+
+function SignIn() {
   const navigate = useNavigate()
 
-  if (loggedInUser !== undefined) {
+  const auth = getAuth(app)
+  if (auth.currentUser) {
     navigate("/")
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    })
+    const email = (data.get("email") as string) || ""
+    const password = (data.get("password") as string) || ""
 
-    setLoggedInUser(INITIAL_LOGGED_IN_USER)
-    navigate("/")
+    signInWithEmailAndPassword(auth, email, password).then(() => {
+      navigate("/")
+    })
   }
 
   return (
@@ -82,4 +81,4 @@ function SignIn({ loggedInUser, setLoggedInUser }: AuthContextProps) {
   )
 }
 
-export default withAuth(SignIn)
+export default SignIn

@@ -1,9 +1,8 @@
 import * as React from "react"
-import withAuth from "../../auth/withAuth"
-import { AuthContextProps } from "../../auth/AuthContext"
+
 import Register from "./Register"
 
-function RegisterOrg({ loggedInUser, setLoggedInUser }: AuthContextProps) {
+function RegisterOrg() {
   return (
     <div>
       <h1>Organisation</h1>
@@ -12,4 +11,4 @@ function RegisterOrg({ loggedInUser, setLoggedInUser }: AuthContextProps) {
   )
 }
 
-export default withAuth(RegisterOrg)
+export default RegisterOrg

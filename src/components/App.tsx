@@ -1,11 +1,11 @@
 import "./App.css"
 
+import { Dashboard } from "@mui/icons-material"
 import { Box } from "@mui/material"
 import Container from "@mui/material/Container"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 
-import { UserType } from "../auth/Auth"
 import { AuthProvider } from "../auth/AuthContext"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import BackendHealth from "./BackendHealth"
@@ -39,17 +39,8 @@ function App() {
               <Box mt={1} mb={1}>
                 <Routes>
                   <Route path="/" element={<Start />} />
-                  <Route
-                    path="/health"
-                    element={
-                      <BackendHealth
-                        loggedInUser={undefined}
-                        setLoggedInUser={function (user: UserType | undefined): void {
-                          throw new Error("Function not implemented.")
-                        }}
-                      />
-                    }
-                  />
+                  <Route path="/health" element={<BackendHealth />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/mui" element={<MuiPlayground />} />
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
