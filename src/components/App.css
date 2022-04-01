@@ -3,7 +3,7 @@
   pointer-events: none;
 }
 
-@media {
+@media all-devices {
   .App-logo {
     animation: App-logo-spin infinite 15s linear;
   }
