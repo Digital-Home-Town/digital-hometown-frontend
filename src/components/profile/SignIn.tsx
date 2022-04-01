@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid"
 import Link from "@mui/material/Link"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import React from "react"
 import { useNavigate } from "react-router"
 
@@ -29,6 +29,13 @@ function SignIn() {
     const password = (data.get("password") as string) || ""
 
     signInWithEmailAndPassword(auth, email, password).then(() => {
+      navigate("/")
+    })
+  }
+
+  const handleGoogleLogin = () => {
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider).then(() => {
       navigate("/")
     })
   }
@@ -60,8 +67,11 @@ function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
             Anmelden
+          </Button>
+          <Button fullWidth variant="contained" sx={{ mt: 1, mb: 2 }} color="error" onClick={handleGoogleLogin}>
+            Mit Google anmelden
           </Button>
           <Grid container>
             <Grid item xs>
