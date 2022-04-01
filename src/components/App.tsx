@@ -5,9 +5,10 @@ import Container from "@mui/material/Container"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 
+import { UserType } from "../auth/Auth"
 import { AuthProvider } from "../auth/AuthContext"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
-import logo from "../logo.svg"
+import BackendHealth from "./BackendHealth"
 import Footer from "./Footer"
 import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
@@ -17,28 +18,6 @@ import SignIn from "./profile/SignIn"
 import SignInOrg from "./profile/SignInOrg"
 import SignOut from "./profile/SignOut"
 import Start from "./Start"
-
-function BackendHealth() {
-  const { status } = useBackendHealth("LOADING")
-
-function ReactStartPage() {
-  return (
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Digital Hometown Frontend
-        {/* <br /> */}
-        {/* {new Date().toLocaleString()} */}
-      </p>
-      <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-        Learn React
-      </a>
-      <a href="https://startpage.com">Jan</a>
-      <a href="https://www.google.com">Jonas was here</a>
-      <a href="https://github.com/bdnkl">Der hier auch</a>
-    </header>
-  )
-}
 
 function App() {
   return (
@@ -60,7 +39,17 @@ function App() {
               <Box mt={1} mb={1}>
                 <Routes>
                   <Route path="/" element={<Start />} />
-                  <Route path="/health" element={<BackendHealth />} />
+                  <Route
+                    path="/health"
+                    element={
+                      <BackendHealth
+                        loggedInUser={undefined}
+                        setLoggedInUser={function (user: UserType | undefined): void {
+                          throw new Error("Function not implemented.")
+                        }}
+                      />
+                    }
+                  />
                   <Route path="/mui" element={<MuiPlayground />} />
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
