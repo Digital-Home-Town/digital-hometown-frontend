@@ -77,7 +77,7 @@ export const customThemeOptions = {
       defaultProps: {
         // margin: "dense" as const,
         variant: "standard" as const,
-        label: "TextField" as const,
+        // label: "TextField" as const,
       },
     },
     MuiPaper: {

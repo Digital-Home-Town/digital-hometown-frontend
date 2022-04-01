@@ -1,30 +1,98 @@
-import { Button, Divider, Grid, Paper, TextField, Typography } from "@mui/material"
+import {
+  Button,
+  Divider,
+  Grid,
+  Card,
+  TextField,
+  Typography,
+  IconButton,
+  CardHeader,
+  CardMedia,
+  CardContent,
+} from "@mui/material"
+import { Check } from "@mui/icons-material"
 import { useNavigate } from "react-router"
+import brushesImg from "../img/brushes.jpg"
+import oldPeopleImg from "../img/old-people.jpg"
+import cafeImg from "../img/cafe-bremen.jpg"
+import { Box } from "@mui/system"
 
 function WhyDht() {
+  const CARD_WIDTH = 250
   return (
     <div>
-      <h3>Warum Digital Hometown nutzen?</h3>
-      <h5>Nachbarn und Umgebung kennenlernen</h5>
-      <h5>Dich vernetzen</h5>
-      <h5>Deine Interessen teilen</h5>
+      <Card sx={{ padding: 1, margin: 1 }}>
+        <Box sx={{ textAlign: "center" }}>
+          <h3>Warum Digital Hometown nutzen?</h3>
+        </Box>
+        <Grid container spacing={2} style={{ marginTop: 1 }}>
+          <Grid item>
+            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
+              <CardHeader title="Interessen teilen" subheader="Untertitel" />
+              <CardMedia component="img" image={brushesImg} alt="Brushes" />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                  labore et dolore magna aliquyam erat, sed diam voluptua.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
+              <CardHeader title="Vernetzen" subheader="Untertitel" />
+              <CardMedia component="img" image={oldPeopleImg} alt="Old People" />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                  labore et dolore magna aliquyam erat, sed diam voluptua.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
+              <CardHeader title="Entdecken" subheader="Untertitel" />
+              <CardMedia component="img" image={cafeImg} alt="Cafe in Bremen" />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                  labore et dolore magna aliquyam erat, sed diam voluptua.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Card>
     </div>
   )
 }
 
-function LogIn() {
+function LogInAsUser() {
   const navigate = useNavigate()
   return (
     <div>
-      <Typography>Alle Möglichkeiten nutzen</Typography>
-      <div>
-        <Button onClick={() => navigate("/sign-in")} sx={{ marginBottom: 0.5 }}>
-          Anmelden
-        </Button>
-      </div>
-      <div>
-        <Button onClick={() => navigate("/register")}>Registrieren</Button>
-      </div>
+      <Typography>Du willst alles nutzen?</Typography>
+      <br />
+      <Button onClick={() => navigate("/sign-in")} sx={{ marginRight: 0.5 }}>
+        Anmelden
+      </Button>
+
+      <Button onClick={() => navigate("/register")}>Registrieren</Button>
+    </div>
+  )
+}
+
+function LogInAsOrganization() {
+  const navigate = useNavigate()
+  return (
+    <div>
+      <Typography>Du bist Vertreter einer Organisation?</Typography>
+      <br />
+      <Button onClick={() => navigate("/organization/sign-in")} sx={{ marginRight: 0.5 }}>
+        Anmelden
+      </Button>
+      <Button onClick={() => navigate("/organization/register")}>Registrieren</Button>
     </div>
   )
 }
@@ -32,36 +100,54 @@ function LogIn() {
 function SelectRegion() {
   return (
     <div>
-      <Typography>Nur öffentliches Anzeigen</Typography>
-      <div>
-        <TextField name="plz" label="Postleitzahl" sx={{ marginBottom: 0.5 }} />
-      </div>
-      <div style={{ textAlign: "left" }}>
-        <Button>Bestätigen</Button>
-      </div>
+      <Typography>Du willst anonym bleiben?</Typography>
+      <br />
+      <TextField
+        name="plz"
+        label="Postleitzahl"
+        sx={{ marginRight: 0.5 }}
+        InputProps={{
+          endAdornment: (
+            <IconButton>
+              <Check />
+            </IconButton>
+          ),
+        }}
+      />
     </div>
   )
 }
 
-function LandingPage() {
+function ControlElements() {
   const GRID_SIZE = 110
 
   return (
-    <div>
-      <WhyDht />
-      <Divider />
-      <Grid container spacing={2} style={{ marginTop: 1 }}>
-        <Grid item textAlign={"center"}>
-          <Paper sx={{ height: GRID_SIZE, padding: 1 }}>
-            <LogIn />
-          </Paper>
-        </Grid>
-        <Grid item textAlign={"center"}>
-          <Paper sx={{ height: GRID_SIZE, padding: 1 }}>
-            <SelectRegion />
-          </Paper>
-        </Grid>
+    <Grid container spacing={2} sx={{ marginTop: 1, marginBottom: 1 }}>
+      <Grid item textAlign={"center"}>
+        <Card sx={{ height: GRID_SIZE, padding: 1 }}>
+          <LogInAsUser />
+        </Card>
       </Grid>
+      <Grid item textAlign={"center"}>
+        <Card sx={{ height: GRID_SIZE, padding: 1 }}>
+          <SelectRegion />
+        </Card>
+      </Grid>
+      <Grid item textAlign={"center"}>
+        <Card sx={{ height: GRID_SIZE, padding: 1 }}>
+          <LogInAsOrganization />
+        </Card>
+      </Grid>
+    </Grid>
+  )
+}
+
+function LandingPage() {
+  return (
+    <div>
+      <ControlElements />
+      <Divider />
+      <WhyDht />
     </div>
   )
 }

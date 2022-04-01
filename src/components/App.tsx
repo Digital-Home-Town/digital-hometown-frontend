@@ -12,7 +12,9 @@ import Footer from "./Footer"
 import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
 import Register from "./profile/Register"
+import RegisterOrg from "./profile/RegisterOrg"
 import SignIn from "./profile/SignIn"
+import SignInOrg from "./profile/SignInOrg"
 import SignOut from "./profile/SignOut"
 import Start from "./Start"
 
@@ -63,6 +65,10 @@ function App() {
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/organization">
+                    <Route path="sign-in" element={<SignInOrg />} />
+                    <Route path="register" element={<RegisterOrg />} />
+                  </Route>
                 </Routes>
               </Box>
             </Container>
