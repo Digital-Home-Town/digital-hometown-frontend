@@ -29,7 +29,7 @@ Javascript Bibliothek, die mit vielen Bibliotheken erweiterbar ist.
   - Eigenschaften (Props), die von außen übergeben werden
   - einem Zustand (lokale Variable in einem React Component)
 
-### Vorteil Typeskript statt Javascript
+### Vorteil Typescript statt Javascript
 
 Typen werden beim Kompilieren überprüft, so können Fehler erkannt werden....
 
