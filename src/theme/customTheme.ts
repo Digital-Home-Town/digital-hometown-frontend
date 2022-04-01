@@ -19,6 +19,22 @@ const customTheme = createTheme({
         variant: "outlined",
       },
     },
+    MuiTextField: {
+      defaultProps: {
+        margin: "dense",
+        variant: "standard",
+      },
+    },
+    // MuiCardMedia: {
+    //   defaultProps: {
+    //     sx: { display: "flex", alignItems: "center", justifyContent: "center" },
+    //   },
+    // },
+    // MuiCardContent: {
+    //   defaultProps: {
+    //     sx: { display: "flex", alignItems: "center", justifyContent: "center" },
+    //   },
+    // },
   },
   palette: {
     //   mode: "light",
