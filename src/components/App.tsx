@@ -5,13 +5,18 @@ import Container from "@mui/material/Container"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 
-import { INITIAL_LOGGED_IN_USER } from "../auth/Auth"
 import { AuthProvider } from "../auth/AuthContext"
 import { ThemeContextProvider } from "../context/ThemeContext"
-import { AuthContextValues } from "../contexts/AuthContext"
 import withAuth from "../hocs/withAuth"
-import { useBackendHealth } from "../hooks/useBackendHealth"
+import logo from "../logo.svg"
 import { INITIAL_LOGGED_IN_USER } from "../types/User"
+import BackendHealth from "./BackendHealth"
+import Footer from "./Footer"
+import Header from "./Header"
+import MuiPlayground from "./playground/mui/MuiPlayground"
+import SignIn from "./SignIn"
+import SignOut from "./SignOut"
+import Start from "./Start"
 
 function ReactStartPage() {
   return (
@@ -31,39 +36,6 @@ function ReactStartPage() {
     </header>
   )
 }
-
-function BackendHealthNoAuth({ loggedInUser, setLoggedInUser }: AuthContextValues) {
-  const { status } = useBackendHealth("LOADING")
-
-  return loggedInUser !== undefined ? (
-    <div>
-      <p>Backend status is {status.status}</p>
-      <p>
-        {loggedInUser.name.first} {loggedInUser.name.last} is logged in as {loggedInUser.role}
-      </p>
-      <button
-        onClick={() => {
-          setLoggedInUser(undefined)
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  ) : (
-    <div>
-      <p>Not authenticated</p>
-      <button
-        onClick={() => {
-          setLoggedInUser(INITIAL_LOGGED_IN_USER)
-        }}
-      >
-        Login
-      </button>
-    </div>
-  )
-}
-
-const BackendHealth = withAuth(BackendHealthNoAuth)
 
 function App() {
   return (
@@ -100,4 +72,4 @@ function App() {
   )
 }
 
-export default App
+export default withAuth(App)

@@ -1,12 +1,12 @@
 import React, { createContext, ReactNode, useState } from "react"
 import { UserType } from "../types/User"
 
-export interface AuthContextValues {
+export interface AuthContextProps {
   loggedInUser: UserType | undefined
   setLoggedInUser: (user: UserType | undefined) => void
 }
 
-const AuthContext = createContext<undefined | AuthContextValues>(undefined)
+const AuthContext = createContext<undefined | AuthContextProps>(undefined)
 
 export function AuthProvider({
   children,
