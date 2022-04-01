@@ -208,9 +208,9 @@ function Header({ userLoggedIn, setLoggedInUser, setLoggedOut }: AuthContextProp
                 url={userLoggedIn ? "sign-out" : "sign-out"}
                 onClick={() => {
                   if (userLoggedIn) {
-                    navigate("sign-out")
+                    navigate("/sign-out")
                   } else {
-                    navigate("sign-in")
+                    navigate("/sign-in")
                   }
                 }}
               />

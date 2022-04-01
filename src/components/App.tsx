@@ -8,14 +8,16 @@ import { HashRouter, Route, Routes } from "react-router-dom"
 import { AuthProvider } from "../auth/AuthContext"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import logo from "../logo.svg"
-import { INITIAL_LOGGED_IN_USER } from "../types/User"
-import BackendHealth from "./BackendHealth"
 import Footer from "./Footer"
 import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import SignIn from "./SignIn"
-import SignOut from "./SignOut"
+import Register from "./profile/Register"
+import SignIn from "./profile/SignIn"
+import SignOut from "./profile/SignOut"
 import Start from "./Start"
+
+function BackendHealth() {
+  const { status } = useBackendHealth("LOADING")
 
 function ReactStartPage() {
   return (
@@ -38,8 +40,8 @@ function ReactStartPage() {
 
 function App() {
   return (
-    <AuthProvider initialLoggedInUser={INITIAL_LOGGED_IN_USER}>
-      <ThemeContextProvider defaultColor={"dark" as const}>
+    <AuthProvider initialLoggedInUser={undefined}>
+      <ThemeContextProvider defaultColor={"light" as const}>
         <Box
           sx={{
             display: "flex",
@@ -60,6 +62,7 @@ function App() {
                   <Route path="/mui" element={<MuiPlayground />} />
                   <Route path="/sign-in" element={<SignIn />} />
                   <Route path="/sign-out" element={<SignOut />} />
+                  <Route path="/register" element={<Register />} />
                 </Routes>
               </Box>
             </Container>
