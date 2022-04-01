@@ -1,5 +1,5 @@
 {
-  "short_name": "React App",
+  "short_name": "Digital Home",
   "name": "Create React App Sample",
   "icons": [
     {
@@ -18,8 +18,5 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "start_url": "."
 }
