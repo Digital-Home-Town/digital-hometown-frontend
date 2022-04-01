@@ -5,6 +5,8 @@ import { Link } from "react-router-dom"
 import { CalendarToday, Chat, Group } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
+import withAuth from "../auth/withAuth"
+import { AuthContextProps } from "../auth/AuthContext"
 
 interface StartElementInterface {
   url: string
@@ -27,14 +29,17 @@ function StartElement({ url, text, icon }: StartElementInterface) {
   )
 }
 
-function Start() {
+function Dashboard({ loggedInUser }: AuthContextProps) {
   return (
-    <Grid container direction="row" alignItems="center" justifyContent="center">
-      <StartElement url="/health" text="Gruppen" icon={Group} />
-      <StartElement url="/mui" text="Chat" icon={Chat} />
-      <StartElement url="/sign-in" text="Termin" icon={CalendarToday} />
-    </Grid>
+    <div>
+      Logged in as {loggedInUser?.name.first} {loggedInUser?.name.last}
+      <Grid container direction="row" alignItems="center" justifyContent="center">
+        <StartElement url="/health" text="Gruppen" icon={Group} />
+        <StartElement url="/mui" text="Chat" icon={Chat} />
+        <StartElement url="/sign-in" text="Termin" icon={CalendarToday} />
+      </Grid>
+    </div>
   )
 }
 
-export default Start
+export default withAuth(Dashboard)
