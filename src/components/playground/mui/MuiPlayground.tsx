@@ -1,10 +1,6 @@
 import React, { useState } from "react"
 
-import {
-  Edit,
-  LocationOn,
-  ShoppingCartRounded,
-} from "@mui/icons-material"
+import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
