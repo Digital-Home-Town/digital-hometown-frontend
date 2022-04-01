@@ -3,6 +3,7 @@ import { UserType } from "./Auth"
 
 export interface AuthContextProps {
   loggedInUser: UserType | undefined
+  userLoggedIn: boolean
   setLoggedInUser: (user: UserType | undefined) => void
   setLoggedOut: () => void
 }
@@ -17,17 +18,22 @@ export function AuthProvider({
   initialLoggedInUser?: UserType
 }) {
   const [loggedInUser, setLoggedInUser] = useState<UserType | undefined>(initialLoggedInUser)
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(initialLoggedInUser !== undefined)
 
   function handleLoggedInUser(user: UserType | undefined) {
     setLoggedInUser(user)
+    setUserLoggedIn(true)
   }
 
   function handleLogOut() {
     setLoggedInUser(undefined)
+    setUserLoggedIn(false)
   }
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, setLoggedInUser: handleLoggedInUser, setLoggedOut: handleLogOut }}>
+    <AuthContext.Provider
+      value={{ loggedInUser, userLoggedIn, setLoggedInUser: handleLoggedInUser, setLoggedOut: handleLogOut }}
+    >
       {children}
     </AuthContext.Provider>
   )
