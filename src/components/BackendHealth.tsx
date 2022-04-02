@@ -1,17 +1,17 @@
-import { getAuth } from "firebase/auth"
 import React from "react"
+import { AuthContextProps } from "src/auth/AuthContext"
+import withAuth from "../auth/withAuth"
 
-import { app } from "../firebase-config"
 import { useBackendHealth } from "../hooks/useBackendHealth"
 
-function BackendHealthNoAuth() {
+function BackendHealthNoAuth({ currentUser }: AuthContextProps) {
   const { status } = useBackendHealth("LOADING")
-  const auth = getAuth(app)
-  return auth.currentUser ? (
+
+  return currentUser ? (
     <div>
       <p>Backend status is {status.status}</p>
       <p>
-        {auth.currentUser.displayName || "No name set"} is logged in as {auth.currentUser.email}
+        {currentUser?.displayName || "No name set"} is logged in as {currentUser?.email}
       </p>
     </div>
   ) : (
@@ -19,4 +19,4 @@ function BackendHealthNoAuth() {
   )
 }
 
-export default BackendHealthNoAuth
+export default withAuth(BackendHealthNoAuth)

@@ -10,24 +10,18 @@ import Grid from "@mui/material/Grid"
 import Link from "@mui/material/Link"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 import * as React from "react"
-import { useNavigate } from "react-router"
-
-import { app } from "../../firebase-config"
+import { Navigate, useNavigate } from "react-router"
+import { AuthContextProps } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
 
 function validateEmail(email: string) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return re.test(email)
 }
 
-function Register() {
+function Register({ currentUser, signUp }: AuthContextProps) {
   const navigate = useNavigate()
-  const auth = getAuth(app)
-
-  if (auth.currentUser) {
-    navigate("/")
-  }
 
   const [userInput, setUserInput_] = React.useState({
     username: "",
@@ -66,12 +60,12 @@ function Register() {
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    createUserWithEmailAndPassword(auth, email, password).then(() => {
-      navigate("/")
-    })
+    signUp(email, password)
   }
 
-  return (
+  return currentUser ? (
+    <Navigate to="/" />
+  ) : (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Box
@@ -168,4 +162,4 @@ function Register() {
   )
 }
 
-export default Register
+export default withAuth(Register)

@@ -1,12 +1,12 @@
-import { getAuth, signOut } from "firebase/auth"
 import * as React from "react"
 import { Navigate } from "react-router-dom"
+import { AuthContextProps } from "../../auth/AuthContext"
+import withAuth from "../../auth/withAuth"
 
-function SignIn() {
-  const auth = getAuth()
-  signOut(auth)
+function SignOut({ logOut }: AuthContextProps) {
+  logOut()
 
   return <Navigate to="/sign-in" />
 }
 
-export default SignIn
+export default withAuth(SignOut)

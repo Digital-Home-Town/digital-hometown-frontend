@@ -1,38 +1,59 @@
-import React, { createContext, ReactNode, useState } from "react"
-import { UserType } from "./Auth"
+import React, { createContext, ReactNode, useEffect, useState } from "react"
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  User,
+} from "firebase/auth"
+import { app } from "../firebase-config"
 
 export interface AuthContextProps {
-  loggedInUser: UserType | undefined
-  userLoggedIn: boolean
-  setLoggedInUser: (user: UserType | undefined) => void
-  setLoggedOut: () => void
+  currentUser: User | undefined | null
+  logOut: () => void
+  logIn: (email: string, password: string) => void
+  logInGoogle: () => void
+  signUp: (email: string, password: string) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextProps>(undefined)
 
-export function AuthProvider({
-  children,
-  initialLoggedInUser,
-}: {
-  children: ReactNode
-  initialLoggedInUser?: UserType
-}) {
-  const [loggedInUser, setLoggedInUser] = useState<UserType | undefined>(initialLoggedInUser)
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(initialLoggedInUser !== undefined)
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
 
-  function handleLoggedInUser(user: UserType | undefined) {
-    setLoggedInUser(user)
-    setUserLoggedIn(true)
+  useEffect(() => {
+    setCurrentUser(getAuth(app).currentUser)
+    getAuth(app).onAuthStateChanged(setCurrentUser)
+  }, [])
+
+  function handleGoogleLogIn() {
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(getAuth(app), provider)
   }
 
-  function handleLogOut() {
-    setLoggedInUser(undefined)
-    setUserLoggedIn(false)
+  const handleEmailLogIn = (email: string, password: string) => {
+    signInWithEmailAndPassword(getAuth(app), email, password)
+  }
+
+  const handleSignOut = () => {
+    signOut(getAuth(app))
+  }
+
+  const handleCreateUserWithEmail = (email: string, password: string) => {
+    createUserWithEmailAndPassword(getAuth(app), email, password)
   }
 
   return (
     <AuthContext.Provider
-      value={{ loggedInUser, userLoggedIn, setLoggedInUser: handleLoggedInUser, setLoggedOut: handleLogOut }}
+      value={{
+        currentUser: currentUser,
+        logOut: handleSignOut,
+        logIn: handleEmailLogIn,
+        logInGoogle: handleGoogleLogIn,
+        signUp: handleCreateUserWithEmail,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -41,6 +62,8 @@ export function AuthProvider({
 
 export default function useAuthContext() {
   const context = React.useContext(AuthContext)
+
+  console.log("Current user", context?.currentUser)
 
   if (context === undefined) {
     throw new Error("useAuthContext should be used within an AuthProvider.")

@@ -1,3 +1,4 @@
+import React from "react"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -8,19 +9,12 @@ import Grid from "@mui/material/Grid"
 import Link from "@mui/material/Link"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
-import React from "react"
-import { useNavigate } from "react-router"
+import { Navigate, useNavigate } from "react-router"
+import { AuthContextProps } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
 
-import { app } from "../../firebase-config"
-
-function SignIn() {
+function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
   const navigate = useNavigate()
-
-  const auth = getAuth(app)
-  if (auth.currentUser) {
-    navigate("/")
-  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -28,19 +22,16 @@ function SignIn() {
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signInWithEmailAndPassword(auth, email, password).then(() => {
-      navigate("/")
-    })
+    logIn(email, password)
   }
 
   const handleGoogleLogin = () => {
-    const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider).then(() => {
-      navigate("/")
-    })
+    logInGoogle()
   }
 
-  return (
+  return currentUser ? (
+    <Navigate to="/" />
+  ) : (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Box
@@ -91,4 +82,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default withAuth(SignIn)

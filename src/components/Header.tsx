@@ -11,12 +11,12 @@ import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Tooltip from "@mui/material/Tooltip"
 import Typography from "@mui/material/Typography"
-import { getAuth } from "firebase/auth"
 import * as React from "react"
 import { NavLink, useNavigate } from "react-router-dom"
+import { AuthContextProps } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
 
 import { useThemeContext } from "../contexts/ThemeContext"
-import { app } from "../firebase-config"
 import dummyAvatar from "../img/dummy-avatar.jpg"
 import logo from "../img/logo.png"
 
@@ -76,9 +76,9 @@ function CustomNavItem({
   )
 }
 
-function Header() {
+function Header({ currentUser }: AuthContextProps) {
   const navigate = useNavigate()
-  const auth = getAuth(app)
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const { colorMode, toggleColorMode } = useThemeContext()
@@ -174,7 +174,8 @@ function Header() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Not logged in"
-                  src={auth.currentUser?.photoURL ? auth.currentUser.photoURL : dummyAvatar}
+                  src={currentUser?.photoURL ? currentUser.photoURL : dummyAvatar}
+                  imgProps={{ referrerPolicy: "no-referrer" }}
                 />
               </IconButton>
             </Tooltip>
@@ -210,10 +211,10 @@ function Header() {
                 />
               ))}
               <CustomMenuItem
-                name={auth.currentUser ? "Logout" : "Login"}
-                url={auth.currentUser ? "sign-out" : "sign-out"}
+                name={currentUser ? "Logout" : "Login"}
+                url={currentUser ? "sign-out" : "sign-out"}
                 onClick={() => {
-                  if (auth.currentUser) {
+                  if (currentUser) {
                     navigate("/sign-out")
                   } else {
                     navigate("/sign-in")
@@ -227,4 +228,5 @@ function Header() {
     </AppBar>
   )
 }
-export default Header
+
+export default withAuth(Header)

@@ -1,11 +1,10 @@
+import React from "react"
 import { CalendarToday, Chat, Group } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
-import { getAuth } from "firebase/auth"
-import React from "react"
 import { Link } from "react-router-dom"
-
-import { app } from "../firebase-config"
+import withAuth from "src/auth/withAuth"
+import { AuthContextProps } from "src/auth/AuthContext"
 
 interface StartElementInterface {
   url: string
@@ -28,11 +27,10 @@ function StartElement({ url, text, icon }: StartElementInterface) {
   )
 }
 
-function Dashboard() {
-  const auth = getAuth(app)
+function Dashboard({ currentUser }: AuthContextProps) {
   return (
     <div>
-      Logged in as {auth.currentUser?.email}
+      Logged in as {currentUser?.email}
       <Grid container direction="row" alignItems="center" justifyContent="center">
         <StartElement url="/" text="Gruppen" icon={Group} />
         <StartElement url="/" text="Chat" icon={Chat} />
@@ -42,4 +40,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default withAuth(Dashboard)

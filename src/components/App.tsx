@@ -17,42 +17,45 @@ import SignIn from "./profile/SignIn"
 import SignInOrg from "./profile/SignInOrg"
 import SignOut from "./profile/SignOut"
 import Start from "./Start"
+import { AuthProvider } from "src/auth/AuthContext"
 
 function App() {
   return (
     <ThemeContextProvider defaultColor={"light" as const}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-          bgcolor: "background.default",
-          color: "text.primary",
-        }}
-      >
-        {/* HashRouter only needed because github pages put the root to github.io/<name> */}
-        <HashRouter>
-          <Header />
-          <Container component="main" maxWidth="lg">
-            <Box mt={1} mb={1}>
-              <Routes>
-                <Route path="/" element={<Start />} />
-                <Route path="/health" element={<BackendHealth />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/mui" element={<MuiPlayground />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/sign-out" element={<SignOut />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/organization">
-                  <Route path="sign-in" element={<SignInOrg />} />
-                  <Route path="register" element={<RegisterOrg />} />
-                </Route>
-              </Routes>
-            </Box>
-          </Container>
-        </HashRouter>
-        <Footer />
-      </Box>
+      <AuthProvider>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            color: "text.primary",
+          }}
+        >
+          {/* HashRouter only needed because github pages put the root to github.io/<name> */}
+          <HashRouter>
+            <Header />
+            <Container component="main" maxWidth="lg">
+              <Box mt={1} mb={1}>
+                <Routes>
+                  <Route path="/" element={<Start />} />
+                  <Route path="/health" element={<BackendHealth />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/mui" element={<MuiPlayground />} />
+                  <Route path="/sign-in" element={<SignIn />} />
+                  <Route path="/sign-out" element={<SignOut />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/organization">
+                    <Route path="sign-in" element={<SignInOrg />} />
+                    <Route path="register" element={<RegisterOrg />} />
+                  </Route>
+                </Routes>
+              </Box>
+            </Container>
+          </HashRouter>
+          <Footer />
+        </Box>
+      </AuthProvider>
     </ThemeContextProvider>
   )
 }
