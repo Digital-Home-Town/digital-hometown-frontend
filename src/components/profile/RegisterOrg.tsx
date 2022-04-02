@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import Register from "./Register"
+import { Register } from "./Register"
 
-function RegisterOrg() {
+export function RegisterOrg() {
   return (
     <div>
       <h1>Organisation</h1>
@@ -10,5 +10,3 @@ function RegisterOrg() {
     </div>
   )
 }
-
-export default RegisterOrg

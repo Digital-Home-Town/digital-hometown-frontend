@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import SignIn from "./SignIn"
+import { SignIn } from "./SignIn"
 
-function SignInOrg() {
+export function SignInOrg() {
   return (
     <div>
       <h1>Organisation</h1>
@@ -10,5 +10,3 @@ function SignInOrg() {
     </div>
   )
 }
-
-export default SignInOrg
