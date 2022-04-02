@@ -1,5 +1,5 @@
 import "./App.css"
-import "react-toastify/dist/ReactToastify.css"
+import "./ReactToastify.css"
 
 import { Dashboard } from "@mui/icons-material"
 import { Box } from "@mui/material"
