@@ -11,12 +11,12 @@ import Typography from "@mui/material/Typography"
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import React from "react"
 import { useNavigate } from "react-router"
+import { toast } from "react-toastify"
 
 import { app } from "../../firebase-config"
 
 export function SignIn() {
   const navigate = useNavigate()
-
   const auth = getAuth(app)
   if (auth.currentUser) {
     navigate("/")
@@ -28,9 +28,14 @@ export function SignIn() {
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signInWithEmailAndPassword(auth, email, password).then(() => {
-      navigate("/")
-    })
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        toast.success("Erfolgreich eingeloggt.")
+        navigate("/")
+      })
+      .catch((err) => {
+        toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort")
+      })
   }
 
   const handleGoogleLogin = () => {

@@ -1,21 +1,26 @@
 import "./App.css"
+import "react-toastify/dist/ReactToastify.css"
 
 import { Dashboard } from "@mui/icons-material"
 import { Box } from "@mui/material"
 import Container from "@mui/material/Container"
 import { HashRouter, Route, Routes } from "react-router-dom"
+import { toast, ToastContainer } from "react-toastify"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import BackendHealth from "./BackendHealth"
 import Footer from "./Footer"
 import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import { EmailSent, Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./profile"
+import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./profile"
 import Start from "./Start"
+
+toast.configure()
 
 function App() {
   return (
     <ThemeContextProvider defaultColor={"light" as const}>
+      <ToastContainer />
       <Box
         sx={{
           display: "flex",
@@ -39,7 +44,6 @@ function App() {
                 <Route path="/sign-out" element={<SignOut />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/email-sent" element={<EmailSent />} />
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
                   <Route path="register" element={<RegisterOrg />} />

@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth"
 import React from "react"
 import { useNavigate } from "react-router"
+import { toast } from "react-toastify"
 
 import { app } from "../../firebase-config"
 
@@ -25,9 +26,14 @@ export function ResetPassword() {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const email = (data.get("email") as string) || ""
-    sendPasswordResetEmail(auth, email).then(() => {
-      navigate("/email-sent")
-    })
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toast.success("Passwort zurückgesetzt. Bitte überprüfe deine Mails und folge den Anweisungen in der Mail.")
+        navigate("/sign-in")
+      })
+      .catch(() => {
+        toast.error("Fehler beim Passwort zurücksetzen. Ist deine Mail richtig geschrieben?")
+      })
   }
 
   return (
