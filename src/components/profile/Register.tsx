@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography"
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 import * as React from "react"
 import { useNavigate } from "react-router"
+import { toast } from "react-toastify"
 
 import { app } from "../../firebase-config"
 
@@ -67,6 +68,7 @@ export function Register() {
     const password = (data.get("password") as string) || ""
 
     createUserWithEmailAndPassword(auth, email, password).then(() => {
+      toast.success("Du bist nun registriert.")
       navigate("/")
     })
   }
