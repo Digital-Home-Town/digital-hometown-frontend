@@ -1,4 +1,3 @@
-import React from "react"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -9,24 +8,20 @@ import Grid from "@mui/material/Grid"
 import Link from "@mui/material/Link"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import React from "react"
 import { Navigate, useNavigate } from "react-router"
-import { AuthContextProps } from "src/auth/AuthContext"
-import withAuth from "src/auth/withAuth"
+import withAuth from "../../auth/withAuth"
+import { AuthContextProps } from "../../auth/AuthContext"
 
-function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
+function ResetPassword({ currentUser, resetPassword }: AuthContextProps) {
   const navigate = useNavigate()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handlePasswordReset = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const email = (data.get("email") as string) || ""
-    const password = (data.get("password") as string) || ""
-
-    logIn(email, password)
-  }
-
-  const handleGoogleLogin = () => {
-    logInGoogle()
+    resetPassword(email)
+    navigate("/sign-in")
   }
 
   return currentUser ? (
@@ -47,31 +42,19 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
         <Typography component="h1" variant="h5">
           Anmelden
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handlePasswordReset} noValidate sx={{ mt: 1 }}>
           <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
-            Anmelden
-          </Button>
-          <Button fullWidth variant="contained" sx={{ mt: 1, mb: 2 }} color="error" onClick={handleGoogleLogin}>
-            Mit Google anmelden
+            Passwort zurücksetzen
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link variant="body2" onClick={() => navigate("/reset-password")}>
-                Password vergessen?
+              <Link onClick={() => navigate("/sign-in")} variant="body2">
+                Zur Anmeldung
               </Link>
             </Grid>
             <Grid item>
-              <Link variant="body2" onClick={() => navigate("/register")}>
+              <Link onClick={() => navigate("/register")} variant="body2">
                 Noch keinen Account? Registriere dich hier!
               </Link>
             </Grid>
@@ -82,4 +65,4 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
   )
 }
 
-export default withAuth(SignIn)
+export default withAuth(ResetPassword)

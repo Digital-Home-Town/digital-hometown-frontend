@@ -3,12 +3,14 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   User,
 } from "firebase/auth"
 import { app } from "../firebase-config"
+import { toast } from "react-toastify"
 
 export interface AuthContextProps {
   currentUser: User | undefined | null
@@ -16,6 +18,7 @@ export interface AuthContextProps {
   logIn: (email: string, password: string) => void
   logInGoogle: () => void
   signUp: (email: string, password: string) => void
+  resetPassword: (email: string) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextProps>(undefined)
@@ -35,6 +38,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleEmailLogIn = (email: string, password: string) => {
     signInWithEmailAndPassword(getAuth(app), email, password)
+      .then(() => {
+        toast.success("Erfolgreich eingeloggt.")
+      })
+      .catch((err) => {
+        console.error(err)
+        toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort")
+      })
   }
 
   const handleSignOut = () => {
@@ -42,7 +52,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const handleCreateUserWithEmail = (email: string, password: string) => {
-    createUserWithEmailAndPassword(getAuth(app), email, password)
+    createUserWithEmailAndPassword(getAuth(app), email, password).then(() => {
+      toast.success("Du bist nun registriert.")
+    })
+  }
+
+  const handlePasswordReset = (email: string) => {
+    sendPasswordResetEmail(getAuth(app), email)
+      .then(() => {
+        toast.success("Passwort zurückgesetzt. Bitte überprüfe deine Mails und folge den Anweisungen in der Mail.")
+      })
+      .catch(() => {
+        toast.error("Fehler beim Passwort zurücksetzen. Ist deine Mail richtig geschrieben?")
+      })
   }
 
   return (
@@ -53,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logIn: handleEmailLogIn,
         logInGoogle: handleGoogleLogIn,
         signUp: handleCreateUserWithEmail,
+        resetPassword: handlePasswordReset,
       }}
     >
       {children}
