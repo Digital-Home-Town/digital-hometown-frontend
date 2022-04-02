@@ -1,29 +1,31 @@
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
-import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
-import withAuth from "../../auth/withAuth"
-import { AuthContextProps } from "../../auth/AuthContext"
-import { useNavigate } from "react-router"
-import { IconButton, InputAdornment } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import { IconButton, InputAdornment } from "@mui/material"
+import Avatar from "@mui/material/Avatar"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Container from "@mui/material/Container"
+import CssBaseline from "@mui/material/CssBaseline"
+import Grid from "@mui/material/Grid"
+import Link from "@mui/material/Link"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import * as React from "react"
+import { useNavigate } from "react-router"
+
+import { app } from "../../firebase-config"
 
 function validateEmail(email: string) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return re.test(email)
 }
 
-function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
+function Register() {
   const navigate = useNavigate()
+  const auth = getAuth(app)
 
-  if (loggedInUser !== undefined) {
+  if (auth.currentUser) {
     navigate("/")
   }
 
@@ -61,12 +63,12 @@ function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    const email = (data.get("email") as string) || ""
+    const password = (data.get("password") as string) || ""
+
+    createUserWithEmailAndPassword(auth, email, password).then(() => {
+      navigate("/")
     })
-    console.log(userInput)
   }
 
   return (
@@ -166,4 +168,4 @@ function Register({ loggedInUser, setLoggedInUser }: AuthContextProps) {
   )
 }
 
-export default withAuth(Register)
+export default Register

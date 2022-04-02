@@ -39,4 +39,4 @@ jobs:
           git config user.name "Automated"
           git config user.email "actions@users.noreply.github.com"
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/digital-home-town/digital-hometown-frontend.git
-          npm run deploy
+          yarn deploy

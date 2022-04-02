@@ -1,11 +1,13 @@
+import { getAuth } from "firebase/auth"
 import React from "react"
-import { AuthContextProps } from "../auth/AuthContext"
-import withAuth from "../auth/withAuth"
+
+import { app } from "../firebase-config"
 import Dashboard from "./Dashboard"
 import LandingPage from "./LandingPage"
 
-function Start({ loggedInUser }: AuthContextProps) {
-  return <div>{loggedInUser !== undefined ? <Dashboard /> : <LandingPage />}</div>
+function Start() {
+  const auth = getAuth(app)
+  return <div>{auth.currentUser ? <Dashboard /> : <LandingPage />}</div>
 }
 
-export default withAuth(Start)
+export default Start
