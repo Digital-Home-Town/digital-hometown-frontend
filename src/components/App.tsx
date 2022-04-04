@@ -1,5 +1,5 @@
 import "./App.css"
-import "./ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css"
 
 import { Dashboard } from "@mui/icons-material"
 import { Box } from "@mui/material"
@@ -7,6 +7,7 @@ import Container from "@mui/material/Container"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
+import { AuthProvider } from "src/auth/AuthContext"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import BackendHealth from "./BackendHealth"
@@ -15,7 +16,6 @@ import Header from "./Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./profile"
 import Start from "./Start"
-import { AuthProvider } from "src/auth/AuthContext"
 
 toast.configure()
 
