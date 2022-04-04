@@ -40,6 +40,7 @@
     "cross-env": "^7.0.3"
   },
   "dependencies": {
+    "@babel/runtime": "^7.17.8",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.3.1",
