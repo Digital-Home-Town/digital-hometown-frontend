@@ -34,6 +34,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function handleGoogleLogIn() {
     const provider = new GoogleAuthProvider()
     signInWithPopup(getAuth(app), provider)
+      .then(() => {
+        toast.success("Erfolgreich mit Google eingeloggt.")
+      })
+      .catch((err) => {
+        console.error(err)
+        toast.error("Fehler bei der Authentifizierung mit Google.")
+      })
   }
 
   const handleEmailLogIn = (email: string, password: string) => {
@@ -43,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .catch((err) => {
         console.error(err)
-        toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort")
+        toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")
       })
   }
 

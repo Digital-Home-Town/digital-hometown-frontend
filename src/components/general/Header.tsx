@@ -32,6 +32,33 @@ function Logo({ bigScreen }: { bigScreen: boolean }) {
   )
 }
 
+function HeaderNotLoggedIn() {
+  return (
+    <Toolbar sx={{ alignItems: "center", paddingY: 3 }}>
+      <Box sx={{ flexGrow: 1, textAlign: "right", display: { xs: "none", md: "block" } }}>
+        <Typography variant="h4" color="inherit" component="div">
+          Willkommen
+        </Typography>
+      </Box>
+      <Box sx={{ flexGrow: null, paddingX: 2 }}>
+        <NavLink to="/">
+          <Avatar src={logo} />
+        </NavLink>
+      </Box>
+      <Box sx={{ flexGrow: 1, textAlign: "left", display: { xs: "block", md: "none" } }}>
+        <Typography variant="h5" color="inherit" component="div">
+          Willkommen Dahoam
+        </Typography>
+      </Box>
+      <Box sx={{ flexGrow: 1, textAlign: "left", display: { xs: "none", md: "block" } }}>
+        <Typography variant="h4" color="inherit" component="div">
+          Dahoam
+        </Typography>
+      </Box>
+    </Toolbar>
+  )
+}
+
 function Header({ currentUser }: AuthContextProps) {
   return (
     <AppBar position="static">
@@ -45,23 +72,7 @@ function Header({ currentUser }: AuthContextProps) {
             <HeaderUserMenu />
           </Toolbar>
         ) : (
-          <Toolbar sx={{ alignItems: "center", paddingY: 2 }}>
-            <Box sx={{ flexGrow: 1, textAlign: "right" }}>
-              <Typography variant="h4" color="inherit" component="div">
-                Willkommen
-              </Typography>
-            </Box>
-            <Box sx={{ flexGrow: null, paddingX: 2 }}>
-              <NavLink to="/">
-                <Avatar src={logo} />
-              </NavLink>
-            </Box>
-            <Box sx={{ flexGrow: 1, textAlign: "left" }}>
-              <Typography variant="h4" color="inherit" component="div">
-                Dahoam
-              </Typography>
-            </Box>
-          </Toolbar>
+          <HeaderNotLoggedIn />
         )}
       </Container>
     </AppBar>
