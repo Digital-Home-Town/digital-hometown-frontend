@@ -57,10 +57,11 @@ function Register({ currentUser, signUp }: AuthContextProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
+    const displayName = (data.get("username") as string) || ""
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signUp(email, password)
+    signUp(email, password, displayName)
   }
 
   return currentUser ? (
@@ -110,7 +111,7 @@ function Register({ currentUser, signUp }: AuthContextProps) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Passwort"
             type={userInput.hidePassword ? "password" : "text"}
             id="password"
             autoComplete="current-password"
@@ -130,7 +131,7 @@ function Register({ currentUser, signUp }: AuthContextProps) {
             required
             fullWidth
             name="passwordConfirm"
-            label="Password (Wiederholung)"
+            label="Passwort (Wiederholung)"
             type={userInput.hidePasswordConfirm ? "password" : "text"}
             id="password"
             autoComplete="current-password"
@@ -150,10 +151,12 @@ function Register({ currentUser, signUp }: AuthContextProps) {
             Registrieren
           </Button>
           <Grid container>
-            <Grid item>
+            <Grid item xs>
               <Link variant="body2" onClick={() => navigate("/reset-password")}>
                 Password vergessen?
               </Link>
+            </Grid>
+            <Grid item>
               <Link variant="body2" onClick={() => navigate("/sign-in")}>
                 Schon einen Account? Melde dich hier an!
               </Link>

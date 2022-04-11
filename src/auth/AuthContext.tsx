@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import {
   createUserWithEmailAndPassword,
-  getAuth,
+  updateProfile,
   GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -9,7 +9,7 @@ import {
   signOut,
   User,
 } from "firebase/auth"
-import { app } from "../firebase-config"
+import { auth } from "../firebase-config"
 import { toast } from "react-toastify"
 
 export interface AuthContextProps {
@@ -17,7 +17,7 @@ export interface AuthContextProps {
   logOut: () => void
   logIn: (email: string, password: string) => void
   logInGoogle: () => void
-  signUp: (email: string, password: string) => void
+  signUp: (email: string, password: string, displayName: string) => void
   resetPassword: (email: string) => void
 }
 
@@ -27,15 +27,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
 
   useEffect(() => {
-    setCurrentUser(getAuth(app).currentUser)
-    getAuth(app).onAuthStateChanged(setCurrentUser)
+    setCurrentUser(auth.currentUser)
+    auth.onAuthStateChanged(setCurrentUser)
   }, [])
 
   function handleGoogleLogIn() {
     const provider = new GoogleAuthProvider()
-    signInWithPopup(getAuth(app), provider)
-      .then(() => {
-        toast.success("Erfolgreich mit Google eingeloggt.")
+    signInWithPopup(auth, provider)
+      .then((registeredUser) => {
+        toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
       })
       .catch((err) => {
         console.error(err)
@@ -44,9 +44,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const handleEmailLogIn = (email: string, password: string) => {
-    signInWithEmailAndPassword(getAuth(app), email, password)
-      .then(() => {
-        toast.success("Erfolgreich eingeloggt.")
+    signInWithEmailAndPassword(auth, email, password)
+      .then((registeredUser) => {
+        toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
       })
       .catch((err) => {
         console.error(err)
@@ -55,17 +55,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const handleSignOut = () => {
-    signOut(getAuth(app))
+    signOut(auth)
   }
 
-  const handleCreateUserWithEmail = (email: string, password: string) => {
-    createUserWithEmailAndPassword(getAuth(app), email, password).then(() => {
-      toast.success("Du bist nun registriert.")
+  const handleCreateUserWithEmail = (email: string, password: string, displayName: string) => {
+    createUserWithEmailAndPassword(auth, email, password).then(() => {
+      if (auth.currentUser != null) {
+        updateProfile(auth.currentUser, { displayName }).then(() => {
+          toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
+        })
+      }
     })
   }
 
   const handlePasswordReset = (email: string) => {
-    sendPasswordResetEmail(getAuth(app), email)
+    sendPasswordResetEmail(auth, email)
       .then(() => {
         toast.success("Passwort zurückgesetzt. Bitte überprüfe deine Mails und folge den Anweisungen in der Mail.")
       })

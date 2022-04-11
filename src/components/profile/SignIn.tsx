@@ -53,7 +53,7 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Passwort"
             type="password"
             id="password"
             autoComplete="current-password"
