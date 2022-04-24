@@ -14,6 +14,7 @@ import { toast } from "react-toastify"
 
 export interface AuthContextProps {
   currentUser: User | undefined | null
+  loading: boolean
   logOut: () => void
   logIn: (email: string, password: string) => void
   logInGoogle: () => void
@@ -25,10 +26,14 @@ const AuthContext = createContext<undefined | AuthContextProps>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setCurrentUser(auth.currentUser)
-    auth.onAuthStateChanged(setCurrentUser)
+    auth.onAuthStateChanged((user) => {
+      setCurrentUser(user)
+      setLoading(false)
+    })
   }, [])
 
   function handleGoogleLogIn() {
@@ -38,8 +43,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
       })
       .catch((err) => {
-        console.error(err)
         toast.error("Fehler bei der Authentifizierung mit Google.")
+        throw err
       })
   }
 
@@ -49,23 +54,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
       })
       .catch((err) => {
-        console.error(err)
         toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")
+        throw err
       })
   }
 
   const handleSignOut = () => {
     signOut(auth)
+      .then(() => {
+        toast.info("Erfolgreich abgemeldet.")
+      })
+      .catch((error) => {
+        toast.error("Abmeldung konnte nicht durchgeführt werden.")
+        throw error
+      })
   }
 
   const handleCreateUserWithEmail = (email: string, password: string, displayName: string) => {
-    createUserWithEmailAndPassword(auth, email, password).then(() => {
-      if (auth.currentUser != null) {
-        updateProfile(auth.currentUser, { displayName }).then(() => {
-          toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
-        })
-      }
-    })
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        if (auth.currentUser != null) {
+          updateProfile(auth.currentUser, { displayName }).then(() => {
+            toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
+          })
+        }
+      })
+      .catch((err) => {
+        toast.error("Registrierung war nicht erfolgreich")
+        throw err
+      })
   }
 
   const handlePasswordReset = (email: string) => {
@@ -82,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         currentUser: currentUser,
+        loading: loading,
         logOut: handleSignOut,
         logIn: handleEmailLogIn,
         logInGoogle: handleGoogleLogIn,

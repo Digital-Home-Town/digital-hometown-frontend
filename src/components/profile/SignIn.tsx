@@ -48,7 +48,7 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
           Anmelden
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+          <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" autoFocus />
           <TextField
             required
             fullWidth
@@ -67,7 +67,7 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
           <Grid container>
             <Grid item xs>
               <Link variant="body2" onClick={() => navigate("/reset-password")}>
-                Password vergessen?
+                Passwort vergessen?
               </Link>
             </Grid>
             <Grid item>
