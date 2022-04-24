@@ -31,7 +31,7 @@ function UserMenu({ currentUser }: AuthContextProps) {
     {
       name: "Dashboard",
       event: () => {
-        navigate("/dashboard")
+        navigate("/")
       },
     },
   ]

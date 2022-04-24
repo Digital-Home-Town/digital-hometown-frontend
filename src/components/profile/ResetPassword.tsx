@@ -43,14 +43,14 @@ function ResetPassword({ currentUser, resetPassword }: AuthContextProps) {
           Anmelden
         </Typography>
         <Box component="form" onSubmit={handlePasswordReset} noValidate sx={{ mt: 1 }}>
-          <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+          <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" autoFocus />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
             Passwort zurücksetzen
           </Button>
           <Grid container>
             <Grid item xs>
               <Link onClick={() => navigate("/sign-in")} variant="body2">
-                Zur Anmeldung
+                Anmelden
               </Link>
             </Grid>
             <Grid item>

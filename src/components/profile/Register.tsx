@@ -153,7 +153,7 @@ function Register({ currentUser, signUp }: AuthContextProps) {
           <Grid container>
             <Grid item xs>
               <Link variant="body2" onClick={() => navigate("/reset-password")}>
-                Password vergessen?
+                Passwort vergessen?
               </Link>
             </Grid>
             <Grid item>
