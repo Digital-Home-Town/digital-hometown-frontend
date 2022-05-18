@@ -9,18 +9,27 @@ import {
   signOut,
   User,
 } from "firebase/auth"
-import { db, auth, setUserData } from "../firebase-config"
-import { ref, set } from "firebase/database"
+import { db, auth } from "../firebase-config"
+import { ref, set, onValue } from "firebase/database"
 import { toast } from "react-toastify"
 
+export interface UserI extends User {
+  address?: string
+  //  private: boolean
+  //  phoneNumber?: string
+  //  interests?: string[]
+  //  role?: string
+}
+
 export interface AuthContextProps {
-  currentUser: User | undefined | null
+  currentUser: UserI | undefined | null
   loading: boolean
   logOut: () => void
   logIn: (email: string, password: string) => void
   logInGoogle: () => void
   signUp: (email: string, password: string, displayName: string) => void
   resetPassword: (email: string) => void
+  updateUserData: (user: UserI) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextProps>(undefined)
@@ -33,16 +42,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCurrentUser(auth.currentUser)
     auth.onAuthStateChanged((user) => {
       setCurrentUser(user)
-      setLoading(false)
+      if (user != null) {
+        const userRef = ref(db, `users/${user?.uid}`)
+        onValue(
+          userRef,
+          (snapshot) => {
+            const newUser = { ...user, ...snapshot.val() }
+            setCurrentUser(newUser)
+            setLoading(false)
+          },
+          (error) => {
+            console.error(error)
+            setLoading(false)
+          },
+        )
+      }
     })
   }, [])
+
+  /**
+   * Update the user data in the database
+   * @param user
+   */
+  function updateUserData(user: UserI) {
+    const userRef = ref(db, `users/${user.uid}`)
+    set(userRef, { email: user.email, displayName: user.displayName, photoURL: user.photoURL })
+      .then(() => {
+        console.log("User successfully written!")
+      })
+      .catch((error) => {
+        console.error("Error writing user: ", error)
+      })
+  }
 
   function handleGoogleLogIn() {
     const provider = new GoogleAuthProvider()
     signInWithPopup(auth, provider)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
-        setUserData(registeredUser.user)
+        updateUserData({ ...registeredUser.user })
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung mit Google.")
@@ -54,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithEmailAndPassword(auth, email, password)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
-        setUserData(registeredUser.user)
+        updateUserData({ ...registeredUser.user })
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")
@@ -80,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           updateProfile(auth.currentUser, { displayName }).then(() => {
             toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
           })
-          setUserData(auth.currentUser)
+          updateUserData({ ...auth.currentUser })
         }
       })
       .catch((err) => {
@@ -109,6 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logInGoogle: handleGoogleLogIn,
         signUp: handleCreateUserWithEmail,
         resetPassword: handlePasswordReset,
+        updateUserData: updateUserData,
       }}
     >
       {children}

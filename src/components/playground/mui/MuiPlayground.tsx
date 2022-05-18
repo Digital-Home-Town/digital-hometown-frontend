@@ -35,7 +35,6 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton"
 import { styled } from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
 
-import dummyAvatar from "../../../img/dummy-avatar.jpg"
 import paellaImg from "../../../img/paella.png"
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -63,7 +62,7 @@ function RecipeReviewCard() {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={dummyAvatar} />}
+        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src="" />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
@@ -120,7 +119,7 @@ function ProfileOverview() {
   return (
     <Card>
       <Box sx={{ p: 2, display: "flex" }}>
-        <Avatar variant="rounded" src={dummyAvatar} />
+        <Avatar variant="rounded" src="" />
         <Stack spacing={0.5}>
           <Typography fontWeight={700}>Michael Scott</Typography>
           <Typography variant="body2" color="text.secondary">

@@ -6,7 +6,6 @@ import Box from "@mui/material/Box"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import Avatar from "@mui/material/Avatar"
-import dummyAvatar from "../../img/dummy-avatar.jpg"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import { DarkMode, LightMode } from "@mui/icons-material"
@@ -48,11 +47,7 @@ function UserMenu({ currentUser }: AuthContextProps) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open Menu">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar
-            alt="Not logged in"
-            src={currentUser?.photoURL ? currentUser.photoURL : dummyAvatar}
-            imgProps={{ referrerPolicy: "no-referrer" }}
-          />
+          <Avatar alt="Not logged in" src={currentUser?.photoURL || ""} imgProps={{ referrerPolicy: "no-referrer" }} />
         </IconButton>
       </Tooltip>
       <Menu
