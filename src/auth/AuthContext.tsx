@@ -9,7 +9,8 @@ import {
   signOut,
   User,
 } from "firebase/auth"
-import { auth } from "../firebase-config"
+import { db, auth, setUserData } from "../firebase-config"
+import { ref, set } from "firebase/database"
 import { toast } from "react-toastify"
 
 export interface AuthContextProps {
@@ -41,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithPopup(auth, provider)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
+        setUserData(registeredUser.user)
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung mit Google.")
@@ -52,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithEmailAndPassword(auth, email, password)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
+        setUserData(registeredUser.user)
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")
@@ -77,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           updateProfile(auth.currentUser, { displayName }).then(() => {
             toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
           })
+          setUserData(auth.currentUser)
         }
       })
       .catch((err) => {
@@ -114,8 +118,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export default function useAuthContext() {
   const context = React.useContext(AuthContext)
-
-  console.log("Current user", context?.currentUser)
 
   if (context === undefined) {
     throw new Error("useAuthContext should be used within an AuthProvider.")

@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { Box, Grid, useTheme } from "@mui/material"
 import Container from "@mui/material/Container"
 import React from "react"
-import { HashRouter, Route, Routes } from "react-router-dom"
+import { HashRouter, PathRouteProps, Route, Routes, Navigate } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthContextProps, AuthProvider } from "src/auth/AuthContext"
 import { RiseLoader } from "react-spinners"
@@ -17,6 +17,7 @@ import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from
 import Start from "./Start"
 import ReactPlaceholder from "react-placeholder"
 import withAuth from "../auth/withAuth"
+import Chat from "./chat/Chat"
 
 toast.configure()
 
@@ -64,6 +65,9 @@ function AuthApp_({ loading }: AuthContextProps) {
                 <Route path="/sign-out" element={<SignOut />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/dashboard">
+                  <Route path="chat" element={<Chat />} />
+                </Route>
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
                   <Route path="register" element={<RegisterOrg />} />

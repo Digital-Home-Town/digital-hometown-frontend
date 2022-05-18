@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore"
-import { getAuth } from "firebase/auth"
+import { getDatabase, ref, set } from "firebase/database"
+import { getAuth, User } from "firebase/auth"
+import { UserType } from "./auth/withAuth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsI2qLoPZpcA5QFp1Dnz8TiNbrCqr8XNk",
@@ -10,9 +12,22 @@ const firebaseConfig = {
   messagingSenderId: "532207686252",
   appId: "1:532207686252:web:5f455be6b61e787d11fe49",
   measurementId: "G-RB98YSRV64",
+  databaseURL: "https://digital-dahoam-default-rtdb.europe-west1.firebasedatabase.app/",
 }
 
 export const app = initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+export const firestore = getFirestore(app)
+export const db = getDatabase(app)
 export const auth = getAuth(app)
 // export const firebaseCollection = collection(db, "user")
+
+export function setUserData(currentUser: User) {
+  const userRef = ref(db, `users/${currentUser.uid}`)
+  set(userRef, { name: currentUser.displayName, email: currentUser.email, photoURL: currentUser.photoURL })
+    .then(() => {
+      console.log("User successfully written!")
+    })
+    .catch((error) => {
+      console.error("Error writing user: ", error)
+    })
+}
