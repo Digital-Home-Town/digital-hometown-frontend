@@ -4,7 +4,7 @@ import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 import { Link } from "react-router-dom"
 import withAuth from "src/auth/withAuth"
-import { AuthContextProps } from "src/auth/AuthContext"
+import { AuthContextI } from "src/auth/AuthContext"
 
 interface StartElementInterface {
   url: string
@@ -27,7 +27,7 @@ function StartElement({ url, text, icon }: StartElementInterface) {
   )
 }
 
-function Dashboard({ currentUser }: AuthContextProps) {
+function Dashboard({ currentUser }: AuthContextI) {
   return (
     <div>
       Logged in as {currentUser?.email}

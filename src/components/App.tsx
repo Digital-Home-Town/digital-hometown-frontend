@@ -5,7 +5,7 @@ import Container from "@mui/material/Container"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
-import { AuthContextProps, AuthProvider } from "src/auth/AuthContext"
+import { AuthContextI, AuthProvider } from "src/auth/AuthContext"
 import { RiseLoader } from "react-spinners"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
@@ -40,7 +40,7 @@ function CustomPlaceholder() {
  * Wrapper for the whole app
  * @param loading
  */
-function AuthApp_({ loading }: AuthContextProps) {
+function AuthApp_({ loading }: AuthContextI) {
   return (
     <ReactPlaceholder ready={!loading} customPlaceholder={<CustomPlaceholder />}>
       <Box

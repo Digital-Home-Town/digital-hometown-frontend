@@ -1,10 +1,10 @@
 import React from "react"
-import { AuthContextProps } from "src/auth/AuthContext"
+import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "../auth/withAuth"
 
 import { useBackendHealth } from "../hooks/useBackendHealth"
 
-function BackendHealthNoAuth({ currentUser }: AuthContextProps) {
+function BackendHealthNoAuth({ currentUser }: AuthContextI) {
   const { status } = useBackendHealth("LOADING")
 
   return currentUser ? (

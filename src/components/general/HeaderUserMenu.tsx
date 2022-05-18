@@ -1,5 +1,5 @@
 import * as React from "react"
-import { AuthContextProps } from "../../auth/AuthContext"
+import { AuthContextI } from "../../auth/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useThemeContext } from "../../contexts/ThemeContext"
 import Box from "@mui/material/Box"
@@ -12,7 +12,7 @@ import { DarkMode, LightMode } from "@mui/icons-material"
 import withAuth from "../../auth/withAuth"
 import { CustomMenuItem } from "./HeaderMenuItems"
 
-function UserMenu({ currentUser }: AuthContextProps) {
+function UserMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)

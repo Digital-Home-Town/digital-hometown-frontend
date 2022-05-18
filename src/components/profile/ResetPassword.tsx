@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography"
 import React from "react"
 import { Navigate, useNavigate } from "react-router"
 import withAuth from "../../auth/withAuth"
-import { AuthContextProps } from "../../auth/AuthContext"
+import { AuthContextI } from "../../auth/AuthContext"
 
-function ResetPassword({ currentUser, resetPassword }: AuthContextProps) {
+function ResetPassword({ currentUser, resetPassword }: AuthContextI) {
   const navigate = useNavigate()
 
   const handlePasswordReset = (event: React.FormEvent<HTMLFormElement>) => {

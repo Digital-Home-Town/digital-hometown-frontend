@@ -10,10 +10,10 @@ import Link from "@mui/material/Link"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { Navigate, useNavigate } from "react-router"
-import { AuthContextProps } from "src/auth/AuthContext"
+import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
-function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
+function SignIn({ currentUser, logIn }: AuthContextI) {
   const navigate = useNavigate()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,10 +23,6 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
     const password = (data.get("password") as string) || ""
 
     logIn(email, password)
-  }
-
-  const handleGoogleLogin = () => {
-    logInGoogle()
   }
 
   return currentUser ? (
@@ -60,9 +56,6 @@ function SignIn({ currentUser, logInGoogle, logIn }: AuthContextProps) {
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
             Anmelden
-          </Button>
-          <Button fullWidth variant="contained" sx={{ mt: 1, mb: 2 }} color="error" onClick={handleGoogleLogin}>
-            Mit Google anmelden
           </Button>
           <Grid container>
             <Grid item xs>

@@ -1,7 +1,5 @@
 import { db } from "../firebase-config"
-import { onValue, ref, get } from "firebase/database"
-import { useEffect, useState } from "react"
-import { UserI } from "../auth/AuthContext"
+import { get, ref } from "firebase/database"
 
 export async function getMessages(roomId: string) {
   const snapshot = await get(ref(db, `messages/${roomId}/messages`))

@@ -6,7 +6,7 @@ import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import Toolbar from "@mui/material/Toolbar"
 import { NavLink } from "react-router-dom"
-import { AuthContextProps } from "src/auth/AuthContext"
+import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { LeftMenuSmall, LeftMenuBig } from "./HeaderNavMenu"
 import HeaderUserMenu from "./HeaderUserMenu"
@@ -59,7 +59,7 @@ function HeaderNotLoggedIn() {
   )
 }
 
-function Header({ currentUser }: AuthContextProps) {
+function Header({ currentUser }: AuthContextI) {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">

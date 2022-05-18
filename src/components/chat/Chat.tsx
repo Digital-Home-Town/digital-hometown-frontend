@@ -1,19 +1,19 @@
 import withAuth from "../../auth/withAuth"
-import { AuthContextProps, UserI } from "../../auth/AuthContext"
-import React, { FormEvent, useEffect, useRef, useState } from "react"
-import { ref, set, onValue, getDatabase, query, orderByKey, limitToFirst } from "firebase/database"
+import { AuthContextI, UserI } from "../../auth/AuthContext"
+import React, { useEffect, useState } from "react"
+import { onValue, ref } from "firebase/database"
 import { Navigate } from "react-router-dom"
-import { db, auth } from "../../firebase-config"
+import { db } from "../../firebase-config"
 import { Avatar } from "@mui/material"
-import { getMessages, getUserData } from "../../hooks/useGetData"
+import { getUserData } from "../../hooks/useGetData"
 
-function Chat({ currentUser }: AuthContextProps) {
+function Chat({ currentUser }: AuthContextI) {
   return currentUser != null ? <ChatRoom /> : <Navigate to="/sign-in" />
 }
 
 export default withAuth(Chat)
 
-function ChatRoomNoAuth({ currentUser }: AuthContextProps) {
+function ChatRoomNoAuth({ currentUser }: AuthContextI) {
   const [messages, setMessages] = useState<ChatMessageI[]>([
     // { sendAt: new Date().getTime(), sendBy: "WfN1PaeWVwULcD5RYM7pfVQXLsM2", text: "Hello" },
     // { sendAt: new Date().getTime(), sendBy: "ZbpTP7X6QDfZ2xAqaNmCtlfZW1t2", text: "Hi" },
@@ -37,7 +37,7 @@ function ChatRoomNoAuth({ currentUser }: AuthContextProps) {
   // }, [])
 
   useEffect(() => {
-    messages.map((msg, i) => {
+    messages.forEach((msg, i) => {
       getUserData(msg.sendBy).then((user) => {
         setMessageItems((prev) => [...prev, <ChatMessage key={i} message={msg} user={user} />])
       })
@@ -79,7 +79,7 @@ interface ChatMessageI {
   sendBy: string
 }
 
-function ChatMessageNoAuth({ message, user, currentUser }: { message: ChatMessageI; user: UserI } & AuthContextProps) {
+function ChatMessageNoAuth({ message, user, currentUser }: { message: ChatMessageI; user: UserI } & AuthContextI) {
   const isMyMsg = message.sendBy === currentUser?.uid
   const messageClass = isMyMsg ? "send" : "received"
 

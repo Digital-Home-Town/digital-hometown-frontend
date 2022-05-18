@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
 import { Navigate, useNavigate } from "react-router"
-import { AuthContextProps } from "src/auth/AuthContext"
+import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
 function validateEmail(email: string) {
@@ -20,7 +20,7 @@ function validateEmail(email: string) {
   return re.test(email)
 }
 
-function Register({ currentUser, signUp }: AuthContextProps) {
+function Register({ currentUser, signUp }: AuthContextI) {
   const navigate = useNavigate()
 
   const [userInput, setUserInput_] = React.useState({

@@ -1,7 +1,7 @@
 import React from "react"
-import useAuthContext, { AuthContextProps } from "./AuthContext"
+import useAuthContext, { AuthContextI } from "./AuthContext"
 
-function withAuth<Props>(Component: React.ComponentType<Props & AuthContextProps>) {
+function withAuth<Props>(Component: React.ComponentType<Props & AuthContextI>) {
   return function WithAuth(props: Props) {
     const authContext = useAuthContext()
 
