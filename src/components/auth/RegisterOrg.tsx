@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Register } from "../profile"
+import { Register } from "./"
 
 function RegisterOrg() {
   return (

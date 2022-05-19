@@ -1,22 +1,23 @@
 import "./App.css"
 import "react-toastify/dist/ReactToastify.css"
+
 import { Box, Grid, useTheme } from "@mui/material"
 import Container from "@mui/material/Container"
 import React from "react"
+import ReactPlaceholder from "react-placeholder"
 import { HashRouter, Route, Routes } from "react-router-dom"
+import { RiseLoader } from "react-spinners"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthContextProps, AuthProvider } from "src/auth/AuthContext"
-import { RiseLoader } from "react-spinners"
 
+import withAuth from "../auth/withAuth"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
+import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./profile"
 import Start from "./Start"
-import ReactPlaceholder from "react-placeholder"
-import withAuth from "../auth/withAuth"
 
 toast.configure()
 
