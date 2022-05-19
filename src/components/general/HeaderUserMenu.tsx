@@ -1,16 +1,18 @@
-import * as React from "react"
-import { AuthContextProps } from "../../auth/AuthContext"
-import { useNavigate } from "react-router-dom"
-import { useThemeContext } from "../../contexts/ThemeContext"
-import Box from "@mui/material/Box"
-import Tooltip from "@mui/material/Tooltip"
-import IconButton from "@mui/material/IconButton"
+import { DarkMode, LightMode } from "@mui/icons-material"
+import { Button } from "@mui/material"
 import Avatar from "@mui/material/Avatar"
-import dummyAvatar from "../../img/dummy-avatar.jpg"
+import Box from "@mui/material/Box"
+import IconButton from "@mui/material/IconButton"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
-import { DarkMode, LightMode } from "@mui/icons-material"
+import Tooltip from "@mui/material/Tooltip"
+import * as React from "react"
+import { useNavigate } from "react-router-dom"
+
+import { AuthContextProps } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
+import { useThemeContext } from "../../contexts/ThemeContext"
+import dummyAvatar from "../../img/dummy-avatar.jpg"
 import { CustomMenuItem } from "./HeaderMenuItems"
 
 function UserMenu({ currentUser }: AuthContextProps) {
@@ -26,7 +28,9 @@ function UserMenu({ currentUser }: AuthContextProps) {
     },
     {
       name: "Account",
-      event: () => {},
+      event: () => {
+        navigate("/account")
+      },
     },
     {
       name: "Dashboard",
@@ -43,9 +47,15 @@ function UserMenu({ currentUser }: AuthContextProps) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+  const handleClickName = () => {
+    navigate("/account")
+  }
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <Button variant="text" color="inherit" onClick={handleClickName}>
+        {currentUser?.displayName}
+      </Button>
       <Tooltip title="Open Menu">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar

@@ -1,16 +1,17 @@
-import React, { createContext, ReactNode, useEffect, useState } from "react"
 import {
   createUserWithEmailAndPassword,
-  updateProfile,
   GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
   User,
 } from "firebase/auth"
-import { auth } from "../firebase-config"
+import React, { createContext, ReactNode, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
+import { auth } from "../firebase-config"
 
 export interface AuthContextProps {
   currentUser: User | undefined | null
@@ -20,6 +21,7 @@ export interface AuthContextProps {
   logInGoogle: () => void
   signUp: (email: string, password: string, displayName: string) => void
   resetPassword: (email: string) => void
+  updateName: (displayName: string) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextProps>(undefined)
@@ -85,6 +87,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
+  const updateName = (displayName: string) => {
+    if (auth.currentUser) {
+      const previousName = auth.currentUser.displayName
+      updateProfile(auth.currentUser, { displayName })
+        .then(() => {
+          toast.success(`Du hast deinen Namen von ${previousName} auf ${auth.currentUser?.displayName}.`)
+        })
+        .catch((err) => {
+          toast.error("Namenänderung fehlgeschlagen")
+          throw err
+        })
+    } else {
+      toast.error("Benutzer ist nicht authentifiziert")
+    }
+  }
+
   const handlePasswordReset = (email: string) => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -105,6 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logInGoogle: handleGoogleLogIn,
         signUp: handleCreateUserWithEmail,
         resetPassword: handlePasswordReset,
+        updateName: updateName,
       }}
     >
       {children}

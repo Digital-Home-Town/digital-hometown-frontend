@@ -17,6 +17,7 @@ import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
+import AccountPage from "./profile/AccountPage"
 import Start from "./Start"
 
 toast.configure()
@@ -64,6 +65,7 @@ function AuthApp_({ loading }: AuthContextProps) {
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-out" element={<SignOut />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/account" element={<AccountPage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
