@@ -25,7 +25,7 @@ function UserMenu({ currentUser }: AuthContextProps) {
     {
       name: "Profile",
       event: () => {
-        navigate("/profile")
+        navigate("/profile/" + currentUser?.uid || "")
       },
     },
     {

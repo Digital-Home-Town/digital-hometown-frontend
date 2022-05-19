@@ -67,7 +67,7 @@ function AuthApp_({ loading }: AuthContextProps) {
                 <Route path="/sign-out" element={<SignOut />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/account" element={<AccountPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile/:id" element={<ProfilePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />

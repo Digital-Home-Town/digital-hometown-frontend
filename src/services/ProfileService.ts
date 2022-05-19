@@ -25,8 +25,9 @@ class ProfileService {
     if (await this.existsProfile(id)) {
       return (await this.getDocument(id)).data()
     }
-    return null
+    return undefined
   }
 }
 
-export default ProfileService
+const profileService = new ProfileService()
+export default profileService
