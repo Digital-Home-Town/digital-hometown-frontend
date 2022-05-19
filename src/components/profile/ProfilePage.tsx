@@ -3,7 +3,8 @@ import Box from "@mui/material/Box"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
-import { useEffect, useState } from "react"
+import * as React from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router"
 import { AuthContextProps } from "src/auth/AuthContext"
 import profileService from "src/services/ProfileService"
@@ -13,9 +14,8 @@ import dummyAvatar from "../../img/dummy-avatar.jpg"
 
 function ProfilePage({ currentUser }: AuthContextProps) {
   const { id } = useParams()
-  const exampleProfile: Profile = { name: "Name", email: "email", photoUrl: "", age: 0 }
-  const [profile, setProfile] = useState(exampleProfile)
-  const [exists, setExists] = useState(false)
+  const [profile, setProfile] = React.useState<null | Profile>(null)
+  const [exists, setExists] = React.useState<null | Boolean>(null)
 
   useEffect(() => {
     const getProfile = async () => {
@@ -24,7 +24,7 @@ function ProfilePage({ currentUser }: AuthContextProps) {
         setProfile(profileData)
       }
     }
-    if (profile === exampleProfile) getProfile()
+    if (!profile) getProfile()
   })
 
   useEffect(() => {
@@ -48,10 +48,10 @@ function ProfilePage({ currentUser }: AuthContextProps) {
       <Avatar alt="Not logged in" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} />
       <List>
         <ListItem disablePadding>
-          <ListItemText primary={profile.name + "(" + profile.age + ")"} />
+          <ListItemText primary={profile?.name + " (" + profile?.age + ")"} />
         </ListItem>
         <ListItem disablePadding>
-          <ListItemText primary={profile.email} />
+          <ListItemText primary={profile?.email} />
         </ListItem>
       </List>
     </Box>
