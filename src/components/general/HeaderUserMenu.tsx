@@ -20,11 +20,7 @@ function UserMenu({ currentUser }: AuthContextI) {
 
   const PROFILE_ITEMS = [
     {
-      name: "Profile",
-      event: () => {},
-    },
-    {
-      name: "Account",
+      name: `Profil (${currentUser?.displayName})`,
       event: () => {},
     },
     {

@@ -1,14 +1,16 @@
 import { db } from "../firebase-config"
 import { get, ref } from "firebase/database"
+import { UserI } from "../auth/AuthContext"
 
 export async function getMessages(roomId: string) {
   const snapshot = await get(ref(db, `messages/${roomId}/messages`))
   return snapshot.val()
 }
 
-export async function getUserData(uid: string) {
+export async function getUserData(uid: string): Promise<UserI> {
   const snapshot = await get(ref(db, `users/${uid}`))
-  return snapshot.val()
+  const user: UserI = { ...snapshot.val(), uid }
+  return user
 }
 
 // export function useGetUserData(uid: string) {

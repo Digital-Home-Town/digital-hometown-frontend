@@ -39,18 +39,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCurrentUser(auth.currentUser)
     auth.onAuthStateChanged((user) => {
       setCurrentUser(user)
+      setLoading(false)
       if (user != null) {
         const userRef = ref(db, `users/${user?.uid}`)
         onValue(
           userRef,
           (snapshot) => {
-            const newUser = { ...user, ...snapshot.val() }
+            const newUser = { ...snapshot.val(), ...user }
             setCurrentUser(newUser)
-            setLoading(false)
           },
           (error) => {
             console.error(error)
-            setLoading(false)
           },
         )
       }
@@ -95,14 +94,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
-  const handleCreateUserWithEmail = (email: string, password: string, displayName: string) => {
+  const handleSignUp = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         if (auth.currentUser != null) {
-          updateProfile(auth.currentUser, { displayName }).then(() => {
+          const user = { ...auth.currentUser, displayName: displayName, photoURL: "" }
+          updateProfile(user, {}).then(() => {
             toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
           })
-          updateUserData({ ...auth.currentUser })
+          updateUserData({ ...auth.currentUser, displayName })
         }
       })
       .catch((err) => {
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading: loading,
         logOut: handleSignOut,
         logIn: handleEmailLogIn,
-        signUp: handleCreateUserWithEmail,
+        signUp: handleSignUp,
         resetPassword: handlePasswordReset,
         updateUserData: updateUserData,
       }}
