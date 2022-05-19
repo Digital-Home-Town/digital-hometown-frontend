@@ -24,7 +24,7 @@ toast.configure()
 /**
  * Placeholder to show when app is loading
  */
-function CustomPlaceholder() {
+function LoadSymbol() {
   const theme = useTheme()
 
   return (
@@ -42,7 +42,7 @@ function CustomPlaceholder() {
  */
 function AuthApp_({ loading }: AuthContextI) {
   return (
-    <ReactPlaceholder ready={!loading} customPlaceholder={<CustomPlaceholder />}>
+    <ReactPlaceholder ready={!loading} customPlaceholder={<LoadSymbol />}>
       <Box
         sx={{
           display: "flex",

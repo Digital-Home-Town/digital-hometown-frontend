@@ -20,12 +20,7 @@ function Copyright() {
 
 export default function Footer() {
   return (
-    <Box
-      sx={{
-        mt: "auto",
-        width: "100%",
-      }}
-    >
+    <Box style={{ marginTop: "auto", width: "100%" }}>
       <Divider />
       <Container maxWidth="lg" sx={{ py: 2 }}>
         <Copyright />

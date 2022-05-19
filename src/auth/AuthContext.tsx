@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         onValue(
           userRef,
           (snapshot) => {
-            const newUser = { ...snapshot.val(), ...user }
+            const newUser = { ...user, ...snapshot.val() }
             setCurrentUser(newUser)
           },
           (error) => {
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log("User successfully written!")
       })
       .catch((error) => {
-        console.error("Error writing user: ", error)
+        console.error("Error writing user to firebase realtime db ", error)
       })
   }
 
@@ -75,7 +75,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithEmailAndPassword(auth, email, password)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
-        updateUserData({ ...registeredUser.user })
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")

@@ -1,11 +1,12 @@
 import { AuthContextI } from "../../auth/AuthContext"
 import React, { useEffect, useState } from "react"
-import { onValue, ref, orderByChild, query, limitToLast } from "firebase/database"
+import { limitToLast, onChildAdded, onChildRemoved, onValue, orderByChild, query, ref } from "firebase/database"
 import { db } from "../../firebase-config"
 import { getUserData } from "../../hooks/useGetData"
-import { List } from "@mui/material"
+import { Box, Grid, List, Paper } from "@mui/material"
 import withAuth from "../../auth/withAuth"
-import ChatMessage, { ChatMessageI } from "./ChatMessage"
+import ChatMessage, { MessageI } from "./Message"
+import SendMessage from "./SendMessage"
 
 interface ChatRoomI {
   roomId: string
@@ -14,25 +15,27 @@ interface ChatRoomI {
 
 function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
   const [roomName, setRoomName] = useState<string | null | undefined>(undefined)
-  const [messages, setMessages] = useState<ChatMessageI[]>([])
-  const [messageItems, setMessageItems] = useState<React.ReactElement[]>([])
+  const [messages, setMessages] = useState<MessageI[]>([])
+  // const [messageItems, setMessageItems] = useState<React.ReactElement[]>([])
+
+  console.log("messages", messages)
 
   useEffect(() => {
     const messageRef = ref(db, `messages/${roomId}`)
     const messageQuery = query(messageRef, orderByChild("sendAt"), limitToLast(20))
     const roomRef = ref(db, `rooms/${roomId}`)
 
-    onValue(
-      messageQuery,
-      async (snapshot) => {
-        const messages_ = snapshot.val()
-        console.log("messages", messages_)
-        setMessages(messages_)
-      },
-      (error) => {
-        console.error(error)
-      },
-    )
+    onChildAdded(messageQuery, async (snapshot) => {
+      const message = snapshot.val()
+      console.log("message added", message)
+      setMessages((messages) => [...messages, message])
+    })
+
+    onChildRemoved(messageQuery, (snapshot) => {
+      const message = snapshot.val()
+      console.log("message removed", message)
+      setMessages((messages) => messages.filter((m) => m.messageId !== message.messageId))
+    })
 
     onValue(roomRef, async (snapshot) => {
       const room_ = snapshot.val()
@@ -49,19 +52,20 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
     })
   }, [])
 
-  useEffect(() => {
-    setMessageItems([])
-    messages.forEach((msg, i) => {
-      getUserData(msg.sendBy).then((user) => {
-        setMessageItems((prev) => [...prev, <ChatMessage key={i} message={msg} user={user} />])
-      })
-    })
-  }, [messages])
-
   return (
-    <div>
-      <h1>{roomName}</h1>
-      <List>{messageItems.map((item) => item)}</List>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <div style={{ flex: "1 0 auto", verticalAlign: "end" }}>
+        <h1>{roomName}</h1>
+        <List style={{ overflowY: "auto", minHeight: "60vh", maxHeight: "60vh" }}>
+          {messages.map((item, i) => (
+            <ChatMessage key={i} message={item} />
+          ))}
+        </List>
+      </div>
+      <div style={{ flexShrink: "0" }}>
+        <SendMessage />
+      </div>
+      {/*</Paper>*/}
     </div>
   )
 }
