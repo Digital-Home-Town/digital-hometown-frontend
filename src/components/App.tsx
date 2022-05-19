@@ -12,13 +12,13 @@ import { AuthContextProps, AuthProvider } from "src/auth/AuthContext"
 
 import withAuth from "../auth/withAuth"
 import { ThemeContextProvider } from "../contexts/ThemeContext"
+import AccountPage from "./AccountPage"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import AccountPage from "./profile/AccountPage"
-import ProfilePage from "./profile/ProfilePage"
+import ProfilePage from "./ProfilePage"
 import Start from "./Start"
 
 toast.configure()

@@ -1,4 +1,5 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore"
+import { toast } from "react-toastify"
 import { profileCollection } from "src/firebase-config"
 
 class ProfileService {
@@ -14,6 +15,7 @@ class ProfileService {
   async updateProfile(id: string, profile: Profile) {
     const userRef = doc(profileCollection, id)
     await setDoc(userRef, profile)
+    toast.info("Profil gespeichert.")
   }
 
   async getDocument(id: string) {

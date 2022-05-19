@@ -9,8 +9,8 @@ import { useParams } from "react-router"
 import { AuthContextProps } from "src/auth/AuthContext"
 import profileService from "src/services/ProfileService"
 
-import withAuth from "../../auth/withAuth"
-import dummyAvatar from "../../img/dummy-avatar.jpg"
+import withAuth from "../auth/withAuth"
+import dummyAvatar from "../img/dummy-avatar.jpg"
 
 function ProfilePage({ currentUser }: AuthContextProps) {
   const { id } = useParams()

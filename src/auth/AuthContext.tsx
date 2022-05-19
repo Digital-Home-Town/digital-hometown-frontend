@@ -5,11 +5,11 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateProfile,
   User,
 } from "firebase/auth"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import profileService from "src/services/ProfileService"
 
 import { auth } from "../firebase-config"
 
@@ -21,7 +21,6 @@ export interface AuthContextProps {
   logInGoogle: () => void
   signUp: (email: string, password: string, displayName: string) => void
   resetPassword: (email: string) => void
-  updateName: (displayName: string) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextProps>(undefined)
@@ -41,8 +40,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function handleGoogleLogIn() {
     const provider = new GoogleAuthProvider()
     signInWithPopup(auth, provider)
-      .then((registeredUser) => {
+      .then(async (registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
+        const id = registeredUser.user.uid
+        const exist = await profileService.existsProfile(id)
+        if (exist)
+          profileService.updateProfile(id, {
+            id,
+            age: 99,
+            email: registeredUser.user.email || "",
+            name: registeredUser.user.displayName || "",
+            photoUrl: registeredUser.user.photoURL || "",
+          })
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung mit Google.")
@@ -74,33 +83,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleCreateUserWithEmail = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then(async () => {
+        toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
         if (auth.currentUser != null) {
-          updateProfile(auth.currentUser, { displayName }).then(() => {
-            toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
-          })
+          const user = auth.currentUser
+          const id = user.uid
+          const exist = await profileService.existsProfile(id)
+          if (exist)
+            profileService.updateProfile(id, {
+              id,
+              age: 99,
+              email: user.email || "",
+              name: user.displayName || "",
+              photoUrl: user.photoURL || "",
+            })
         }
       })
       .catch((err) => {
         toast.error("Registrierung war nicht erfolgreich")
         throw err
       })
-  }
-
-  const updateName = (displayName: string) => {
-    if (auth.currentUser) {
-      const previousName = auth.currentUser.displayName
-      updateProfile(auth.currentUser, { displayName })
-        .then(() => {
-          toast.success(`Du hast deinen Namen von ${previousName} auf ${auth.currentUser?.displayName}.`)
-        })
-        .catch((err) => {
-          toast.error("Namenänderung fehlgeschlagen")
-          throw err
-        })
-    } else {
-      toast.error("Benutzer ist nicht authentifiziert")
-    }
   }
 
   const handlePasswordReset = (email: string) => {
@@ -123,7 +125,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logInGoogle: handleGoogleLogIn,
         signUp: handleCreateUserWithEmail,
         resetPassword: handlePasswordReset,
-        updateName: updateName,
       }}
     >
       {children}
