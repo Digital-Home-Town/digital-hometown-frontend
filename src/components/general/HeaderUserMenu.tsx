@@ -24,7 +24,9 @@ function UserMenu({ currentUser }: AuthContextProps) {
   const PROFILE_ITEMS = [
     {
       name: "Profile",
-      event: () => {},
+      event: () => {
+        navigate("/profile")
+      },
     },
     {
       name: "Account",
