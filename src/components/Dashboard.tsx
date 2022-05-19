@@ -1,10 +1,10 @@
-import React from "react"
 import { CalendarToday, Chat, Group } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
+import React from "react"
 import { Link } from "react-router-dom"
-import withAuth from "src/auth/withAuth"
 import { AuthContextProps } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
 
 interface StartElementInterface {
   url: string
@@ -32,6 +32,8 @@ function Dashboard({ currentUser }: AuthContextProps) {
     <div>
       Logged in as {currentUser?.email}
       <Grid container direction="row" alignItems="center" justifyContent="center">
+        <StartElement url="/profile/3d0EKr2oGLYwYjNcaNH8WrxyqUA2" text="Jonas" icon={Group} />
+        <StartElement url="/profile/JLwLJKfqskW2P1fJnZ50dVxuz352" text="Anderer Jonas" icon={Group} />
         <StartElement url="/" text="Gruppen" icon={Group} />
         <StartElement url="/" text="Chat" icon={Chat} />
         <StartElement url="/" text="Termin" icon={CalendarToday} />
