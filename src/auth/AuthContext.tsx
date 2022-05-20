@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
         const id = registeredUser.user.uid
         const exist = await profileService.existsProfile(id)
-        if (exist)
+        if (!exist)
           profileService.updateProfile(id, {
             id,
             age: 99,
@@ -83,20 +83,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleCreateUserWithEmail = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async () => {
-        toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
-        if (auth.currentUser != null) {
-          const user = auth.currentUser
-          const id = user.uid
-          const exist = await profileService.existsProfile(id)
-          if (exist)
-            profileService.updateProfile(id, {
-              id,
-              age: 99,
-              email: user.email || "",
-              name: user.displayName || "",
-              photoUrl: user.photoURL || "",
-            })
+      .then(async (response) => {
+        const currentUser = response.user
+        if (currentUser != null) {
+          const id = currentUser.uid
+          profileService.updateProfile(id, {
+            id,
+            age: 99,
+            email: currentUser.email || "",
+            name: displayName || "",
+            photoUrl: currentUser.photoURL || "",
+          })
+
+          toast.success(`Hallo ${displayName}, du bist nun registriert.`)
         }
       })
       .catch((err) => {
