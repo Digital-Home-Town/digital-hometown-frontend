@@ -1,11 +1,12 @@
 import * as React from "react"
-import { AuthContextI } from "../../auth/AuthContext"
+import { AuthContextProps } from "../../auth/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useThemeContext } from "../../contexts/ThemeContext"
 import Box from "@mui/material/Box"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import Avatar from "@mui/material/Avatar"
+import dummyAvatar from "../../img/dummy-avatar.jpg"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import { DarkMode, LightMode } from "@mui/icons-material"
@@ -18,10 +19,47 @@ function UserMenu({ currentUser }: AuthContextI) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const { colorMode, toggleColorMode } = useThemeContext()
 
+  const [profile, setProfile] = React.useState<null | Profile>(null)
+  const [exists, setExists] = React.useState<null | Boolean>(null)
+
+  React.useEffect(() => {
+    const getProfile = async () => {
+      const profileData = await profileService.getProfile(currentUser?.uid || "")
+      if (profileData) {
+        setProfile(profileData)
+      }
+    }
+    if (!profile) getProfile()
+  })
+
+  React.useEffect(() => {
+    const getExists = async () => {
+      const exists = await profileService.existsProfile(currentUser?.uid || "")
+      if (exists) {
+        setExists(exists)
+      }
+    }
+    if (!exists) getExists()
+  })
+
+  const getPhoto = () => {
+    if (profile?.photoUrl) return profile.photoUrl
+    if (currentUser?.photoURL) return currentUser.photoURL
+    return dummyAvatar
+  }
+
   const PROFILE_ITEMS = [
     {
-      name: `Profil (${currentUser?.displayName})`,
-      event: () => {},
+      name: "Profile",
+      event: () => {
+        navigate("/profile/" + currentUser?.uid || "")
+      },
+    },
+    {
+      name: "Account",
+      event: () => {
+        navigate("/account")
+      },
     },
     {
       name: "Dashboard",
@@ -38,12 +76,18 @@ function UserMenu({ currentUser }: AuthContextI) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+  const handleClickName = () => {
+    navigate("/profile/" + currentUser?.uid || "")
+  }
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <Button variant="text" color="inherit" onClick={handleClickName}>
+        {exists ? profile?.name : currentUser?.displayName}
+      </Button>
       <Tooltip title="Open Menu">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Not logged in" src={currentUser?.photoURL || ""} imgProps={{ referrerPolicy: "no-referrer" }} />
+          <Avatar alt="Not logged in" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -67,6 +111,7 @@ function UserMenu({ currentUser }: AuthContextI) {
           {colorMode === "light" ? <DarkMode /> : <LightMode />}
           {/* </IconButton> */}
         </MenuItem>
+        <MenuItem onClick={toggleColorMode}>{exists ? profile?.name : currentUser?.displayName}</MenuItem>
         {PROFILE_ITEMS.map((item) => (
           <CustomMenuItem
             key={item.name}

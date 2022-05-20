@@ -16,6 +16,8 @@ import MuiPlayground from "./playground/mui/MuiPlayground"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./profile"
 import Start from "./Start"
 import ReactPlaceholder from "react-placeholder"
+import ProfilePage from "./ProfilePage"
+import AccountPage from "./AccountPage"
 import withAuth from "../auth/withAuth"
 import Chat from "./chat/Chat"
 
@@ -64,6 +66,8 @@ function AuthApp_({ loading }: AuthContextI) {
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-out" element={<SignOut />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/account" element={<AccountPage />} />
+                <Route path="/profile/:id" element={<ProfilePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/dashboard">
                   <Route path="chat" element={<Chat />} />
@@ -99,4 +103,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

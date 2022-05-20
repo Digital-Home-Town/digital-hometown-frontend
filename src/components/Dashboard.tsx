@@ -32,6 +32,8 @@ function Dashboard({ currentUser }: AuthContextI) {
     <div>
       Logged in as {currentUser?.email}
       <Grid container direction="row" alignItems="center" justifyContent="center">
+        <StartElement url="/profile/3d0EKr2oGLYwYjNcaNH8WrxyqUA2" text="Jonas" icon={Group} />
+        <StartElement url="/profile/JLwLJKfqskW2P1fJnZ50dVxuz352" text="Anderer Jonas" icon={Group} />
         <StartElement url="/" text="Gruppen" icon={Group} />
         <StartElement url="/dashboard/chat" text="Chat" icon={Chat} />
         <StartElement url="/" text="Termin" icon={CalendarToday} />

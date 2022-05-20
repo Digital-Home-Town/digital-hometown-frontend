@@ -10,6 +10,7 @@ import {
 import { auth, db } from "../firebase-config"
 import { onValue, ref, set } from "firebase/database"
 import { toast } from "react-toastify"
+import profileService from "src/services/ProfileService"
 
 export interface UserI extends User {
   address?: string
@@ -56,20 +57,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  /**
-   * Update the user data in the database
-   * @param user
-   */
-  function updateUserData(user: UserI) {
-    const userRef = ref(db, `users/${user.uid}`)
-    set(userRef, { email: user.email, displayName: user.displayName, photoURL: user.photoURL })
-      .then(() => {
-        console.log("User successfully written!")
-      })
-      .catch((error) => {
-        console.error("Error writing user to firebase realtime db ", error)
-      })
-  }
+  // /**
+  //  * Update the user data in the database
+  //  * @param user
+  //  */
+  // function updateUserData(user: UserI) {
+  //   const userRef = ref(db, `users/${user.uid}`)
+  //   set(userRef, { email: user.email, displayName: user.displayName, photoURL: user.photoURL })
+  //     .then(() => {
+  //       console.log("User successfully written!")
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error writing user to firebase realtime db ", error)
+  //     })
+  // }
 
   const handleEmailLogIn = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -95,13 +96,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleSignUp = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        if (auth.currentUser != null) {
-          const user = { ...auth.currentUser, displayName: displayName, photoURL: "" }
-          updateProfile(user, {}).then(() => {
-            toast.success(`Hallo ${auth.currentUser?.displayName}, du bist nun registriert.`)
+      .then(async (response) => {
+        const currentUser = response.user
+        if (currentUser != null) {
+          const id = currentUser.uid
+          profileService.updateProfile(id, {
+            id,
+            age: 99,
+            email: currentUser.email || "",
+            name: displayName || "",
+            photoUrl: currentUser.photoURL || "",
           })
-          updateUserData({ ...auth.currentUser, displayName })
+
+          toast.success(`Hallo ${displayName}, du bist nun registriert.`)
         }
       })
       .catch((err) => {
