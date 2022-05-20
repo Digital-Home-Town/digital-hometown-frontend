@@ -1,7 +1,7 @@
-interface Profile {
-  id?: string
-  name?: string
+interface ProfileI {
+  uid: string
+  displayName?: string
   email?: string
   age?: number
-  photoUrl?: string
+  photoURL?: string
 }

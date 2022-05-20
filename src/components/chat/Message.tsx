@@ -1,22 +1,15 @@
-import { AuthContextI, UserI } from "../../auth/AuthContext"
+import { AuthContextI } from "../../auth/AuthContext"
 import { ListItem, ListItemText, Paper } from "@mui/material"
 import withAuth from "../../auth/withAuth"
 import React, { useEffect, useState } from "react"
 import classes from "./Message.module.css"
-import { getUserData } from "../../hooks/useGetData"
-
-export interface MessageI {
-  messageId: string
-  messageText: string
-  sendAt: number
-  sendBy: string
-}
+import profileService from "../../services/ProfileService"
 
 function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {
-  const [user, setUser] = useState<UserI | null | undefined>(undefined)
+  const [user, setUser] = useState<ProfileI | null | undefined>(undefined)
 
   useEffect(() => {
-    getUserData(message.sendBy).then((user) => setUser(user))
+    profileService.getProfile(message.sendBy).then((user) => setUser(user))
   }, [])
 
   const isMyMsg = message.sendBy === currentUser?.uid

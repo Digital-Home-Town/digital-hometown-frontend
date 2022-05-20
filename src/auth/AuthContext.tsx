@@ -4,73 +4,58 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile,
-  User,
 } from "firebase/auth"
-import { auth, db } from "../firebase-config"
-import { onValue, ref, set } from "firebase/database"
+import { auth } from "../firebase-config"
 import { toast } from "react-toastify"
 import profileService from "src/services/ProfileService"
-
-export interface UserI extends User {
-  address?: string
-  //  private: boolean
-  //  phoneNumber?: string
-  //  interests?: string[]
-  //  role?: string
-}
+import ReactPlaceholder from "react-placeholder"
+import AuthLoader from "./AuthLoader"
 
 export interface AuthContextI {
-  currentUser: UserI | undefined | null
-  loading: boolean
+  currentUser: ProfileI | undefined | null
   logOut: () => void
   logIn: (email: string, password: string) => void
   signUp: (email: string, password: string, displayName: string) => void
   resetPassword: (email: string) => void
-  updateUserData: (user: UserI) => void
 }
 
 const AuthContext = createContext<undefined | AuthContextI>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
+  const [currentUser, setCurrentUser] = useState<ProfileI | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setCurrentUser(auth.currentUser)
+    setCurrentUser(null)
     auth.onAuthStateChanged((user) => {
-      setCurrentUser(user)
       setLoading(false)
       if (user != null) {
-        const userRef = ref(db, `users/${user?.uid}`)
-        onValue(
-          userRef,
-          (snapshot) => {
-            const newUser = { ...user, ...snapshot.val() }
-            setCurrentUser(newUser)
-          },
-          (error) => {
-            console.error(error)
-          },
-        )
+        setCurrentUser({
+          uid: auth.currentUser?.uid || "",
+          email: auth.currentUser?.email || undefined,
+          displayName: auth.currentUser?.displayName || undefined,
+        })
+        profileService
+          .getProfile(user.uid)
+          .then((profile) => {
+            if (profile == null) {
+              // can be removed when all users have a profile in the firestore
+              profileService.addProfile(user.uid, {
+                uid: user.uid,
+                email: user.email as string,
+                displayName: user.displayName as string,
+                photoURL: user.photoURL as string,
+              })
+            } else {
+              setCurrentUser(profile)
+            }
+          })
+          .catch((err) => {
+            toast.error(`Fehler beim Laden deines Profils. ${err.message}`)
+          })
       }
     })
   }, [])
-
-  // /**
-  //  * Update the user data in the database
-  //  * @param user
-  //  */
-  // function updateUserData(user: UserI) {
-  //   const userRef = ref(db, `users/${user.uid}`)
-  //   set(userRef, { email: user.email, displayName: user.displayName, photoURL: user.photoURL })
-  //     .then(() => {
-  //       console.log("User successfully written!")
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error writing user to firebase realtime db ", error)
-  //     })
-  // }
 
   const handleEmailLogIn = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -96,19 +81,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleSignUp = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async (response) => {
+      .then((response) => {
         const currentUser = response.user
         if (currentUser != null) {
           const id = currentUser.uid
-          profileService.updateProfile(id, {
-            id,
-            age: 99,
-            email: currentUser.email || "",
-            name: displayName || "",
-            photoUrl: currentUser.photoURL || "",
-          })
-
-          toast.success(`Hallo ${displayName}, du bist nun registriert.`)
+          profileService
+            .updateProfile(id, {
+              uid: id,
+              age: 99,
+              email: currentUser.email || "",
+              displayName: displayName || "",
+              photoURL: currentUser.photoURL || "",
+            })
+            .then(() => {
+              toast.success(`Hallo ${displayName}, du bist nun registriert.`)
+            })
+            .catch(() => {
+              toast.error("Fehler beim Speichern des Profils.")
+            })
         }
       })
       .catch((err) => {
@@ -128,19 +118,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        currentUser: currentUser,
-        loading: loading,
-        logOut: handleSignOut,
-        logIn: handleEmailLogIn,
-        signUp: handleSignUp,
-        resetPassword: handlePasswordReset,
-        updateUserData: updateUserData,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <ReactPlaceholder ready={!loading} customPlaceholder={<AuthLoader />}>
+      <AuthContext.Provider
+        value={{
+          currentUser: currentUser,
+          logOut: handleSignOut,
+          logIn: handleEmailLogIn,
+          signUp: handleSignUp,
+          resetPassword: handlePasswordReset,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </ReactPlaceholder>
   )
 }
 

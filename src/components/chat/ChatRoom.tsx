@@ -1,12 +1,12 @@
 import { AuthContextI } from "../../auth/AuthContext"
 import React, { useEffect, useState } from "react"
 import { limitToLast, onChildAdded, onChildRemoved, onValue, orderByChild, query, ref } from "firebase/database"
-import { db } from "../../firebase-config"
-import { getUserData } from "../../hooks/useGetData"
-import { Box, Grid, List, Paper } from "@mui/material"
+import { realtimeDB } from "../../firebase-config"
+import { List } from "@mui/material"
 import withAuth from "../../auth/withAuth"
-import ChatMessage, { MessageI } from "./Message"
+import ChatMessage from "./Message"
 import SendMessage from "./SendMessage"
+import profileService from "../../services/ProfileService"
 
 interface ChatRoomI {
   roomId: string
@@ -21,9 +21,9 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
   console.log("messages", messages)
 
   useEffect(() => {
-    const messageRef = ref(db, `messages/${roomId}`)
+    const messageRef = ref(realtimeDB, `messages/${roomId}`)
     const messageQuery = query(messageRef, orderByChild("sendAt"), limitToLast(20))
-    const roomRef = ref(db, `rooms/${roomId}`)
+    const roomRef = ref(realtimeDB, `rooms/${roomId}`)
 
     onChildAdded(messageQuery, async (snapshot) => {
       const message = snapshot.val()
@@ -44,7 +44,7 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
       } else {
         for (const member of room_.members) {
           if (member !== currentUser?.uid) {
-            const user = await getUserData(member)
+            const user = await profileService.getProfile(member.uid)
             setRoomName(user?.displayName)
           }
         }

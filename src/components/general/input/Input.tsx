@@ -1,13 +1,17 @@
 import { TextField } from "@mui/material"
-import React from "react"
+import React, { useEffect } from "react"
 
 export interface InputProps {
   name: string
   placeholder: string
-  initialValue: string
+  initialValue: string | number | undefined
 }
 function Input(props: InputProps) {
-  const [value, setValue] = React.useState(props.initialValue)
+  const [value, setValue] = React.useState<string | number | undefined>(props.initialValue)
+
+  useEffect(() => {
+    setValue(props.initialValue)
+  }, [props.initialValue])
 
   function handleChange(event: any) {
     event.preventDefault()
@@ -18,11 +22,12 @@ function Input(props: InputProps) {
       required
       fullWidth
       id={props.name}
+      type={typeof props.initialValue === "number" ? "number" : "text"}
       label={props.placeholder}
       name={props.name}
-      autoFocus
+      // autoFocus
       onChange={handleChange}
-      value={value}
+      value={value != null ? value : ""}
       sx={{ mt: 2, mb: 2 }}
     />
   )

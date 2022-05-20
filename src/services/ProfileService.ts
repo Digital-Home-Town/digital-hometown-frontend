@@ -1,31 +1,48 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore"
 import { toast } from "react-toastify"
-import { profileCollection } from "src/firebase-config"
+import { updateProfile as updateProfileFirebaseAuth } from "firebase/auth"
+import { auth, profileCollection } from "src/firebase-config"
 
 class ProfileService {
-  async addProfile(id: string, profile: Profile) {
-    await this.updateProfile(id, profile)
+  async addProfile(uid: string, profile: ProfileI) {
+    await this.updateProfile(uid, profile)
   }
 
-  async existsProfile(id: string) {
-    const profile = await this.getDocument(id)
+  async existsProfile(uid: string) {
+    const profile = await this.getDocument(uid)
     return profile.exists()
   }
 
-  async updateProfile(id: string, profile: Profile) {
-    const userRef = doc(profileCollection, id)
-    await setDoc(userRef, profile)
-    toast.info("Profil gespeichert.")
+  async updateAuthProfile(profile: ProfileI) {
+    if (auth.currentUser !== null) {
+      console.log("updateAuthProfile", profile)
+      await updateProfileFirebaseAuth(auth.currentUser, {
+        displayName: profile.displayName || null,
+        photoURL: profile.photoURL || null,
+      })
+    }
   }
 
-  async getDocument(id: string) {
-    const userRef = doc(profileCollection, id)
+  async updateProfile(uid: string, profile: ProfileI) {
+    try {
+      const userRef = doc(profileCollection, uid)
+      await setDoc(userRef, profile)
+      await this.updateAuthProfile(profile)
+      toast.info("Profil gespeichert.")
+    } catch (error) {
+      toast.error("Fehler beim Speichern des Profils.")
+      throw error
+    }
+  }
+
+  async getDocument(uid: string) {
+    const userRef = doc(profileCollection, uid)
     return await getDoc(userRef)
   }
 
-  async getProfile(id: string) {
-    if (await this.existsProfile(id)) {
-      return (await this.getDocument(id)).data()
+  async getProfile(uid: string) {
+    if (await this.existsProfile(uid)) {
+      return (await this.getDocument(uid)).data()
     }
     return undefined
   }

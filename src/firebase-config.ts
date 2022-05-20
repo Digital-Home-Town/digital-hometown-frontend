@@ -19,7 +19,7 @@ export const firestore = getFirestore(app)
 export const realtimeDB = getDatabase(app)
 export const auth = getAuth(app)
 const createCollection = <T = DocumentData>(collectionName: string) => {
-  return collection(db, collectionName) as CollectionReference<T>
+  return collection(firestore, collectionName) as CollectionReference<T>
 }
 
-export const profileCollection = createCollection<Profile>("profiles")
+export const profileCollection = createCollection<ProfileI>("profiles")

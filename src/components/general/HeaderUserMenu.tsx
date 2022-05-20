@@ -1,17 +1,16 @@
 import * as React from "react"
-import { AuthContextProps } from "../../auth/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useThemeContext } from "../../contexts/ThemeContext"
 import Box from "@mui/material/Box"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import Avatar from "@mui/material/Avatar"
-import dummyAvatar from "../../img/dummy-avatar.jpg"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
+import { Button, Menu, MenuItem } from "@mui/material"
 import { DarkMode, LightMode } from "@mui/icons-material"
 import withAuth from "../../auth/withAuth"
 import { CustomMenuItem } from "./HeaderMenuItems"
+import { AuthContextI } from "../../auth/AuthContext"
+import profileService from "../../services/ProfileService"
 
 function UserMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
@@ -19,7 +18,7 @@ function UserMenu({ currentUser }: AuthContextI) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
   const { colorMode, toggleColorMode } = useThemeContext()
 
-  const [profile, setProfile] = React.useState<null | Profile>(null)
+  const [profile, setProfile] = React.useState<null | ProfileI>(null)
   const [exists, setExists] = React.useState<null | Boolean>(null)
 
   React.useEffect(() => {
@@ -43,9 +42,9 @@ function UserMenu({ currentUser }: AuthContextI) {
   })
 
   const getPhoto = () => {
-    if (profile?.photoUrl) return profile.photoUrl
+    if (profile?.photoURL) return profile.photoURL
     if (currentUser?.photoURL) return currentUser.photoURL
-    return dummyAvatar
+    return ""
   }
 
   const PROFILE_ITEMS = [
@@ -83,7 +82,7 @@ function UserMenu({ currentUser }: AuthContextI) {
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Button variant="text" color="inherit" onClick={handleClickName}>
-        {exists ? profile?.name : currentUser?.displayName}
+        {exists ? profile?.displayName : currentUser?.displayName}
       </Button>
       <Tooltip title="Open Menu">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -111,7 +110,7 @@ function UserMenu({ currentUser }: AuthContextI) {
           {colorMode === "light" ? <DarkMode /> : <LightMode />}
           {/* </IconButton> */}
         </MenuItem>
-        <MenuItem onClick={toggleColorMode}>{exists ? profile?.name : currentUser?.displayName}</MenuItem>
+        <MenuItem onClick={toggleColorMode}>{exists ? profile?.displayName : currentUser?.displayName}</MenuItem>
         {PROFILE_ITEMS.map((item) => (
           <CustomMenuItem
             key={item.name}
