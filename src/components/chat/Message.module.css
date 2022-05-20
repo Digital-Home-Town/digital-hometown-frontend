@@ -1,8 +1,8 @@
 .ownMessageBubbleItem {
- display: flex !important;
- justify-content: flex-end !important;
+  display: flex !important;
+  justify-content: flex-end !important;
 }
 
 .messageBubble {
-    padding: 10px 30px;
+  padding: 10px 30px;
 }
