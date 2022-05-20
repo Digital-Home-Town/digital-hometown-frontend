@@ -29,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCurrentUser(null)
     auth.onAuthStateChanged((user) => {
       setLoading(false)
+      setCurrentUser(null)
       if (user != null) {
         setCurrentUser({
           uid: auth.currentUser?.uid || "",
