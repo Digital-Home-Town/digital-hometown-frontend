@@ -9,11 +9,11 @@ import SendMessage from "./SendMessage"
 import profileService from "../../services/ProfileService"
 
 interface ChatRoomI {
-  roomId: string
+  currentRoom: string
   name?: string
 }
 
-function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
+function ChatRoomNoAuth({ currentRoom, currentUser }: AuthContextI & ChatRoomI) {
   const [roomName, setRoomName] = useState<string | null | undefined>(undefined)
   const [messages, setMessages] = useState<MessageI[]>([])
   // const [messageItems, setMessageItems] = useState<React.ReactElement[]>([])
@@ -21,9 +21,9 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
   console.log("messages", messages)
 
   useEffect(() => {
-    const messageRef = ref(realtimeDB, `messages/${roomId}`)
+    const messageRef = ref(realtimeDB, `messages/${currentRoom}`)
     const messageQuery = query(messageRef, orderByChild("sendAt"), limitToLast(20))
-    const roomRef = ref(realtimeDB, `rooms/${roomId}`)
+    const roomRef = ref(realtimeDB, `rooms/${currentRoom}`)
 
     onChildAdded(messageQuery, async (snapshot) => {
       const message = snapshot.val()
@@ -50,7 +50,7 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
         }
       }
     })
-  }, [])
+  }, [currentRoom])
 
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -63,7 +63,7 @@ function ChatRoomNoAuth({ roomId, currentUser }: AuthContextI & ChatRoomI) {
         </List>
       </div>
       <div style={{ flexShrink: "0" }}>
-        <SendMessage />
+        <SendMessage roomId={currentRoom} />
       </div>
       {/*</Paper>*/}
     </div>
