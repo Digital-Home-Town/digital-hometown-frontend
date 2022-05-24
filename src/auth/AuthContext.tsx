@@ -28,7 +28,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setLoading(false)
-      setCurrentUser(null)
       if (user != null) {
         setCurrentUser({
           uid: auth.currentUser?.uid || "",
