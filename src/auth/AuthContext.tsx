@@ -26,10 +26,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setCurrentUser(null)
     auth.onAuthStateChanged((user) => {
       setLoading(false)
-      setCurrentUser(null)
       if (user != null) {
         setCurrentUser({
           uid: auth.currentUser?.uid || "",
@@ -70,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const handleSignOut = () => {
+    setCurrentUser(undefined)
     signOut(auth)
       .then(() => {
         toast.info("Erfolgreich abgemeldet.")
