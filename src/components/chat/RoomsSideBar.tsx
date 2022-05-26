@@ -1,18 +1,26 @@
 import List from "@mui/material/List"
 import { ListItem, ListItemText } from "@mui/material"
+import { DatabaseReference, onValue, ref } from "firebase/database"
+import { realtimeDB } from "../../firebase-config"
+import { useEffect, useState } from "react"
+import { ChatContextI, withChat } from "./ChatContext"
 
-interface RoomsSideBarI {
-  rooms: string[]
-  currentRoom: string
-}
-
-function RoomsSideBar({ rooms, currentRoom }: RoomsSideBarI) {
-  return (
-    <List>
-      {rooms.map((room) => {
+function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms }: ChatContextI) {
+  return rooms == null ? (
+    <div></div>
+  ) : (
+    <List component="nav">
+      {Object.keys(rooms).map((roomId) => {
         return (
-          <ListItem selected={room === currentRoom}>
-            <ListItemText primary={room} />
+          <ListItem
+            key={roomId}
+            button
+            selected={roomId === currentRoomId}
+            onClick={() => {
+              setCurrentRoom(roomId)
+            }}
+          >
+            <ListItemText primary={rooms[roomId].name} />
           </ListItem>
         )
       })}
@@ -20,4 +28,4 @@ function RoomsSideBar({ rooms, currentRoom }: RoomsSideBarI) {
   )
 }
 
-export default RoomsSideBar
+export default withChat(RoomsSideBar)

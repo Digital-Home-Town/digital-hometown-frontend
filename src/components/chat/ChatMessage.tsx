@@ -2,7 +2,7 @@ import { AuthContextI } from "../../auth/AuthContext"
 import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
 import withAuth from "../../auth/withAuth"
 import React, { useEffect, useState } from "react"
-import classes from "./Message.module.css"
+import classes from "./ChatMessage.module.css"
 import profileService from "../../services/ProfileService"
 
 function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {

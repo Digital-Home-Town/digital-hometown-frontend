@@ -8,31 +8,21 @@ import { DatabaseReference, push, ref } from "firebase/database"
 import { realtimeDB } from "../../firebase-config"
 import { AuthContextI } from "../../auth/AuthContext"
 import { toast } from "react-toastify"
+import { ChatContextI, withChat } from "./ChatContext"
+import chatService from "../../services/ChatService"
 
-interface SendMessageI {
-  roomId: string
-}
-
-function SendMessage({ roomId, currentUser }: AuthContextI & SendMessageI) {
+function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI) {
   const [message, setMessage] = useState("")
-  const [messagesRef, setMessagesRef] = useState<DatabaseReference | null>(null)
-
-  useEffect(() => {
-    setMessagesRef(ref(realtimeDB, `messages/${roomId}`))
-  }, [])
 
   const handleSubmit = () => {
-    if (messagesRef == null) {
-      toast.error("Deine Nachricht konnte nicht versendet werden")
-      return
-    }
-    console.log("message:", message)
-    push(messagesRef, { messageText: message, sendAt: Date.now(), sendBy: currentUser?.uid })
+    chatService
+      .sendMessage(currentRoomId as string, {
+        messageText: message,
+        sendAt: Date.now(),
+        sendBy: currentUser?.uid as string,
+      })
       .then(() => {
         setMessage("")
-      })
-      .catch((error) => {
-        console.error(error)
       })
   }
 
@@ -54,7 +44,7 @@ function SendMessage({ roomId, currentUser }: AuthContextI & SendMessageI) {
         onChange={(e) => setMessage(e.target.value)}
         fullWidth={true}
         onKeyPress={(e) => {
-          if (e.ctrlKey && e.key === "\n") {
+          if (!e.shiftKey && e.key === "Enter") {
             handleSubmit()
           }
         }}
@@ -72,4 +62,4 @@ function SendMessage({ roomId, currentUser }: AuthContextI & SendMessageI) {
   )
 }
 
-export default withAuth(SendMessage)
+export default withChat(withAuth(SendMessage))
