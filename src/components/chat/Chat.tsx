@@ -4,21 +4,21 @@ import React from "react"
 import { Navigate } from "react-router-dom"
 import ChatRoom from "./ChatRoom"
 import { Grid } from "@mui/material"
-import RoomSideBar from "./RoomsSideBar"
-
-const rooms = ["Room 1", "Room 2", "Room 3"]
-const currentRoom = "Room 1"
+import RoomsSideBar from "./RoomsSideBar"
+import { ChatProvider } from "./ChatContext"
 
 function Chat({ currentUser }: AuthContextI) {
   return currentUser != null ? (
-    <Grid container style={{ height: "100%", display: "flex", alignItems: "stretch" }}>
-      <Grid item>
-        <RoomSideBar rooms={rooms} currentRoom={currentRoom} />
+    <ChatProvider currentUser={currentUser}>
+      <Grid container style={{ height: "100%", display: "flex", alignItems: "stretch" }}>
+        <Grid item>
+          <RoomsSideBar />
+        </Grid>
+        <Grid item style={{ flexGrow: 4 }}>
+          <ChatRoom />
+        </Grid>
       </Grid>
-      <Grid item style={{ flexGrow: 4 }}>
-        <ChatRoom currentRoom={currentRoom} />
-      </Grid>
-    </Grid>
+    </ChatProvider>
   ) : (
     <Navigate to="/sign-in" />
   )
