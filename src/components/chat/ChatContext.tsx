@@ -57,16 +57,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
       }
       const room = rooms[currentRoomId]
 
-      if (Object.keys(room.members).length > 2) {
-        setCurrentRoomName(room.name)
-      } else {
-        for (const uid of Object.keys(room.members)) {
-          if (uid !== currentUser?.uid) {
-            const user = await profileService.getProfile(uid)
-            setCurrentRoomName(user?.displayName)
-          }
-        }
-      }
+      setCurrentRoomName(room.name)
 
       const messagesRef = query(
         ref(realtimeDB, `messages/${currentRoomId}/messages`),
