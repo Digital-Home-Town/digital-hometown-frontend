@@ -1,4 +1,4 @@
 interface RoomI {
-  members: string[]
+  members: { [userId: string]: { role: string } }
   name: string
 }

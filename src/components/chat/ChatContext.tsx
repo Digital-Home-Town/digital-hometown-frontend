@@ -30,23 +30,16 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   const [rooms, setRooms] = useState<{ [roomId: string]: RoomI } | undefined>(undefined)
   const [currentRoomName, setCurrentRoomName] = useState<string | undefined>(undefined)
   const [messages, setMessages] = useState<{ [msgId: string]: MessageI }>({})
-  const [roomRef, setRoomRef] = useState<DatabaseReference | undefined>(undefined)
   const [currentRoomId, setCurrentRoomId] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setRoomRef(ref(realtimeDB, `rooms`))
+    onValue(ref(realtimeDB, `rooms`), (snapshot) => {
+      const rooms_ = snapshot.val()
+      console.log("rooms_", rooms_)
+      setRooms(rooms_)
+    })
   }, [])
-
-  useEffect(() => {
-    if (roomRef != null) {
-      onValue(roomRef, (snapshot) => {
-        const rooms_ = snapshot.val()
-        console.log("rooms_", rooms_)
-        setRooms(rooms_)
-      })
-    }
-  }, [roomRef])
 
   useEffect(() => {
     // set current room with the first room in the list
@@ -64,12 +57,12 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
       }
       const room = rooms[currentRoomId]
 
-      if (room.members.length > 2) {
+      if (Object.keys(room.members).length > 2) {
         setCurrentRoomName(room.name)
       } else {
-        for (const member of room.members) {
-          if (member !== currentUser?.uid) {
-            const user = await profileService.getProfile(member)
+        for (const uid of Object.keys(room.members)) {
+          if (uid !== currentUser?.uid) {
+            const user = await profileService.getProfile(uid)
             setCurrentRoomName(user?.displayName)
           }
         }
