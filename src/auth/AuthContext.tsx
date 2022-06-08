@@ -12,7 +12,7 @@ import { auth } from "../firebase-config"
 import { toast } from "react-toastify"
 import profileService from "src/services/ProfileService"
 import ReactPlaceholder from "react-placeholder"
-import AuthLoader from "./AuthLoader"
+import Loader from "./Loader"
 
 export interface AuthContextI {
   currentUser: ProfileI | undefined | null
@@ -40,21 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profileService
           .getProfile(user.uid)
           .then((profile) => {
+            setCurrentUser(profile)
             setLoading(false)
-            if (profile == null) {
-              // can be removed when all users have a profile in the firestore
-              profileService.addProfile(user.uid, {
-                uid: user.uid,
-                email: user.email as string,
-                displayName: user.displayName as string,
-                photoURL: user.photoURL as string,
-              })
-            } else {
-              setCurrentUser(profile)
-            }
           })
           .catch((err) => {
             toast.error(`Fehler beim Laden deines Profils. ${err.message}`)
+            setLoading(false)
           })
       } else {
         setLoading(false)
@@ -91,16 +82,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const currentUser = response.user
         if (currentUser != null) {
           const id = currentUser.uid
+          toast.success(`Hallo ${displayName}, du bist nun registriert.`)
           profileService
             .updateProfile(id, {
               uid: id,
-              dateOfBirth: new Date("2000-01-01").getTime(),
               email: currentUser.email || "",
               displayName: displayName || "",
               photoURL: currentUser.photoURL || "",
-            })
-            .then(() => {
-              toast.success(`Hallo ${displayName}, du bist nun registriert.`)
             })
             .catch(() => {
               toast.error("Fehler beim Speichern des Profils.")
@@ -132,19 +120,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           profileService
             .updateProfile(id, {
               uid: id,
-              dateOfBirth: new Date("2000-01-01").getTime(),
               email: registeredUser.user.email || "",
               displayName: registeredUser.user.displayName || "",
               photoURL: registeredUser.user.photoURL || "",
             })
             .then()
             .catch((e) => {
-              toast.error("Fehler beim Speichern des Profils bei der Anmeldung mit Google.")
+              toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
               throw e
             })
       })
       .catch((err) => {
-        toast.error("Fehler bei der Authentifizierung mit Google.")
+        toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)
         throw err
       })
   }
@@ -160,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <ReactPlaceholder ready={!loading} customPlaceholder={<AuthLoader />}>
+    <ReactPlaceholder ready={!loading} customPlaceholder={<Loader />}>
       <AuthContext.Provider
         value={{
           currentUser: currentUser,

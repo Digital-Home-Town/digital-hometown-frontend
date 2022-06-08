@@ -1,7 +1,7 @@
 import { AuthContextI } from "../../auth/AuthContext"
 import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
 import withAuth from "../../auth/withAuth"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, memo } from "react"
 import classes from "./ChatMessage.module.css"
 import profileService from "../../services/ProfileService"
 

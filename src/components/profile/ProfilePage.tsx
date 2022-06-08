@@ -11,6 +11,7 @@ import profileService from "src/services/ProfileService"
 
 import withAuth from "../../auth/withAuth"
 import ReactPlaceholder from "react-placeholder"
+import { differenceInYears } from "date-fns"
 
 function ProfilePage({ currentUser }: AuthContextI) {
   const { id } = useParams()
@@ -50,9 +51,15 @@ function ProfilePage({ currentUser }: AuthContextI) {
         <Box sx={{ mt: 1 }}>
           <Avatar alt="Not logged in" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} />
           <List>
-            <ListItem disablePadding>
-              <ListItemText primary={profile?.displayName + " (" + profile?.age + ")"} />
-            </ListItem>
+            {profile?.dateOfBirth == null || (
+              <ListItem disablePadding>
+                <ListItemText
+                  primary={
+                    profile?.displayName + " (" + differenceInYears(new Date(), new Date(profile?.dateOfBirth)) + ")"
+                  }
+                />
+              </ListItem>
+            )}
             <ListItem disablePadding>
               <ListItemText primary={profile?.email} />
             </ListItem>

@@ -8,6 +8,7 @@ import parse from "date-fns/parse"
 import withAuth from "../../auth/withAuth"
 import Input from "../general/input/Input"
 import DatePicker from "../general/input/DatePicker"
+import { toast } from "react-toastify"
 
 function AccountPage({ currentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +24,11 @@ function AccountPage({ currentUser }: AuthContextI) {
         email: email,
         dateOfBirth: dateOfBirth,
       }
-      profileService.updateProfile(currentUser.uid, profile)
+      profileService.updateProfile(currentUser.uid, profile).catch((e) => {
+        toast.error("Dein Profil konnte nicht aktualisiert werden.")
+        throw e
+      })
+      toast.success("Dein Profil wurde aktualisiert.")
     }
   }
 

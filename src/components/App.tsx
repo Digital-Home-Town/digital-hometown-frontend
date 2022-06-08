@@ -31,15 +31,15 @@ function App() {
     <ThemeContextProvider defaultColor={"light" as const}>
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
         <AuthProvider>
-          <ToastContainer position={toast.POSITION.TOP_RIGHT} />
+          <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              minHeight: "100vh",
               bgcolor: "background.default",
               color: "text.primary",
             }}
+            style={{ minHeight: "100vh" }}
           >
             {/* HashRouter only needed because github pages put the root to github.io/<name> */}
             <HashRouter>

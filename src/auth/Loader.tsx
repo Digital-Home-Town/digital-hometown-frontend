@@ -2,7 +2,7 @@ import { Grid, useTheme } from "@mui/material"
 import { RiseLoader } from "react-spinners"
 import React from "react"
 
-function AuthLoader() {
+function Loader() {
   const theme = useTheme()
 
   return (
@@ -14,4 +14,4 @@ function AuthLoader() {
   )
 }
 
-export default AuthLoader
+export default Loader

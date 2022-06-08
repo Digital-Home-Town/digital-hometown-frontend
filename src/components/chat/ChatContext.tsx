@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
-import AuthLoader from "../../auth/AuthLoader"
+import Loader from "../../auth/Loader"
 import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
 import { realtimeDB } from "../../firebase-config"
 
@@ -10,6 +10,7 @@ export interface ChatContextI {
   currentRoomName: string | undefined
   messages: { [msgId: string]: MessageI }
   setCurrentRoom: (room: string) => void
+  loading: boolean
 }
 
 const ChatContext = createContext<undefined | ChatContextI>(undefined)
@@ -67,7 +68,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   }
 
   return (
-    <ReactPlaceholder ready={!loading} customPlaceholder={<AuthLoader />}>
+    <ReactPlaceholder ready={!loading} customPlaceholder={<Loader />}>
       <ChatContext.Provider
         value={{
           rooms: rooms,
@@ -75,6 +76,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           currentRoomName: currentRoomName,
           setCurrentRoom: handleCurrentRoom,
           messages: messages,
+          loading: loading,
         }}
       >
         {children}
