@@ -20,7 +20,7 @@ function validateEmail(email: string) {
   return re.test(email)
 }
 
-function Register({ currentUser, signUp }: AuthContextI) {
+function Register({ currentUser, signUpWithEmail }: AuthContextI) {
   const navigate = useNavigate()
 
   const [userInput, setUserInput_] = React.useState({
@@ -61,7 +61,7 @@ function Register({ currentUser, signUp }: AuthContextI) {
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signUp(email, password, displayName)
+    signUpWithEmail(email, password, displayName)
   }
 
   return currentUser ? (

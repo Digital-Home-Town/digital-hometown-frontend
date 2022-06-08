@@ -15,7 +15,6 @@ class ProfileService {
 
   async updateAuthProfile(profile: ProfileI) {
     if (auth.currentUser !== null) {
-      console.log("updateAuthProfile", profile)
       await updateProfileFirebaseAuth(auth.currentUser, {
         displayName: profile.displayName || null,
         photoURL: profile.photoURL || null,
@@ -25,10 +24,10 @@ class ProfileService {
 
   async updateProfile(uid: string, profile: ProfileI) {
     try {
+      console.log("updateProfile", profile)
       const userRef = doc(profileCollection, uid)
       await setDoc(userRef, profile)
       await this.updateAuthProfile(profile)
-      toast.info("Profil gespeichert.")
     } catch (error) {
       toast.error("Fehler beim Speichern des Profils.")
       throw error
@@ -42,7 +41,26 @@ class ProfileService {
 
   async getProfile(uid: string) {
     if (await this.existsProfile(uid)) {
-      return (await this.getDocument(uid)).data()
+      const resp = await this.getDocument(uid)
+      const profile = resp.data()
+      console.log(profile)
+      if (profile != null) {
+        profile.dateOfBirth = profile?.dateOfBirth || 0
+        if (profile.dateOfBirth != null) {
+          const today = new Date()
+          const birthday = new Date(profile.dateOfBirth)
+          console.log(birthday)
+          let age = today.getFullYear() - birthday.getFullYear()
+          if (
+            today.getMonth() < birthday.getMonth() ||
+            (today.getMonth() === birthday.getMonth() && today.getDate() < birthday.getDay())
+          ) {
+            age--
+          }
+          profile.age = age
+        }
+      }
+      return profile
     }
     return undefined
   }

@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
 import Button from "@mui/material/Button"
+import { useThemeContext } from "../../contexts/ThemeContext"
+import { DarkMode, LightMode } from "@mui/icons-material"
 
 export function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
   return (
@@ -22,12 +24,7 @@ export function CustomMenuItem({ name, url, onClick }: { name: string; url?: str
   )
 }
 
-export function CustomNavItem({ url, name, icon }: { url: string; name: string; icon: React.ReactElement }) {
-  return (
-    <NavLink to={url} style={{ textDecoration: "none" }}>
-      <Button sx={{ my: 2, color: "white" }} startIcon={icon} variant="text">
-        {name}
-      </Button>
-    </NavLink>
-  )
+export function ColorModeToggler() {
+  const { colorMode, toggleColorMode } = useThemeContext()
+  return <MenuItem onClick={toggleColorMode}>{colorMode === "light" ? <LightMode /> : <DarkMode />}</MenuItem>
 }

@@ -1,8 +1,5 @@
 import List from "@mui/material/List"
 import { ListItem, ListItemText } from "@mui/material"
-import { DatabaseReference, onValue, ref } from "firebase/database"
-import { realtimeDB } from "../../firebase-config"
-import { useEffect, useState } from "react"
 import { ChatContextI, withChat } from "./ChatContext"
 
 function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms }: ChatContextI) {

@@ -26,7 +26,7 @@ function ProfilePage({ currentUser }: AuthContextI) {
       }
     }
     if (!profile) getProfile()
-  })
+  }, [])
 
   useEffect(() => {
     const getExists = async () => {

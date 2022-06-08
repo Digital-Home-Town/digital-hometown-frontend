@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react"
-import { List } from "@mui/material"
 import ChatMessage from "./ChatMessage"
 import SendMessage from "./SendMessage"
 import { ChatContextI, withChat } from "./ChatContext"

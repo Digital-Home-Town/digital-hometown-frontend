@@ -11,9 +11,11 @@ import Typography from "@mui/material/Typography"
 import React from "react"
 import { Navigate, useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
-import withAuth from "src/auth/withAuth"
+import { IconButton } from "@mui/material"
+import { Facebook, Google } from "@mui/icons-material"
+import withAuth from "../../auth/withAuth"
 
-function SignIn({ currentUser, logIn }: AuthContextI) {
+function SignIn({ currentUser, logIn, signUpOAuth }: AuthContextI) {
   const navigate = useNavigate()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,6 +59,26 @@ function SignIn({ currentUser, logIn }: AuthContextI) {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
             Anmelden
           </Button>
+          <Grid container>
+            <Grid item>
+              <IconButton
+                onClick={() => {
+                  signUpOAuth("google")
+                }}
+              >
+                <Google />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton
+                onClick={() => {
+                  signUpOAuth("facebook")
+                }}
+              >
+                <Facebook />
+              </IconButton>
+            </Grid>
+          </Grid>
           <Grid container>
             <Grid item xs>
               <Link variant="body2" onClick={() => navigate("/reset-password")}>

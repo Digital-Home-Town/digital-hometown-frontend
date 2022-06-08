@@ -1,8 +1,11 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import {
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from "firebase/auth"
 import { auth } from "../firebase-config"
@@ -15,7 +18,8 @@ export interface AuthContextI {
   currentUser: ProfileI | undefined | null
   logOut: () => void
   logIn: (email: string, password: string) => void
-  signUp: (email: string, password: string, displayName: string) => void
+  signUpWithEmail: (email: string, password: string, displayName: string) => void
+  signUpOAuth: (providerName: "google" | "facebook") => void
   resetPassword: (email: string) => void
 }
 
@@ -27,7 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      setLoading(false)
       if (user != null) {
         setCurrentUser({
           uid: auth.currentUser?.uid || "",
@@ -37,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profileService
           .getProfile(user.uid)
           .then((profile) => {
+            setLoading(false)
             if (profile == null) {
               // can be removed when all users have a profile in the firestore
               profileService.addProfile(user.uid, {
@@ -52,6 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .catch((err) => {
             toast.error(`Fehler beim Laden deines Profils. ${err.message}`)
           })
+      } else {
+        setLoading(false)
       }
     })
   }, [])
@@ -79,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
-  const handleSignUp = (email: string, password: string, displayName: string) => {
+  const handleSignUpEmail = (email: string, password: string, displayName: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((response) => {
         const currentUser = response.user
@@ -88,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           profileService
             .updateProfile(id, {
               uid: id,
-              age: 99,
+              dateOfBirth: new Date("2000-01-01").getTime(),
               email: currentUser.email || "",
               displayName: displayName || "",
               photoURL: currentUser.photoURL || "",
@@ -103,6 +109,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .catch((err) => {
         toast.error("Registrierung war nicht erfolgreich")
+        throw err
+      })
+  }
+
+  function handleOAuthSignIn(providerName: "google" | "facebook") {
+    let provider
+    if (providerName === "google") {
+      provider = new GoogleAuthProvider()
+    } else if (providerName === "facebook") {
+      provider = new FacebookAuthProvider()
+    } else {
+      throw new Error("Unbekannter Auth Provider")
+    }
+
+    signInWithPopup(auth, provider)
+      .then(async (registeredUser) => {
+        toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
+        const id = registeredUser.user.uid
+        const exist = await profileService.existsProfile(id)
+        if (exist)
+          profileService
+            .updateProfile(id, {
+              uid: id,
+              dateOfBirth: new Date("2000-01-01").getTime(),
+              email: registeredUser.user.email || "",
+              displayName: registeredUser.user.displayName || "",
+              photoURL: registeredUser.user.photoURL || "",
+            })
+            .then()
+            .catch((e) => {
+              toast.error("Fehler beim Speichern des Profils bei der Anmeldung mit Google.")
+              throw e
+            })
+      })
+      .catch((err) => {
+        toast.error("Fehler bei der Authentifizierung mit Google.")
         throw err
       })
   }
@@ -124,7 +166,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           currentUser: currentUser,
           logOut: handleSignOut,
           logIn: handleEmailLogIn,
-          signUp: handleSignUp,
+          signUpWithEmail: handleSignUpEmail,
+          signUpOAuth: handleOAuthSignIn,
           resetPassword: handlePasswordReset,
         }}
       >

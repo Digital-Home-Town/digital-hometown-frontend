@@ -1,5 +1,5 @@
 import { realtimeDB } from "../firebase-config"
-import { get, onValue, push, ref } from "firebase/database"
+import { get, push, ref } from "firebase/database"
 
 class ChatService {
   async getMessages(roomId: string) {

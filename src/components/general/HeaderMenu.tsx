@@ -1,25 +1,25 @@
 import * as React from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useThemeContext } from "../../contexts/ThemeContext"
 import Box from "@mui/material/Box"
 import Tooltip from "@mui/material/Tooltip"
 import IconButton from "@mui/material/IconButton"
 import Avatar from "@mui/material/Avatar"
-import { Button, Menu, MenuItem } from "@mui/material"
-import { DarkMode, LightMode } from "@mui/icons-material"
+import { Button, MenuItem, Menu, Typography, Divider } from "@mui/material"
+import { DarkMode, LightMode, Menu as MenuIcon } from "@mui/icons-material"
 import withAuth from "../../auth/withAuth"
-import { CustomMenuItem } from "./HeaderMenuItems"
+import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 import { AuthContextI } from "../../auth/AuthContext"
 import profileService from "../../services/ProfileService"
 
-function UserMenu({ currentUser }: AuthContextI) {
+function HeaderMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
-  const { colorMode, toggleColorMode } = useThemeContext()
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const [profile, setProfile] = React.useState<null | ProfileI>(null)
-  const [exists, setExists] = React.useState<null | Boolean>(null)
+  const [profile, setProfile] = useState<null | ProfileI>(null)
+  const [exists, setExists] = useState<null | Boolean>(null)
 
   React.useEffect(() => {
     const getProfile = async () => {
@@ -29,7 +29,7 @@ function UserMenu({ currentUser }: AuthContextI) {
       }
     }
     if (!profile) getProfile()
-  })
+  }, [])
 
   React.useEffect(() => {
     const getExists = async () => {
@@ -39,7 +39,7 @@ function UserMenu({ currentUser }: AuthContextI) {
       }
     }
     if (!exists) getExists()
-  })
+  }, [])
 
   const getPhoto = () => {
     if (profile?.photoURL) return profile.photoURL
@@ -49,13 +49,13 @@ function UserMenu({ currentUser }: AuthContextI) {
 
   const PROFILE_ITEMS = [
     {
-      name: "Profile",
+      name: "Profil",
       event: () => {
         navigate("/profile/" + currentUser?.uid || "")
       },
     },
     {
-      name: "Account",
+      name: "Profil bearbeiten",
       event: () => {
         navigate("/account")
       },
@@ -82,11 +82,12 @@ function UserMenu({ currentUser }: AuthContextI) {
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Button variant="text" color="inherit" onClick={handleClickName}>
-        {exists ? profile?.displayName : currentUser?.displayName}
+        <Typography>{exists ? profile?.displayName : currentUser?.displayName}</Typography>
+        <Avatar alt="Profilfoto" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} style={{ margin: 10 }} />
       </Button>
       <Tooltip title="Open Menu">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Not logged in" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} />
+        <IconButton onClick={handleOpenUserMenu} color="inherit">
+          <MenuIcon />
         </IconButton>
       </Tooltip>
       <Menu
@@ -105,12 +106,7 @@ function UserMenu({ currentUser }: AuthContextI) {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuItem onClick={toggleColorMode}>
-          {/* <IconButton sx={{ ml: 1 }}  color="inherit"> */}
-          {colorMode === "light" ? <DarkMode /> : <LightMode />}
-          {/* </IconButton> */}
-        </MenuItem>
-        <MenuItem onClick={toggleColorMode}>{exists ? profile?.displayName : currentUser?.displayName}</MenuItem>
+        <ColorModeToggler />
         {PROFILE_ITEMS.map((item) => (
           <CustomMenuItem
             key={item.name}
@@ -123,19 +119,17 @@ function UserMenu({ currentUser }: AuthContextI) {
         ))}
         {/* TODO can be simplified if header only visible for logged in users */}
         <CustomMenuItem
-          name={currentUser ? "Logout" : "Login"}
-          url={currentUser ? "sign-out" : "sign-out"}
+          name={"Logout"}
+          url={"sign-out"}
           onClick={() => {
-            if (currentUser) {
-              navigate("/sign-out")
-            } else {
-              navigate("/sign-in")
-            }
+            navigate("/sign-out")
           }}
         />
+        <Divider />
+        <MenuItem disabled>{exists ? profile?.displayName : currentUser?.displayName}</MenuItem>
       </Menu>
     </Box>
   )
 }
 
-export default withAuth(UserMenu)
+export default withAuth(HeaderMenu)

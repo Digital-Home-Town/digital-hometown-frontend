@@ -8,24 +8,19 @@ import Toolbar from "@mui/material/Toolbar"
 import { NavLink } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import { LeftMenuSmall, LeftMenuBig } from "./HeaderNavMenu"
-import HeaderUserMenu from "./HeaderUserMenu"
+import HeaderMenu from "./HeaderMenu"
 
 import logo from "../../img/logo.png"
 import { Typography } from "@mui/material"
+import { ColorModeToggler } from "./HeaderMenuItems"
 
-function Logo({ bigScreen }: { bigScreen: boolean }) {
-  let display = { xs: "flex", md: "none" }
-  let flexGrow: number | null = 1
-  if (bigScreen) {
-    display = { xs: "none", md: "flex" }
-    flexGrow = null
-  }
+function Logo() {
   return (
-    <Box sx={{ flexGrow: flexGrow, display: display }}>
-      <NavLink to="/">
-        <Button variant="text">
-          <Avatar src={logo} />
+    <Box>
+      <NavLink to="/" style={{ textDecoration: "none" }}>
+        <Button variant="text" color="inherit">
+          <Avatar src={logo} style={{ margin: 10 }} />
+          <Typography color="white">Digital Dahoam</Typography>
         </Button>
       </NavLink>
     </Box>
@@ -55,6 +50,7 @@ function HeaderNotLoggedIn() {
           Dahoam
         </Typography>
       </Box>
+      <ColorModeToggler />
     </Toolbar>
   )
 }
@@ -65,11 +61,10 @@ function Header({ currentUser }: AuthContextI) {
       <Container maxWidth="xl">
         {currentUser ? (
           <Toolbar disableGutters>
-            <Logo bigScreen={true} />
-            <LeftMenuSmall />
-            <Logo bigScreen={false} />
-            <LeftMenuBig />
-            <HeaderUserMenu />
+            <div style={{ flexGrow: 1 }}>
+              <Logo />
+            </div>
+            <HeaderMenu />
           </Toolbar>
         ) : (
           <HeaderNotLoggedIn />

@@ -1,20 +1,8 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import AuthLoader from "../../auth/AuthLoader"
-import {
-  DatabaseReference,
-  limitToLast,
-  onChildAdded,
-  onChildRemoved,
-  onValue,
-  orderByChild,
-  push,
-  query,
-  ref,
-} from "firebase/database"
+import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
 import { realtimeDB } from "../../firebase-config"
-import profileService from "../../services/ProfileService"
-import { toast } from "react-toastify"
 
 export interface ChatContextI {
   currentRoomId: string | undefined
