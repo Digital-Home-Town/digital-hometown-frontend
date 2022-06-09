@@ -32,7 +32,6 @@ function StartElement({ url, text, icon }: StartElementInterface) {
 function Dashboard({ currentUser }: AuthContextI) {
   return (
     <div>
-      Logged in as {currentUser?.email}
       <Grid container direction="row" alignItems="center" justifyContent="center">
         <StartElement url="/" text="Gruppen" icon={Group} />
         <StartElement url="/dashboard/chat" text="Chat" icon={Chat} />
