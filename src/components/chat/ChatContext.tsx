@@ -5,6 +5,7 @@ import { limitToLast, onValue, orderByChild, query, ref } from "firebase/databas
 import { realtimeDB } from "../../firebase-config"
 import chatService from "../../services/ChatService"
 import { toast } from "react-toastify"
+import profileService from "../../services/ProfileService"
 
 export interface ChatContextI {
   currentRoomId: string | undefined
@@ -49,7 +50,15 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
       }
       const room = rooms[currentRoomId]
 
-      setCurrentRoomName(room.name)
+      const members = room.members
+      delete members[currentUser.id]
+      if (Object.keys(members).length === 1) {
+        profileService.getProfile(Object.keys(members)[0]).then((profile) => {
+          setCurrentRoomName(profile?.displayName)
+        })
+      } else {
+        setCurrentRoomName(room.name)
+      }
 
       const messagesRef = query(
         ref(realtimeDB, `messages/${currentRoomId}/messages`),
@@ -71,7 +80,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   }
 
   const createRoom = () => {
-    chatService.createRoom(currentUser).catch(() => {
+    chatService.createRoom(currentUser, "Neuer Chat von " + currentUser.displayName).catch(() => {
       toast.error("Es konnte kein neuer Chat-Raum erstellt werden.")
     })
   }

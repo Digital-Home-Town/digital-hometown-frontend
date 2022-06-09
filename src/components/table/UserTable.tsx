@@ -18,7 +18,11 @@ const columns = [
   },
 ]
 
-function UserTable() {
+interface UserTableI {
+  onRowClick?: (profile: ProfileI) => void
+}
+
+function UserTable({ onRowClick }: UserTableI) {
   const [profiles, setProfiles] = React.useState<ProfileI[]>([])
 
   useEffect(() => {
@@ -34,7 +38,15 @@ function UserTable() {
 
   return profiles ? (
     <div style={{ height: 400, width: "100%" }}>
-      <DataGrid rows={profiles} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      <DataGrid
+        rows={profiles}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        onRowClick={(e) => {
+          if (onRowClick != null) onRowClick(e.row as ProfileI)
+        }}
+      />
     </div>
   ) : (
     <p>Lädt...</p>

@@ -1,5 +1,5 @@
 import { realtimeDB } from "../firebase-config"
-import { get, push, ref } from "firebase/database"
+import { get, push, ref, set } from "firebase/database"
 
 class ChatService {
   async getMessages(roomId: string) {
@@ -16,11 +16,22 @@ class ChatService {
     }
   }
 
-  async createRoom(currentUser: ProfileI) {
+  async createRoom(currentUser: ProfileI, name: string) {
     try {
-      const resp = await push(ref(realtimeDB, `rooms`), { members: [currentUser.id] })
+      const resp = await push(ref(realtimeDB, `rooms`), {
+        name: name,
+        members: { [currentUser.id]: { role: "admin" } },
+      })
       console.log("added new room", resp.key)
       return resp.key
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async addMember(roomId: string, userId: string, role: string = "admin") {
+    try {
+      await set(ref(realtimeDB, `rooms/${roomId}/members/${userId}`), { role: "admin" })
     } catch (error) {
       throw error
     }
