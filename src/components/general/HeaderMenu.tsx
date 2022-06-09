@@ -1,17 +1,17 @@
+import { Menu as MenuIcon } from "@mui/icons-material"
+import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
+import Avatar from "@mui/material/Avatar"
+import Box from "@mui/material/Box"
+import IconButton from "@mui/material/IconButton"
+import Tooltip from "@mui/material/Tooltip"
 import * as React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useThemeContext } from "../../contexts/ThemeContext"
-import Box from "@mui/material/Box"
-import Tooltip from "@mui/material/Tooltip"
-import IconButton from "@mui/material/IconButton"
-import Avatar from "@mui/material/Avatar"
-import { Button, MenuItem, Menu, Typography, Divider } from "@mui/material"
-import { DarkMode, LightMode, Menu as MenuIcon } from "@mui/icons-material"
-import withAuth from "../../auth/withAuth"
-import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
+
 import { AuthContextI } from "../../auth/AuthContext"
+import withAuth from "../../auth/withAuth"
 import profileService from "../../services/ProfileService"
+import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 
 function HeaderMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
 
   React.useEffect(() => {
     const getProfile = async () => {
-      const profileData = await profileService.getProfile(currentUser?.uid || "")
+      const profileData = await profileService.getProfile(currentUser?.id || "")
       if (profileData) {
         setProfile(profileData)
       }
@@ -33,7 +33,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
 
   React.useEffect(() => {
     const getExists = async () => {
-      const exists = await profileService.existsProfile(currentUser?.uid || "")
+      const exists = await profileService.existsProfile(currentUser?.id || "")
       if (exists) {
         setExists(exists)
       }
@@ -51,7 +51,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     {
       name: "Profil",
       event: () => {
-        navigate("/profile/" + currentUser?.uid || "")
+        navigate("/profile/" + currentUser?.id || "")
       },
     },
     {
@@ -76,7 +76,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     setAnchorElUser(null)
   }
   const handleClickName = () => {
-    navigate("/profile/" + currentUser?.uid || "")
+    navigate("/profile/" + currentUser?.id || "")
   }
 
   return (
