@@ -11,7 +11,7 @@ function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: M
 
   useEffect(() => {
     profileService.getProfile(message.sendBy).then((user) => setUser(user))
-  }, [])
+  }, [message.sendBy])
 
   const isMyMsg = message.sendBy === currentUser?.id
 

@@ -29,7 +29,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
       }
     }
     if (!profile) getProfile()
-  }, [])
+  }, [currentUser?.id, profile])
 
   React.useEffect(() => {
     const getExists = async () => {
@@ -39,7 +39,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
       }
     }
     if (!exists) getExists()
-  }, [])
+  }, [currentUser?.id, exists])
 
   const getPhoto = () => {
     if (profile?.photoURL) return profile.photoURL
