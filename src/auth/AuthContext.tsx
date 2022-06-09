@@ -115,20 +115,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(async (registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
         const id = registeredUser.user.uid
-        const exist = await profileService.existsProfile(id)
-        if (exist)
-          profileService
-            .updateProfile(id, {
-              uid: id,
-              email: registeredUser.user.email || "",
-              displayName: registeredUser.user.displayName || "",
-              photoURL: registeredUser.user.photoURL || "",
-            })
-            .then()
-            .catch((e) => {
-              toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-              throw e
-            })
+        profileService
+          .updateProfile(id, {
+            uid: id,
+            email: registeredUser.user.email || "",
+            displayName: registeredUser.user.displayName || "",
+            photoURL: registeredUser.user.photoURL || "",
+          })
+          .catch((e) => {
+            toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+            throw e
+          })
       })
       .catch((err) => {
         toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)

@@ -3,6 +3,8 @@ import ReactPlaceholder from "react-placeholder"
 import Loader from "../../auth/Loader"
 import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
 import { realtimeDB } from "../../firebase-config"
+import chatService from "../../services/ChatService"
+import { toast } from "react-toastify"
 
 export interface ChatContextI {
   currentRoomId: string | undefined
@@ -10,6 +12,7 @@ export interface ChatContextI {
   currentRoomName: string | undefined
   messages: { [msgId: string]: MessageI }
   setCurrentRoom: (room: string) => void
+  createRoom: () => void
   loading: boolean
 }
 
@@ -67,6 +70,12 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     setCurrentRoomId(roomId)
   }
 
+  const createRoom = () => {
+    chatService.createRoom(currentUser).catch(() => {
+      toast.error("Es konnte kein neuer Chat-Raum erstellt werden.")
+    })
+  }
+
   return (
     <ReactPlaceholder ready={!loading} customPlaceholder={<Loader />}>
       <ChatContext.Provider
@@ -75,6 +84,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           currentRoomId: currentRoomId,
           currentRoomName: currentRoomName,
           setCurrentRoom: handleCurrentRoom,
+          createRoom: createRoom,
           messages: messages,
           loading: loading,
         }}

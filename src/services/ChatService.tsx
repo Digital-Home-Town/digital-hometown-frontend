@@ -16,9 +16,9 @@ class ChatService {
     }
   }
 
-  async newRoom(members: { [uid: string]: { role: string } }) {
+  async createRoom(currentUser: ProfileI) {
     try {
-      const resp = await push(ref(realtimeDB, `rooms`), { members: members })
+      const resp = await push(ref(realtimeDB, `rooms`), { members: [currentUser.uid] })
       console.log("added new room", resp.key)
       return resp.key
     } catch (error) {

@@ -6,10 +6,11 @@ function Messages_({ loading, currentRoomId, messages, rooms, currentRoomName }:
   const endMsgRef = useRef<HTMLDivElement | null>(null)
 
   const handleScroll = () => {
-    if (endMsgRef.current != null) {
-      endMsgRef.current?.scrollIntoView({ behavior: "smooth" })
-      setTimeout(() => {}, 500)
-    }
+    setTimeout(() => {
+      if (endMsgRef.current != null) {
+        endMsgRef.current?.scrollIntoView({ behavior: "smooth" })
+      }
+    }, 500)
   }
 
   useEffect(() => {

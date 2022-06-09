@@ -1,12 +1,26 @@
 import List from "@mui/material/List"
-import { ListItem, ListItemText } from "@mui/material"
+import { ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { ChatContextI, withChat } from "./ChatContext"
+import { PlusOne } from "@mui/icons-material"
+import ChatService from "../../services/ChatService"
+import chatService from "../../services/ChatService"
 
-function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms }: ChatContextI) {
+function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms, createRoom }: ChatContextI) {
   return rooms == null ? (
     <div></div>
   ) : (
     <List component="nav">
+      <ListItem
+        button
+        onClick={() => {
+          createRoom()
+        }}
+      >
+        <ListItemText primary="Chat hinzufügen" />
+        <ListItemIcon>
+          <PlusOne />
+        </ListItemIcon>
+      </ListItem>
       {Object.keys(rooms).map((roomId) => {
         return (
           <ListItem

@@ -41,7 +41,7 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
     >
       {showEmojiPicker && (
         <BrowserView>
-          <div style={{ position: "fixed", right: "5%", top: "50%" }}>
+          <div className={classes.emojiPicker}>
             <Picker onEmojiClick={(_, emojiObject) => onEmojiClick(emojiObject)} />
           </div>
         </BrowserView>
