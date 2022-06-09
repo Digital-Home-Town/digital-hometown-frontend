@@ -53,13 +53,12 @@ class ProfileService {
   }
 
   async getProfiles(profileQuery?: ProfileQueryI) {
-    const orderBy = profileQuery?.orderBy || "displayName"
-    const limit = profileQuery?.limit || 10
+    // const orderBy = profileQuery?.orderBy || "displayName"
+    // const limit = profileQuery?.limit || 10
 
     const firebaseQuery = query(profileCollection)
 
     const documents = await getDocs(firebaseQuery)
-    console.log(documents.query)
     const profiles = documents.docs.map((doc) => doc.data())
     return profiles
   }

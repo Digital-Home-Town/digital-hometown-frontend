@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid"
 import * as React from "react"
 import { useEffect } from "react"
+import { useNavigate } from "react-router"
 import profileService from "src/services/ProfileService"
 
 import withAuth from "../../auth/withAuth"
@@ -19,6 +20,7 @@ const columns = [
 ]
 
 function UserTable() {
+  const navigate = useNavigate()
   const [profiles, setProfiles] = React.useState<ProfileI[]>([])
 
   useEffect(() => {
@@ -34,7 +36,15 @@ function UserTable() {
 
   return profiles ? (
     <div style={{ height: 400, width: "100%" }}>
-      <DataGrid rows={profiles} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+      <DataGrid
+        rows={profiles}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        onCellClick={(params) => {
+          navigate(`/profile/${params.id}`)
+        }}
+      />
     </div>
   ) : (
     <p>Lädt...</p>
