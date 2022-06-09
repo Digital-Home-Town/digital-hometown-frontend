@@ -1,4 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid"
+import moment from "moment"
 import * as React from "react"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
@@ -10,7 +11,12 @@ const columns = [
   { field: "id", headerName: "ID", width: 200 },
   { field: "displayName", headerName: "Name", width: 200 },
   { field: "email", headerName: "Email", width: 200 },
-  { field: "dateOfBirth", headerName: "Geburtstag", width: 200 },
+  {
+    field: "dateOfBirth",
+    headerName: "Geburtstag",
+    width: 200,
+    valueGetter: (params: { row: ProfileI }) => moment(params.row.dateOfBirth).format("DD.MM.YYYY"),
+  },
   {
     field: "age",
     headerName: "Alter",
@@ -26,7 +32,6 @@ function UserTable() {
   useEffect(() => {
     const getProfiles = async () => {
       const profilesData = await profileService.getProfiles()
-      console.log(profilesData)
       if (profilesData) {
         setProfiles(profilesData)
       }
