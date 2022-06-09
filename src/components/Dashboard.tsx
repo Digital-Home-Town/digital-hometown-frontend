@@ -1,10 +1,12 @@
-import React from "react"
 import { CalendarToday, Chat, Group } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
+import React from "react"
 import { Link } from "react-router-dom"
-import withAuth from "src/auth/withAuth"
 import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+
+import UserTable from "./table/UserTable"
 
 interface StartElementInterface {
   url: string
@@ -38,6 +40,8 @@ function Dashboard({ currentUser }: AuthContextI) {
         <StartElement url="/dashboard/chat" text="Chat" icon={Chat} />
         <StartElement url="/" text="Termin" icon={CalendarToday} />
       </Grid>
+      <h1>Alle Benutzer</h1>
+      <UserTable></UserTable>
     </div>
   )
 }

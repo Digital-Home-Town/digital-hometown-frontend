@@ -1,14 +1,14 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import React, { useState } from "react"
+import parse from "date-fns/parse"
+import React from "react"
+import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import profileService from "src/services/ProfileService"
-import parse from "date-fns/parse"
 
 import withAuth from "../../auth/withAuth"
-import Input from "../general/input/Input"
 import DatePicker from "../general/input/DatePicker"
-import { toast } from "react-toastify"
+import Input from "../general/input/Input"
 
 function AccountPage({ currentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,12 +19,12 @@ function AccountPage({ currentUser }: AuthContextI) {
     const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
     if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
       const profile: ProfileI = {
-        uid: currentUser.uid,
+        id: currentUser.id,
         displayName: fullName,
         email: email,
         dateOfBirth: dateOfBirth,
       }
-      profileService.updateProfile(currentUser.uid, profile).catch((e) => {
+      profileService.updateProfile(currentUser.id, profile).catch((e) => {
         toast.error("Dein Profil konnte nicht aktualisiert werden.")
         throw e
       })

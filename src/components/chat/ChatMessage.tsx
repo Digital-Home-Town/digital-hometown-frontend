@@ -1,9 +1,10 @@
-import { AuthContextI } from "../../auth/AuthContext"
 import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
+import React, { useEffect, useState } from "react"
+
+import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import React, { useEffect, useState, memo } from "react"
-import classes from "./ChatMessage.module.css"
 import profileService from "../../services/ProfileService"
+import classes from "./ChatMessage.module.css"
 
 function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {
   const [user, setUser] = useState<ProfileI | null | undefined>(undefined)
@@ -12,7 +13,7 @@ function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: M
     profileService.getProfile(message.sendBy).then((user) => setUser(user))
   }, [])
 
-  const isMyMsg = message.sendBy === currentUser?.uid
+  const isMyMsg = message.sendBy === currentUser?.id
 
   return (
     <ListItem className={isMyMsg ? classes.ownMessageBubbleItem : ""}>

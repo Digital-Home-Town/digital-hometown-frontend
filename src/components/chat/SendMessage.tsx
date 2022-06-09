@@ -1,15 +1,16 @@
-import { IconButton, InputAdornment, TextField } from "@mui/material"
+import { EmojiEmotions } from "@mui/icons-material"
 import SendIcon from "@mui/icons-material/Send"
-import classes from "./SendMessage.module.css"
+import { IconButton, InputAdornment, TextField } from "@mui/material"
+import Picker, { IEmojiData } from "emoji-picker-react"
 import * as React from "react"
 import { useReducer, useState } from "react"
-import withAuth from "../../auth/withAuth"
-import { AuthContextI } from "../../auth/AuthContext"
-import { ChatContextI, withChat } from "./ChatContext"
-import chatService from "../../services/ChatService"
-import Picker, { IEmojiData } from "emoji-picker-react"
-import { EmojiEmotions } from "@mui/icons-material"
 import { BrowserView } from "react-device-detect"
+
+import { AuthContextI } from "../../auth/AuthContext"
+import withAuth from "../../auth/withAuth"
+import chatService from "../../services/ChatService"
+import { ChatContextI, withChat } from "./ChatContext"
+import classes from "./SendMessage.module.css"
 
 function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI) {
   const [message, setMessage] = useState("")
@@ -24,7 +25,7 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
       .sendMessage(currentRoomId as string, {
         messageText: message,
         sendAt: Date.now(),
-        sendBy: currentUser?.uid as string,
+        sendBy: currentUser?.id as string,
       })
       .then(() => {
         setMessage("")
