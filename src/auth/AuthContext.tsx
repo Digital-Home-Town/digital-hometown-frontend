@@ -122,13 +122,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           displayName: registeredUser.user.displayName || "",
           photoURL: registeredUser.user.photoURL || "",
         }
-        profileService
-          .updateProfile(id, user)
-          .then()
-          .catch((e) => {
-            toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-            throw e
-          })
+        const exists = profileService.getProfile(id)
+        if (!exists) {
+          profileService
+            .updateProfile(id, user)
+            .then()
+            .catch((e) => {
+              toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+              throw e
+            })
+        }
         setCurrentUser(user)
       })
       .catch((err) => {
