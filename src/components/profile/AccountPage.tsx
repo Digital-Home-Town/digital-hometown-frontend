@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React from "react"
+import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import profileService from "src/services/ProfileService"
@@ -39,9 +39,9 @@ function AccountPage({ currentUser }: AuthContextI) {
   const [valid_interests, setValidInterests] = useState(data.valid_interests)
 
   const dropValue = (setter: any, list: any, value: any) => {
-  setter((items: any) => list.filter((val: any, i: any) => val !== value))
+    setter((items: any) => list.filter((val: any, i: any) => val !== value))
   }
-  const pickValue = (setter : any, list: any, value: any) => {
+  const pickValue = (setter: any, list: any, value: any) => {
     setter([...list, value])
   }
 
@@ -63,14 +63,7 @@ function AccountPage({ currentUser }: AuthContextI) {
   })
 
   var itemDrop = interests.map((item, index) => {
-    return (
-      <input
-        type="Button"
-        name={item}
-        value={item}
-        onClick={(e) => handleClick(e, false)}
-      />
-    )
+    return <input type="Button" name={item} value={item} onClick={(e) => handleClick(e, false)} />
   })
 
   return currentUser ? (
@@ -82,40 +75,35 @@ function AccountPage({ currentUser }: AuthContextI) {
         placeholder="Geburtstag"
         initialValue={currentUser?.dateOfBirth ? new Date(currentUser.dateOfBirth) : undefined}
       />
-  <br />
-        <img src={image != null ? image : data.defaultImage} alt="" />
-
-        <label>
-          <input
-            style={{display: "none"}}
-            type="file"
-            accept="image/*"
-            onChange={(e:any) => {
-              setImage(URL.createObjectURL(e.target.files![0]))
-            }}
-          />
-          new
-        </label>
-
-        {image != null ? (
-          <input
-            type="button"
-            value="Delete"
-            onClick={() => {
-              setImage(null)
-            }}
-          />
-        ) : (
-          ""
-        )}
-
-      <Input name="description" placeholder="Beschreibung" initialValue="TODO"/>
-
+      <br />
+      <img src={image != null ? image : data.defaultImage} alt="" />
+      <label>
+        <input
+          style={{ display: "none" }}
+          type="file"
+          accept="image/*"
+          onChange={(e: any) => {
+            setImage(URL.createObjectURL(e.target.files![0]))
+          }}
+        />
+        new
+      </label>
+      {image != null ? (
+        <input
+          type="button"
+          value="Delete"
+          onClick={() => {
+            setImage(null)
+          }}
+        />
+      ) : (
+        ""
+      )}
+      <Input name="description" placeholder="Beschreibung" initialValue="TODO" />
       Interessen: <br />
       Options: {itemPick}
       <br />
       My Picks:{itemDrop}
-
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Speichern
       </Button>
