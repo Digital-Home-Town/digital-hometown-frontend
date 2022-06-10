@@ -1,4 +1,3 @@
-import React, { createContext, ReactNode, useEffect, useState } from "react"
 import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
@@ -8,10 +7,12 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth"
-import { auth } from "../firebase-config"
+import React, { createContext, ReactNode, useEffect, useState } from "react"
+import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
 import profileService from "src/services/ProfileService"
-import ReactPlaceholder from "react-placeholder"
+
+import { auth } from "../firebase-config"
 import Loader from "./Loader"
 
 export interface AuthContextI {
@@ -33,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     auth.onAuthStateChanged((user) => {
       if (user != null) {
         setCurrentUser({
-          uid: auth.currentUser?.uid || "",
+          id: auth.currentUser?.uid || "",
           email: auth.currentUser?.email || undefined,
           displayName: auth.currentUser?.displayName || undefined,
         })
@@ -85,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           toast.success(`Hallo ${displayName}, du bist nun registriert.`)
           profileService
             .updateProfile(id, {
-              uid: id,
+              id,
               email: currentUser.email || "",
               displayName: displayName || "",
               photoURL: currentUser.photoURL || "",
@@ -115,20 +116,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(async (registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
         const id = registeredUser.user.uid
-        const exist = await profileService.existsProfile(id)
-        if (exist)
-          profileService
-            .updateProfile(id, {
-              uid: id,
-              email: registeredUser.user.email || "",
-              displayName: registeredUser.user.displayName || "",
-              photoURL: registeredUser.user.photoURL || "",
-            })
-            .then()
-            .catch((e) => {
-              toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-              throw e
-            })
+        const user = {
+          id,
+          email: registeredUser.user.email || "",
+          displayName: registeredUser.user.displayName || "",
+          photoURL: registeredUser.user.photoURL || "",
+        }
+        profileService
+          .updateProfile(id, user)
+          .then()
+          .catch((e) => {
+            toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+            throw e
+          })
+        setCurrentUser(user)
       })
       .catch((err) => {
         toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)
