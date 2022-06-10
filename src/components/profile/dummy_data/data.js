@@ -1,11 +1,11 @@
-import image from "./alf.jpeg";
-import defaultImage from "./NoImage.png";
+import image from "./alf.jpeg"
+import defaultImage from "./NoImage.png"
 
 export const data = {
   loggedIn: true,
   defaultImage: defaultImage,
   valid_interests: ["sport", "culture", "traveling", "tv"],
-  
+
   first_name: "Alf",
   surname: "Tanner",
   adress: {
@@ -17,7 +17,6 @@ export const data = {
   },
   phone_number: "555-4044",
   image_url: image,
-  description:
-    "I'am an troublesome, sarcastic, cynical, and i'm an hungry alien who loves to eat food such as pizza.",
+  description: "I'am an troublesome, sarcastic, cynical, and i'm an hungry alien who loves to eat food such as pizza.",
   interests: [],
-};
+}
