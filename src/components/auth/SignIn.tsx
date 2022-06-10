@@ -1,4 +1,6 @@
+import { Facebook, Google } from "@mui/icons-material"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import { IconButton } from "@mui/material"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
@@ -10,14 +12,13 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import React from "react"
 import { Navigate, useNavigate } from "react-router"
-import { AuthContextI } from "src/auth/AuthContext"
-import { IconButton } from "@mui/material"
-import { Facebook, Google } from "@mui/icons-material"
+import { AuthContextI, AuthProps } from "src/auth/AuthContext"
+
 import withAuth from "../../auth/withAuth"
 
-function SignIn({ currentUser, logIn, signUpOAuth }: AuthContextI) {
+function SignIn(props: AuthProps & AuthContextI) {
   const navigate = useNavigate()
-
+  const { currentUser, logIn, signUpOAuth, isOrg } = props
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -43,7 +44,7 @@ function SignIn({ currentUser, logIn, signUpOAuth }: AuthContextI) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Anmelden
+          Anmelden {isOrg ? "als Organisation" : ""}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" autoFocus />
@@ -57,13 +58,13 @@ function SignIn({ currentUser, logIn, signUpOAuth }: AuthContextI) {
             autoComplete="current-password"
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
-            Anmelden
+            Anmelden {isOrg ? "als Organisation" : ""}
           </Button>
           <Grid container>
             <Grid item>
               <IconButton
                 onClick={() => {
-                  signUpOAuth("google")
+                  signUpOAuth("google", isOrg)
                 }}
               >
                 <Google />
@@ -72,7 +73,7 @@ function SignIn({ currentUser, logIn, signUpOAuth }: AuthContextI) {
             <Grid item>
               <IconButton
                 onClick={() => {
-                  signUpOAuth("facebook")
+                  signUpOAuth("facebook", isOrg)
                 }}
               >
                 <Facebook />

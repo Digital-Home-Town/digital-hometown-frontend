@@ -3,39 +3,49 @@ import Box from "@mui/material/Box"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
+import { differenceInYears } from "date-fns"
 import * as React from "react"
 import { useEffect } from "react"
+import ReactPlaceholder from "react-placeholder"
 import { useParams } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
+import clubService from "src/services/ClubService"
 import profileService from "src/services/ProfileService"
 
 import withAuth from "../../auth/withAuth"
-import ReactPlaceholder from "react-placeholder"
-import { differenceInYears } from "date-fns"
 
 function ProfilePage({ currentUser }: AuthContextI) {
   const { id } = useParams()
   const [profile, setProfile] = React.useState<null | ProfileI>(null)
+  const [isOrg, setIsOrg] = React.useState<null | boolean>(null)
   const [exists, setExists] = React.useState<null | boolean>(null)
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
 
   useEffect(() => {
     const getProfile = async () => {
-      const profileData = await profileService.getProfile(id || "")
+      const service = isOrg ? clubService : profileService
+      const profileData = await service.get(id || "")
       if (profileData) {
         setProfile(profileData)
       }
     }
     if (!profile) getProfile()
-  }, [])
+  }, [id, isOrg, profile])
 
   useEffect(() => {
     const getExists = async () => {
-      const exists = await profileService.existsProfile(id || "")
+      let exists = await profileService.exists(id || "")
       if (exists) {
+        setIsOrg(false)
         setExists(exists)
         setIsLoading(false)
+        return
       }
+      exists = await clubService.exists(id || "")
+      setIsOrg(true)
+      setExists(exists)
+      setIsLoading(false)
+      return
     }
     if (!exists) getExists()
   })

@@ -6,7 +6,7 @@ function RegisterOrg() {
   return (
     <div>
       <h1>Organisation</h1>
-      <Register />
+      <Register isOrg={true} />
     </div>
   )
 }

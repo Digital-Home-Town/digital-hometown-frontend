@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
 import { Navigate, useNavigate } from "react-router"
-import { AuthContextI } from "src/auth/AuthContext"
+import { AuthContextI, AuthProps } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
 function validateEmail(email: string) {
@@ -20,8 +20,9 @@ function validateEmail(email: string) {
   return re.test(email)
 }
 
-function Register({ currentUser, signUpWithEmail }: AuthContextI) {
+function Register(props: AuthProps & AuthContextI) {
   const navigate = useNavigate()
+  const { currentUser, signUpWithEmail, isOrg } = props
 
   const [userInput, setUserInput_] = React.useState({
     username: "",
@@ -61,7 +62,7 @@ function Register({ currentUser, signUpWithEmail }: AuthContextI) {
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signUpWithEmail(email, password, displayName)
+    signUpWithEmail(email, password, displayName, isOrg)
   }
 
   return currentUser ? (
@@ -80,7 +81,7 @@ function Register({ currentUser, signUpWithEmail }: AuthContextI) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Registrieren
+          Registrieren {isOrg ? "als Organisation" : ""}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -148,7 +149,7 @@ function Register({ currentUser, signUpWithEmail }: AuthContextI) {
             }}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Registrieren
+            Registrieren {isOrg ? "als Organisation" : ""}
           </Button>
           <Grid container>
             <Grid item xs>
