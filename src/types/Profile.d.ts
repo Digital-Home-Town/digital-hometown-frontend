@@ -1,8 +1,4 @@
-interface ProfileI {
-  id: string
-  displayName?: string
-  email?: string
+interface ProfileI extends GenericProfile {
   dateOfBirth?: number
   age?: number
-  photoURL?: string
 }

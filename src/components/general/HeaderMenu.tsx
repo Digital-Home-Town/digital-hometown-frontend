@@ -7,6 +7,7 @@ import Tooltip from "@mui/material/Tooltip"
 import * as React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import clubService from "src/services/ClubService"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
@@ -15,31 +16,32 @@ import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 
 function HeaderMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
+  const service = currentUser?.isOrg ? clubService : profileService
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const [profile, setProfile] = useState<null | ProfileI>(null)
+  const [profile, setProfile] = useState<null | GenericProfile>(null)
   const [exists, setExists] = useState<null | Boolean>(null)
 
   React.useEffect(() => {
     const getProfile = async () => {
-      const profileData = await profileService.getProfile(currentUser?.id || "")
+      const profileData = await service.get(currentUser?.id || "")
       if (profileData) {
         setProfile(profileData)
       }
     }
     if (!profile) getProfile()
-  }, [currentUser?.id, profile])
+  }, [currentUser?.id, profile, service])
 
   React.useEffect(() => {
     const getExists = async () => {
-      const exists = await profileService.existsProfile(currentUser?.id || "")
+      const exists = await service.exists(currentUser?.id || "")
       if (exists) {
         setExists(exists)
       }
     }
     if (!exists) getExists()
-  }, [currentUser?.id, exists])
+  }, [currentUser?.id, exists, service])
 
   const getPhoto = () => {
     if (profile?.photoURL) return profile.photoURL
@@ -57,7 +59,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     {
       name: "Profil bearbeiten",
       event: () => {
-        navigate("/account")
+        return currentUser?.isOrg ? navigate("/clubpage") : navigate("/account")
       },
     },
     {

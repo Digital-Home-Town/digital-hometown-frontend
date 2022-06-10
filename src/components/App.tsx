@@ -1,25 +1,27 @@
 import "./App.css"
 import "react-toastify/dist/ReactToastify.css"
+
 import { Box } from "@mui/material"
 import Container from "@mui/material/Container"
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import { de } from "date-fns/locale"
 import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
+import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
+import Chat from "./chat/Chat"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
-import { de } from "date-fns/locale"
-import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
-import Start from "./Start"
-import ProfilePage from "./profile/ProfilePage"
 import AccountPage from "./profile/AccountPage"
-import Chat from "./chat/Chat"
+import ClubPage from "./profile/ClubPage"
+import ProfilePage from "./profile/ProfilePage"
+import Start from "./Start"
 
 toast.configure()
 
@@ -50,10 +52,11 @@ function App() {
                     <Route path="/" element={<Start />} />
                     <Route path="/health" element={<BackendHealth />} />
                     <Route path="/mui" element={<MuiPlayground />} />
-                    <Route path="/sign-in" element={<SignIn />} />
+                    <Route path="/sign-in" element={<SignIn isOrg={false} />} />
                     <Route path="/sign-out" element={<SignOut />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/register" element={<Register isOrg={false} />} />
                     <Route path="/account" element={<AccountPage />} />
+                    <Route path="/clubpage" element={<ClubPage />} />
                     <Route path="/profile/:id" element={<ProfilePage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/dashboard">

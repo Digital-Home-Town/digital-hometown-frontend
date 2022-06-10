@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
+import ClubTable from "./table/ClubTable"
 import UserTable from "./table/UserTable"
 
 interface StartElementInterface {
@@ -39,6 +40,8 @@ function Dashboard({ currentUser }: AuthContextI) {
       </Grid>
       <h1>Alle Benutzer</h1>
       <UserTable></UserTable>
+      <h1>Alle Vereine</h1>
+      <ClubTable></ClubTable>
     </div>
   )
 }

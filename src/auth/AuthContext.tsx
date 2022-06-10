@@ -10,6 +10,7 @@ import {
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
+import clubService from "src/services/ClubService"
 import profileService from "src/services/ProfileService"
 
 import { auth } from "../firebase-config"
@@ -19,9 +20,13 @@ export interface AuthContextI {
   currentUser: ProfileI | undefined | null
   logOut: () => void
   logIn: (email: string, password: string) => void
-  signUpWithEmail: (email: string, password: string, displayName: string) => void
-  signUpOAuth: (providerName: "google" | "facebook") => void
+  signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => void
+  signUpOAuth: (providerName: "google" | "facebook", isOrg: boolean) => void
   resetPassword: (email: string) => void
+}
+
+export interface AuthProps {
+  isOrg: boolean
 }
 
 const AuthContext = createContext<undefined | AuthContextI>(undefined)
@@ -35,14 +40,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (user != null) {
         setCurrentUser({
           id: auth.currentUser?.uid || "",
+          isOrg: false,
           email: auth.currentUser?.email || undefined,
           displayName: auth.currentUser?.displayName || undefined,
         })
         profileService
-          .getProfile(user.uid)
+          .get(user.uid)
           .then((profile) => {
-            setCurrentUser(profile)
-            setLoading(false)
+            if (!profile) {
+              clubService
+                .get(user.uid)
+                .then((profile) => {
+                  setCurrentUser(profile)
+                  setLoading(false)
+                })
+                .catch((err) => {
+                  toast.error(`Fehler beim Laden deines Profils. ${err.message}`)
+                  setLoading(false)
+                })
+            } else {
+              setCurrentUser(profile)
+              setLoading(false)
+            }
           })
           .catch((err) => {
             toast.error(`Fehler beim Laden deines Profils. ${err.message}`)
@@ -77,19 +96,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
-  const handleSignUpEmail = (email: string, password: string, displayName: string) => {
+  const handleSignUpEmail = (email: string, password: string, displayName: string, isOrg: boolean) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        const currentUser = response.user
-        if (currentUser != null) {
-          const id = currentUser.uid
+      .then(async (response) => {
+        const user = response.user
+        if (user != null) {
           toast.success(`Hallo ${displayName}, du bist nun registriert.`)
-          profileService
-            .updateProfile(id, {
+          const id = user.uid
+          const isClub = await clubService.exists(id)
+          const isProfile = await profileService.exists(id)
+
+          let service
+          const profile: GenericProfile = {
+            id,
+            isOrg: false,
+            email: user.email || "",
+            displayName: user.displayName || "",
+            photoURL: user.photoURL || "",
+          }
+
+          if (isProfile) {
+            profile.isOrg = false
+            service = profileService
+          } else if (isClub) {
+            profile.isOrg = true
+            service = clubService
+          } else {
+            profile.isOrg = isOrg
+            service = isOrg ? clubService : profileService
+          }
+          service
+            .update(id, {
               id,
-              email: currentUser.email || "",
+              isOrg,
+              email: user.email || "",
               displayName: displayName || "",
-              photoURL: currentUser.photoURL || "",
+              photoURL: user.photoURL || "",
             })
             .catch(() => {
               toast.error("Fehler beim Speichern des Profils.")
@@ -102,7 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
-  function handleOAuthSignIn(providerName: "google" | "facebook") {
+  function handleOAuthSignIn(providerName: "google" | "facebook", isOrg: boolean) {
     let provider
     if (providerName === "google") {
       provider = new GoogleAuthProvider()
@@ -113,26 +155,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     signInWithPopup(auth, provider)
-      .then(async (registeredUser) => {
-        toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
-        const id = registeredUser.user.uid
-        const user = {
+      .then(async (response) => {
+        const user = response.user
+        toast.success(`Hallo ${user.displayName}, du hast dich erfolgreich angemeldet.`)
+        const id = user.uid
+        const isClub = await clubService.exists(id)
+        const isProfile = await profileService.exists(id)
+
+        let service
+        const profile: GenericProfile = {
           id,
-          email: registeredUser.user.email || "",
-          displayName: registeredUser.user.displayName || "",
-          photoURL: registeredUser.user.photoURL || "",
+          isOrg: false,
+          email: user.email || "",
+          displayName: user.displayName || "",
+          photoURL: user.photoURL || "",
         }
-        const exists = profileService.getProfile(id)
-        if (!exists) {
-          profileService
-            .updateProfile(id, user)
-            .then()
-            .catch((e) => {
-              toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-              throw e
-            })
+
+        if (isProfile) {
+          profile.isOrg = false
+          service = profileService
+        } else if (isClub) {
+          profile.isOrg = true
+          service = clubService
+        } else {
+          profile.isOrg = isOrg
+          service = isOrg ? clubService : profileService
         }
-        setCurrentUser(user)
+
+        service.update(id, profile).catch((e) => {
+          toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+          throw e
+        })
+        setCurrentUser(profile)
       })
       .catch((err) => {
         toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)

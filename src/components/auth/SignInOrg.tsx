@@ -6,7 +6,7 @@ function SignInOrg() {
   return (
     <div>
       <h1>Organisation</h1>
-      <SignIn />
+      <SignIn isOrg={true} />
     </div>
   )
 }

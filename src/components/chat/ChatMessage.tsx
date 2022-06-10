@@ -1,5 +1,6 @@
 import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import clubService from "src/services/ClubService"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
@@ -7,11 +8,12 @@ import profileService from "../../services/ProfileService"
 import classes from "./ChatMessage.module.css"
 
 function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {
-  const [user, setUser] = useState<ProfileI | null | undefined>(undefined)
+  const [user, setUser] = useState<GenericProfile | null | undefined>(undefined)
+  const service = currentUser?.isOrg ? clubService : profileService
 
   useEffect(() => {
-    profileService.getProfile(message.sendBy).then((user) => setUser(user))
-  }, [message.sendBy])
+    service.get(message.sendBy).then((user) => setUser(user))
+  }, [message.sendBy, service])
 
   const isMyMsg = message.sendBy === currentUser?.id
 
