@@ -10,17 +10,17 @@ import React from "react"
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
+import GenericProfilePage from "src/pages/profiles/GenericProfilePage"
+import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
+import Chat from "../pages/Chat"
+import ProfileSettingsPage from "../pages/settings/ProfileSettingsPage"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
-import Chat from "./chat/Chat"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
-import AccountPage from "./profile/AccountPage"
-import ClubPage from "./profile/ClubPage"
-import ProfilePage from "./profile/ProfilePage"
 import Start from "./Start"
 
 toast.configure()
@@ -55,9 +55,10 @@ function App() {
                     <Route path="/sign-in" element={<SignIn isOrg={false} />} />
                     <Route path="/sign-out" element={<SignOut />} />
                     <Route path="/register" element={<Register isOrg={false} />} />
-                    <Route path="/account" element={<AccountPage />} />
-                    <Route path="/clubpage" element={<ClubPage />} />
-                    <Route path="/profile/:id" element={<ProfilePage />} />
+                    <Route path="/settings-profile" element={<ProfileSettingsPage />} />
+                    <Route path="/settings-club" element={<ClubSettingsPage />} />
+                    <Route path="/profile" element={<GenericProfilePage />} />
+                    <Route path="/profile/:id" element={<GenericProfilePage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/dashboard">
                       <Route path="chat" element={<Chat />} />

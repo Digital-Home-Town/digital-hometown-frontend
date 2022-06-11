@@ -53,13 +53,13 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     {
       name: "Profil",
       event: () => {
-        navigate("/profile/" + currentUser?.id || "")
+        navigate("/profile/")
       },
     },
     {
       name: "Profil bearbeiten",
       event: () => {
-        return currentUser?.isOrg ? navigate("/clubpage") : navigate("/account")
+        return currentUser?.isOrg ? navigate("/settings-club") : navigate("/settings-profile")
       },
     },
     {

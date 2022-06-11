@@ -1,22 +1,18 @@
-import { Avatar } from "@mui/material"
-import Box from "@mui/material/Box"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import { differenceInYears } from "date-fns"
 import * as React from "react"
 import { useEffect } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { useParams } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
+import ClubProfile from "src/components/profile/ClubProfile"
+import UserProfile from "src/components/profile/UserProfile"
 import clubService from "src/services/ClubService"
 import profileService from "src/services/ProfileService"
 
 import withAuth from "../../auth/withAuth"
 
-function ProfilePage({ currentUser }: AuthContextI) {
+function GenericProfilePage({ currentUser }: AuthContextI) {
   const { id } = useParams()
-  const [profile, setProfile] = React.useState<null | ProfileI>(null)
+  const [profile, setProfile] = React.useState<null | GenericProfile>(null)
   const [isOrg, setIsOrg] = React.useState<null | boolean>(null)
   const [exists, setExists] = React.useState<null | boolean>(null)
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
@@ -47,34 +43,23 @@ function ProfilePage({ currentUser }: AuthContextI) {
       setIsLoading(false)
       return
     }
-    if (!exists) getExists()
-  })
-
-  const getPhoto = () => {
-    if (profile?.photoURL) return profile.photoURL
-    return ""
-  }
+    if (id && !exists) getExists()
+    else if (!id && currentUser) {
+      setIsOrg(currentUser?.isOrg)
+      setExists(true)
+      setIsLoading(false)
+      setProfile(currentUser)
+    }
+  }, [id, exists, currentUser])
 
   return (
     <ReactPlaceholder ready={!isLoading} type={"media"}>
       {exists ? (
-        <Box sx={{ mt: 1 }}>
-          <Avatar alt="Not logged in" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} />
-          <List>
-            {profile?.dateOfBirth == null || (
-              <ListItem disablePadding>
-                <ListItemText
-                  primary={
-                    profile?.displayName + " (" + differenceInYears(new Date(), new Date(profile?.dateOfBirth)) + ")"
-                  }
-                />
-              </ListItem>
-            )}
-            <ListItem disablePadding>
-              <ListItemText primary={profile?.email} />
-            </ListItem>
-          </List>
-        </Box>
+        profile?.isOrg ? (
+          <ClubProfile profile={profile}></ClubProfile>
+        ) : (
+          <UserProfile profile={profile}></UserProfile>
+        )
       ) : (
         <div>Du hast keinen Zugriff auf diese Seite</div>
       )}
@@ -82,4 +67,4 @@ function ProfilePage({ currentUser }: AuthContextI) {
   )
 }
 
-export default withAuth(ProfilePage)
+export default withAuth(GenericProfilePage)
