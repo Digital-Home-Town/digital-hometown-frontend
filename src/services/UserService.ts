@@ -4,26 +4,27 @@ import { GenericProfileService } from "./GenericProfileService"
 
 class UserService extends GenericProfileService<User> {
   async get(id: string): Promise<User | undefined> {
-    const profile = await super.get(id)
-    if (profile) {
-      profile.age = this.getAge(profile.dateOfBirth)
+    const user = await super.get(id)
+    if (user) {
+      user.age = this.getAge(user.dateOfBirth)
     }
-    return profile
+    return user
   }
 
   async getAll(profileQuery?: ProfileQueryI) {
-    const profiles = await super.getAll(profileQuery)
-    profiles.forEach((profile) => {
-      profile.age = this.getAge(profile.dateOfBirth)
+    const users = await super.getAll(profileQuery)
+    users.forEach((user) => {
+      user.age = this.getAge(user.dateOfBirth)
     })
 
-    return profiles
+    return users
   }
 
-  async update(id: string, profile: User) {
-    if (!profile.clubs) profile.clubs = []
-    if (!profile.clubRequests) profile.clubRequests = []
-    super.update(id, profile)
+  async update(id: string, user: User) {
+    if (!user.clubs) user.clubs = []
+    if (!user.clubRequests) user.clubRequests = []
+    if (!user.friends) user.friends = []
+    super.update(id, user)
   }
 
   getAge(dateOfBirth?: number) {
