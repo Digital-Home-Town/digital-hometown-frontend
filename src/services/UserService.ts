@@ -1,9 +1,9 @@
-import { profileCollection } from "src/firebase-config"
+import { userCollection } from "src/firebase-config"
 
 import { GenericProfileService } from "./GenericProfileService"
 
-class ProfileService extends GenericProfileService<ProfileI> {
-  async get(id: string): Promise<ProfileI | undefined> {
+class UserService extends GenericProfileService<User> {
+  async get(id: string): Promise<User | undefined> {
     const profile = await super.get(id)
     if (profile) {
       profile.age = this.getAge(profile.dateOfBirth)
@@ -34,5 +34,5 @@ class ProfileService extends GenericProfileService<ProfileI> {
   }
 }
 
-const profileService = new ProfileService(profileCollection)
-export default profileService
+const userService = new UserService(userCollection)
+export default userService

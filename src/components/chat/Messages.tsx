@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef } from "react"
-import ChatMessage from "./ChatMessage"
+import React, { useEffect, useRef } from "react"
+
 import { ChatContextI, withChat } from "./ChatContext"
+import ChatMessage from "./ChatMessage"
 
 function Messages_({ loading, currentRoomId, messages, rooms, currentRoomName }: ChatContextI) {
   const endMsgRef = useRef<HTMLDivElement | null>(null)

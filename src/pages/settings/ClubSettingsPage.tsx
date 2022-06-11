@@ -14,7 +14,7 @@ function ClubSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
     const fullName = (data.get("fullName") as string) || ""
     const email = (data.get("email") as string) || ""
     if (fullName.length > 0 && email.length > 0 && currentUser) {
-      const club: ClubI = {
+      const club: Club = {
         ...currentUser,
         displayName: fullName,
         email: email,

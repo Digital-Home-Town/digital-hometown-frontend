@@ -11,14 +11,14 @@ import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
 import clubService from "src/services/ClubService"
-import profileService from "src/services/ProfileService"
+import userService from "src/services/UserService"
 
 import { auth } from "../firebase-config"
 import Loader from "./Loader"
 
 export interface AuthContextI {
-  currentUser: ProfileI | undefined | null
-  setCurrentUser: React.Dispatch<React.SetStateAction<ProfileI | null | undefined>>
+  currentUser: User | undefined | null
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null | undefined>>
   logOut: () => void
   logIn: (email: string, password: string) => void
   signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => void
@@ -33,7 +33,7 @@ export interface AuthProps {
 const AuthContext = createContext<undefined | AuthContextI>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<ProfileI | null | undefined>(undefined)
+  const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: auth.currentUser?.email || undefined,
           displayName: auth.currentUser?.displayName || undefined,
         })
-        profileService
+        userService
           .get(user.uid)
           .then((profile) => {
             if (!profile) {
@@ -105,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           toast.success(`Hallo ${displayName}, du bist nun registriert.`)
           const id = user.uid
           const isClub = await clubService.exists(id)
-          const isProfile = await profileService.exists(id)
+          const isProfile = await userService.exists(id)
 
           let service
           const profile: GenericProfile = {
@@ -118,13 +118,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           if (isProfile) {
             profile.isOrg = false
-            service = profileService
+            service = userService
           } else if (isClub) {
             profile.isOrg = true
             service = clubService
           } else {
             profile.isOrg = isOrg
-            service = isOrg ? clubService : profileService
+            service = isOrg ? clubService : userService
           }
           service
             .update(id, {
@@ -161,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.success(`Hallo ${user.displayName}, du hast dich erfolgreich angemeldet.`)
         const id = user.uid
         const isClub = await clubService.exists(id)
-        const isProfile = await profileService.exists(id)
+        const isProfile = await userService.exists(id)
 
         let service
         const profile: GenericProfile = {
@@ -174,13 +174,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (isProfile) {
           profile.isOrg = false
-          service = profileService
+          service = userService
         } else if (isClub) {
           profile.isOrg = true
           service = clubService
         } else {
           profile.isOrg = isOrg
-          service = isOrg ? clubService : profileService
+          service = isOrg ? clubService : userService
         }
 
         service.update(id, profile).catch((e) => {

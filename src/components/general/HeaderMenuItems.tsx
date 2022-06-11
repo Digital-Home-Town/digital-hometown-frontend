@@ -1,10 +1,10 @@
+import { DarkMode, LightMode } from "@mui/icons-material"
 import MenuItem from "@mui/material/MenuItem"
-import { NavLink } from "react-router-dom"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
-import Button from "@mui/material/Button"
+import { NavLink } from "react-router-dom"
+
 import { useThemeContext } from "../../contexts/ThemeContext"
-import { DarkMode, LightMode } from "@mui/icons-material"
 
 export function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
   return (

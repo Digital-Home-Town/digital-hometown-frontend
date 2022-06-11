@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText"
 import { differenceInYears } from "date-fns"
 import * as React from "react"
 
-function UserProfile(props: ProfileProps<ProfileI>) {
+function UserProfile(props: ProfileProps<User>) {
   const profile = props.profile
   const getPhoto = () => {
     if (profile?.photoURL) return profile.photoURL

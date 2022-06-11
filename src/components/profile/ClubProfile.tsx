@@ -5,7 +5,7 @@ import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
 import * as React from "react"
 
-function ClubProfile(props: ProfileProps<ClubI>) {
+function ClubProfile(props: ProfileProps<Club>) {
   const profile = props.profile
   const getPhoto = () => {
     if (profile?.photoURL) return profile.photoURL

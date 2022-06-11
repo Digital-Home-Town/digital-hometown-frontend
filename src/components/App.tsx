@@ -15,7 +15,7 @@ import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
 import Chat from "../pages/Chat"
-import ProfileSettingsPage from "../pages/settings/ProfileSettingsPage"
+import UserSettingsPage from "../pages/settings/UserSettingsPage"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
@@ -55,8 +55,8 @@ function App() {
                     <Route path="/sign-in" element={<SignIn isOrg={false} />} />
                     <Route path="/sign-out" element={<SignOut />} />
                     <Route path="/register" element={<Register isOrg={false} />} />
-                    <Route path="/settings-profile" element={<ProfileSettingsPage />} />
-                    <Route path="/settings-club" element={<ClubSettingsPage />} />
+                    <Route path="/user-settings" element={<UserSettingsPage />} />
+                    <Route path="/club-settings" element={<ClubSettingsPage />} />
                     <Route path="/profile" element={<GenericProfilePage />} />
                     <Route path="/profile/:id" element={<GenericProfilePage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />

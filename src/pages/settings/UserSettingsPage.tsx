@@ -4,13 +4,13 @@ import parse from "date-fns/parse"
 import React from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
-import profileService from "src/services/ProfileService"
+import userService from "src/services/UserService"
 
 import withAuth from "../../auth/withAuth"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-function ProfileSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
+function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -18,13 +18,13 @@ function ProfileSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
     const email = (data.get("email") as string) || ""
     const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
     if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
-      const profile: ProfileI = {
+      const profile: User = {
         ...currentUser,
         displayName: fullName,
         email: email,
         dateOfBirth: dateOfBirth,
       }
-      profileService
+      userService
         .update(currentUser.id, profile)
         .then(() => {
           setCurrentUser(profile)
@@ -55,4 +55,4 @@ function ProfileSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   )
 }
 
-export default withAuth(ProfileSettingsPage)
+export default withAuth(UserSettingsPage)

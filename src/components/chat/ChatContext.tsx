@@ -1,7 +1,8 @@
+import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
+
 import Loader from "../../auth/Loader"
-import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
 import { realtimeDB } from "../../firebase-config"
 
 export interface ChatContextI {
@@ -15,7 +16,7 @@ export interface ChatContextI {
 
 const ChatContext = createContext<undefined | ChatContextI>(undefined)
 
-export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: ProfileI }) {
+export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: User }) {
   const [rooms, setRooms] = useState<{ [roomId: string]: RoomI } | undefined>(undefined)
   const [currentRoomName, setCurrentRoomName] = useState<string | undefined>(undefined)
   const [messages, setMessages] = useState<{ [msgId: string]: MessageI }>({})
@@ -61,7 +62,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     }
 
     func().then()
-  }, [currentRoomId])
+  }, [currentRoomId, rooms])
 
   const handleCurrentRoom = (roomId: string) => {
     setCurrentRoomId(roomId)

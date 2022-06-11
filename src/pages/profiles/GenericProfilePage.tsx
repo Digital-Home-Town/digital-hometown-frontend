@@ -6,7 +6,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import ClubProfile from "src/components/profile/ClubProfile"
 import UserProfile from "src/components/profile/UserProfile"
 import clubService from "src/services/ClubService"
-import profileService from "src/services/ProfileService"
+import userService from "src/services/UserService"
 
 import withAuth from "../../auth/withAuth"
 
@@ -17,7 +17,7 @@ function GenericProfilePage({ currentUser }: AuthContextI) {
 
   useEffect(() => {
     const getExists = async () => {
-      const userData = await profileService.get(id || "")
+      const userData = await userService.get(id || "")
       if (userData) {
         setIsLoading(false)
         setProfile(userData)

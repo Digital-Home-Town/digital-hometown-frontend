@@ -1,1 +1,0 @@
-interface ClubI extends GenericProfile {}

@@ -81,7 +81,7 @@ function Register(props: AuthProps & AuthContextI) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Registrieren {isOrg ? "als Organisation" : ""}
+          Registrieren {isOrg ? "als Verein" : ""}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -149,7 +149,7 @@ function Register(props: AuthProps & AuthContextI) {
             }}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Registrieren {isOrg ? "als Organisation" : ""}
+            Registrieren {isOrg ? "als Verein" : ""}
           </Button>
           <Grid container>
             <Grid item xs>
