@@ -7,7 +7,7 @@ import withAuth from "src/auth/withAuth"
 import Input from "src/components/general/input/Input"
 import clubService from "src/services/ClubService"
 
-function ClubSettingsPage({ currentUser }: AuthContextI) {
+function ClubSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -15,16 +15,20 @@ function ClubSettingsPage({ currentUser }: AuthContextI) {
     const email = (data.get("email") as string) || ""
     if (fullName.length > 0 && email.length > 0 && currentUser) {
       const club: ClubI = {
-        id: currentUser.id,
-        isOrg: true,
+        ...currentUser,
         displayName: fullName,
         email: email,
       }
-      clubService.update(currentUser.id, club).catch((e) => {
-        toast.error("Dein Profil konnte nicht aktualisiert werden.")
-        throw e
-      })
-      toast.success("Dein Profil wurde aktualisiert.")
+      clubService
+        .update(currentUser.id, club)
+        .then(() => {
+          setCurrentUser(club)
+          toast.success("Dein Profil wurde aktualisiert.")
+        })
+        .catch((e) => {
+          toast.error("Dein Profil konnte nicht aktualisiert werden.")
+          throw e
+        })
     }
   }
 

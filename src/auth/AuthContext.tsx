@@ -18,6 +18,7 @@ import Loader from "./Loader"
 
 export interface AuthContextI {
   currentUser: ProfileI | undefined | null
+  setCurrentUser: React.Dispatch<React.SetStateAction<ProfileI | null | undefined>>
   logOut: () => void
   logIn: (email: string, password: string) => void
   signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => void
@@ -214,6 +215,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           signUpWithEmail: handleSignUpEmail,
           signUpOAuth: handleOAuthSignIn,
           resetPassword: handlePasswordReset,
+          setCurrentUser,
         }}
       >
         {children}

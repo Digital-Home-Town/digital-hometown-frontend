@@ -53,12 +53,9 @@ export class GenericProfileService<T extends GenericProfile> {
   }
 
   async get(id: string) {
-    if (await this.exists(id)) {
-      const resp = await this.getDocument(id)
-      const profile = resp.data()
-      return profile
-    }
-    return undefined
+    const resp = await this.getDocument(id)
+    const profile = resp.data()
+    return profile
   }
 
   async getAll(profileQuery?: ProfileQueryI) {

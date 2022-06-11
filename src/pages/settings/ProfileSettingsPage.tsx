@@ -10,7 +10,7 @@ import withAuth from "../../auth/withAuth"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-function ProfileSettingsPage({ currentUser }: AuthContextI) {
+function ProfileSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -19,17 +19,21 @@ function ProfileSettingsPage({ currentUser }: AuthContextI) {
     const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
     if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
       const profile: ProfileI = {
-        id: currentUser.id,
-        isOrg: false,
+        ...currentUser,
         displayName: fullName,
         email: email,
         dateOfBirth: dateOfBirth,
       }
-      profileService.update(currentUser.id, profile).catch((e) => {
-        toast.error("Dein Profil konnte nicht aktualisiert werden.")
-        throw e
-      })
-      toast.success("Dein Profil wurde aktualisiert.")
+      profileService
+        .update(currentUser.id, profile)
+        .then(() => {
+          setCurrentUser(profile)
+          toast.success("Dein Profil wurde aktualisiert.")
+        })
+        .catch((e) => {
+          toast.error("Dein Profil konnte nicht aktualisiert werden.")
+          throw e
+        })
     }
   }
 

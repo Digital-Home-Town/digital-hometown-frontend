@@ -7,44 +7,17 @@ import Tooltip from "@mui/material/Tooltip"
 import * as React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import clubService from "src/services/ClubService"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import profileService from "../../services/ProfileService"
 import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 
 function HeaderMenu({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
-  const service = currentUser?.isOrg ? clubService : profileService
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const [profile, setProfile] = useState<null | GenericProfile>(null)
-  const [exists, setExists] = useState<null | Boolean>(null)
-
-  React.useEffect(() => {
-    const getProfile = async () => {
-      const profileData = await service.get(currentUser?.id || "")
-      if (profileData) {
-        setProfile(profileData)
-      }
-    }
-    if (!profile) getProfile()
-  }, [currentUser?.id, profile, service])
-
-  React.useEffect(() => {
-    const getExists = async () => {
-      const exists = await service.exists(currentUser?.id || "")
-      if (exists) {
-        setExists(exists)
-      }
-    }
-    if (!exists) getExists()
-  }, [currentUser?.id, exists, service])
-
   const getPhoto = () => {
-    if (profile?.photoURL) return profile.photoURL
     if (currentUser?.photoURL) return currentUser.photoURL
     return ""
   }
@@ -78,13 +51,13 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     setAnchorElUser(null)
   }
   const handleClickName = () => {
-    navigate("/profile/" + currentUser?.id || "")
+    navigate("/profile/")
   }
 
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Button variant="text" color="inherit" onClick={handleClickName}>
-        <Typography>{exists ? profile?.displayName : currentUser?.displayName}</Typography>
+        <Typography>{currentUser?.displayName}</Typography>
         <Avatar alt="Profilfoto" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} style={{ margin: 10 }} />
       </Button>
       <Tooltip title="Open Menu">
@@ -128,7 +101,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
           }}
         />
         <Divider />
-        <MenuItem disabled>{exists ? profile?.displayName : currentUser?.displayName}</MenuItem>
+        <MenuItem disabled>{currentUser?.displayName}</MenuItem>
       </Menu>
     </Box>
   )
