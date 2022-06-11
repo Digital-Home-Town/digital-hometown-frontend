@@ -20,6 +20,12 @@ class UserService extends GenericProfileService<User> {
     return profiles
   }
 
+  async update(id: string, profile: User) {
+    if (!profile.clubs) profile.clubs = []
+    if (!profile.clubRequests) profile.clubRequests = []
+    super.update(id, profile)
+  }
+
   getAge(dateOfBirth?: number) {
     const today = new Date()
     const birthday = new Date(dateOfBirth || 0)

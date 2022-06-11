@@ -1,1 +1,4 @@
-interface Club extends GenericProfile {}
+interface Club extends GenericProfile {
+  members?: User[]
+  requests?: User[]
+}
