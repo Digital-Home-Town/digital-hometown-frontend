@@ -1,4 +1,4 @@
-import { limitToLast, onValue, orderByChild, query, ref } from "firebase/database"
+import { onValue, ref } from "firebase/database"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 
@@ -6,39 +6,62 @@ import Loader from "../../auth/Loader"
 import { realtimeDB } from "../../firebase-config"
 import chatService from "../../services/ChatService"
 import { toast } from "react-toastify"
-import profileService from "../../services/ProfileService"
+import UserService from "../../services/UserService"
 
 export interface ChatContextI {
-  currentRoomId: string | undefined
-  rooms: { [roomId: string]: RoomI } | undefined
-  currentRoomName: string | undefined
-  messages: { [msgId: string]: MessageI }
-  setCurrentRoom: (room: string) => void
+  rooms: RoomI[]
+  currentRoom: RoomI | undefined
+  setCurrentRoom: (roomId: string) => void
   createRoom: () => void
+  messages: { [msgId: string]: MessageI }
   loading: boolean
 }
 
 const ChatContext = createContext<undefined | ChatContextI>(undefined)
 
-export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: User }) {
-  const [rooms, setRooms] = useState<{ [roomId: string]: RoomI } | undefined>(undefined)
-  const [currentRoomName, setCurrentRoomName] = useState<string | undefined>(undefined)
+export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: GenericProfile }) {
+  const [rooms, setRooms] = useState<RoomI[]>([])
+
+  const [currentRoom, setCurrentRoom] = useState<RoomI | undefined>(undefined)
   const [messages, setMessages] = useState<{ [msgId: string]: MessageI }>({})
-  const [currentRoomId, setCurrentRoomId] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    onValue(ref(realtimeDB, `rooms`), (snapshot) => {
-      const rooms_ = snapshot.val()
-      console.log("rooms_", rooms_)
-      setRooms(rooms_)
+    onValue(ref(realtimeDB, `rooms`), (snpsht) => {
+      const rooms_ = snpsht.val()
+
+      async function f(rooms_: { [roomId: string]: RoomI }) {
+        const newRooms = []
+        for (const roomId in rooms_) {
+          const room = rooms_[roomId]
+          let name
+          const members = room.members
+          delete members[currentUser.id]
+          if (Object.keys(members).length === 1) {
+            try {
+              const profile = await UserService.get(Object.keys(members)[0])
+              console.log("Chat name", profile?.displayName)
+              name = profile?.displayName || room.name
+            } catch (e) {
+              toast.error("Die Daten deines Chatpartners konnten nicht geladen werden.")
+              throw e
+            }
+          } else {
+            name = room.name
+          }
+          newRooms.push({ ...room, name: name, id: roomId })
+        }
+        setRooms(newRooms)
+      }
+
+      f(rooms_).then()
     })
   }, [])
 
   useEffect(() => {
     // set current room with the first room in the list
-    if (rooms != null && Object.keys(rooms).length > 0) {
-      setCurrentRoomId(Object.keys(rooms)[0])
+    if (rooms != null && rooms.length > 0) {
+      setCurrentRoom(rooms[0])
       setLoading(false)
     }
   }, [rooms])
@@ -46,38 +69,21 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   useEffect(() => {
     const func = async () => {
       setMessages({})
-      if (currentRoomId == null || rooms == null) {
+      if (currentRoom?.id == null || rooms == null) {
         return
       }
-      const room = rooms[currentRoomId]
 
-      const members = room.members
-      delete members[currentUser.id]
-      if (Object.keys(members).length === 1) {
-        profileService.getProfile(Object.keys(members)[0]).then((profile) => {
-          setCurrentRoomName(profile?.displayName)
-        })
-      } else {
-        setCurrentRoomName(room.name)
-      }
-
-      const messagesRef = query(
-        ref(realtimeDB, `messages/${currentRoomId}/messages`),
-        orderByChild("sendAt"),
-        limitToLast(20),
-      )
-      onValue(messagesRef, (snapshot) => {
-        const messages_ = snapshot.val()
-        console.log("messages_", messages_)
-        setMessages(messages_ || {})
+      onValue(ref(realtimeDB, `messages/${currentRoom.id}/messages`), (snpsht) => {
+        const msgs = snpsht.val()
+        setMessages(msgs)
       })
     }
 
     func().then()
-  }, [currentRoomId, rooms])
+  }, [currentRoom, rooms])
 
   const handleCurrentRoom = (roomId: string) => {
-    setCurrentRoomId(roomId)
+    if (rooms != null) setCurrentRoom(rooms.filter((room) => room.id === roomId)[0])
   }
 
   const createRoom = () => {
@@ -91,8 +97,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
       <ChatContext.Provider
         value={{
           rooms: rooms,
-          currentRoomId: currentRoomId,
-          currentRoomName: currentRoomName,
+          currentRoom: currentRoom,
           setCurrentRoom: handleCurrentRoom,
           createRoom: createRoom,
           messages: messages,

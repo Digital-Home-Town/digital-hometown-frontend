@@ -16,7 +16,7 @@ class ChatService {
     }
   }
 
-  async createRoom(currentUser: ProfileI, name: string) {
+  async createRoom(currentUser: GenericProfile, name: string) {
     try {
       const resp = await push(ref(realtimeDB, `rooms`), {
         name: name,
@@ -29,12 +29,12 @@ class ChatService {
     }
   }
 
+  async editRoom(roomId: string, name: string) {
+    await set(ref(realtimeDB, `rooms/${roomId}/name`), name)
+  }
+
   async addMember(roomId: string, userId: string, role: string = "admin") {
-    try {
-      await set(ref(realtimeDB, `rooms/${roomId}/members/${userId}`), { role: "admin" })
-    } catch (error) {
-      throw error
-    }
+    await set(ref(realtimeDB, `rooms/${roomId}/members/${userId}`), { role: "admin" })
   }
 }
 

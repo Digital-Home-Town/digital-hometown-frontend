@@ -3,7 +3,7 @@ import { ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import { ChatContextI, withChat } from "./ChatContext"
 import { Add } from "@mui/icons-material"
 
-function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms, createRoom }: ChatContextI) {
+function RoomsSideBar({ currentRoom, setCurrentRoom, rooms, createRoom }: ChatContextI) {
   return rooms == null ? (
     <div></div>
   ) : (
@@ -20,20 +20,18 @@ function RoomsSideBar({ currentRoomId, setCurrentRoom, rooms, createRoom }: Chat
             <Add />
           </ListItemIcon>
         </ListItem>
-        {Object.keys(rooms).map((roomId) => {
-          return (
-            <ListItem
-              key={roomId}
-              button
-              selected={roomId === currentRoomId}
-              onClick={() => {
-                setCurrentRoom(roomId)
-              }}
-            >
-              <ListItemText primary={rooms[roomId].name} />
-            </ListItem>
-          )
-        })}
+        {rooms.map((room, index) => (
+          <ListItem
+            key={index}
+            button
+            selected={room.id === currentRoom?.id}
+            onClick={() => {
+              setCurrentRoom(room.id)
+            }}
+          >
+            <ListItemText primary={room.name} />
+          </ListItem>
+        ))}
       </List>
     </div>
   )

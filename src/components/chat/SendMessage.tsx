@@ -12,7 +12,7 @@ import chatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
 import classes from "./SendMessage.module.css"
 
-function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI) {
+function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) {
   const [message, setMessage] = useState("")
   const [showEmojiPicker, toggleEmojiPicker] = useReducer((state: boolean) => !state, false)
 
@@ -22,7 +22,7 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
 
   const handleSubmit = () => {
     chatService
-      .sendMessage(currentRoomId as string, {
+      .sendMessage(currentRoom?.id as string, {
         messageText: message,
         sendAt: Date.now(),
         sendBy: currentUser?.id as string,
