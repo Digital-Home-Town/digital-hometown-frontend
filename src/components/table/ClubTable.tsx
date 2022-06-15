@@ -14,7 +14,7 @@ const columns = [
 
 function UserTable() {
   const navigate = useNavigate()
-  const [profiles, setProfiles] = React.useState<ClubI[]>([])
+  const [profiles, setProfiles] = React.useState<Club[]>([])
 
   useEffect(() => {
     const getProfiles = async () => {

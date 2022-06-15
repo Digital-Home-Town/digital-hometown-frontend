@@ -5,7 +5,7 @@ import { Register } from "./"
 function RegisterOrg() {
   return (
     <div>
-      <h1>Organisation</h1>
+      <h1>Verein</h1>
       <Register isOrg={true} />
     </div>
   )

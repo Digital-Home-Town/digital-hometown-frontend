@@ -3,7 +3,7 @@ import moment from "moment"
 import * as React from "react"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import profileService from "src/services/ProfileService"
+import userService from "src/services/UserService"
 
 import withAuth from "../../auth/withAuth"
 
@@ -15,23 +15,23 @@ const columns = [
     field: "dateOfBirth",
     headerName: "Geburtstag",
     width: 200,
-    valueGetter: (params: { row: ProfileI }) => moment(params.row.dateOfBirth).format("DD.MM.YYYY"),
+    valueGetter: (params: { row: User }) => moment(params.row.dateOfBirth).format("DD.MM.YYYY"),
   },
   {
     field: "age",
     headerName: "Alter",
     type: "number",
-    valueGetter: (params: { row: ProfileI }) => profileService.getAge(params.row.dateOfBirth),
+    valueGetter: (params: { row: User }) => userService.getAge(params.row.dateOfBirth),
   },
 ]
 
 function UserTable() {
   const navigate = useNavigate()
-  const [profiles, setProfiles] = React.useState<ProfileI[]>([])
+  const [profiles, setProfiles] = React.useState<User[]>([])
 
   useEffect(() => {
     const getProfiles = async () => {
-      const profilesData = await profileService.getAll()
+      const profilesData = await userService.getAll()
       if (profilesData) {
         setProfiles(profilesData)
       }

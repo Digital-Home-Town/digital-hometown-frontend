@@ -4,12 +4,12 @@ import clubService from "src/services/ClubService"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import profileService from "../../services/ProfileService"
+import userService from "../../services/UserService"
 import classes from "./ChatMessage.module.css"
 
 function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {
   const [user, setUser] = useState<GenericProfile | null | undefined>(undefined)
-  const service = currentUser?.isOrg ? clubService : profileService
+  const service = currentUser?.isOrg ? clubService : userService
 
   useEffect(() => {
     service.get(message.sendBy).then((user) => setUser(user))

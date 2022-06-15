@@ -44,7 +44,7 @@ function SignIn(props: AuthProps & AuthContextI) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Anmelden {isOrg ? "als Organisation" : ""}
+          Anmelden {isOrg ? "als Verein" : ""}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField required fullWidth id="email" label="Email" name="email" autoComplete="email" autoFocus />
@@ -58,7 +58,7 @@ function SignIn(props: AuthProps & AuthContextI) {
             autoComplete="current-password"
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
-            Anmelden {isOrg ? "als Organisation" : ""}
+            Anmelden {isOrg ? "als Verein" : ""}
           </Button>
           <Grid container>
             <Grid item>

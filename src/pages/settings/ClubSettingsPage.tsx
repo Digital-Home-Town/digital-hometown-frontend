@@ -3,29 +3,32 @@ import Button from "@mui/material/Button"
 import React from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+import Input from "src/components/general/input/Input"
 import clubService from "src/services/ClubService"
 
-import withAuth from "../../auth/withAuth"
-import Input from "../general/input/Input"
-
-function ClubPage({ currentUser }: AuthContextI) {
+function ClubSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const fullName = (data.get("fullName") as string) || ""
     const email = (data.get("email") as string) || ""
     if (fullName.length > 0 && email.length > 0 && currentUser) {
-      const club: ClubI = {
-        id: currentUser.id,
-        isOrg: true,
+      const club: Club = {
+        ...currentUser,
         displayName: fullName,
         email: email,
       }
-      clubService.update(currentUser.id, club).catch((e) => {
-        toast.error("Dein Profil konnte nicht aktualisiert werden.")
-        throw e
-      })
-      toast.success("Dein Profil wurde aktualisiert.")
+      clubService
+        .update(currentUser.id, club)
+        .then(() => {
+          setCurrentUser(club)
+          toast.success("Dein Profil wurde aktualisiert.")
+        })
+        .catch((e) => {
+          toast.error("Dein Profil konnte nicht aktualisiert werden.")
+          throw e
+        })
     }
   }
 
@@ -42,4 +45,4 @@ function ClubPage({ currentUser }: AuthContextI) {
   )
 }
 
-export default withAuth(ClubPage)
+export default withAuth(ClubSettingsPage)
