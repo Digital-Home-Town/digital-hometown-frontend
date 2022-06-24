@@ -15,12 +15,21 @@ function Messages_({ loading, currentRoom, messages, rooms }: ChatContextI) {
     if (currentRoom?.id == null) {
       return
     }
-    chatService
-      .addMember(currentRoom.id, profile.id, "admin")
-      .then(() => toggleShowChatEdit())
-      .catch(() => {
-        toast.error("Benutzer konnte nicht hinzugefügt werden.")
-      })
+    if (!Object.keys(currentRoom.members).includes(profile.id)) {
+      chatService
+        .addMember(currentRoom.id, profile.id, "admin")
+        .then(() => toggleShowChatEdit())
+        .catch(() => {
+          toast.error("Benutzer konnte nicht hinzugefügt werden.")
+        })
+    } else {
+      chatService
+        .removeMember(currentRoom.id, profile.id)
+        .then(() => toggleShowChatEdit())
+        .catch((e) => {
+          toast.error("Benutzer konnte nicht entfernt werden.")
+        })
+    }
   }
 
   const handleScroll = () => {
@@ -38,12 +47,10 @@ function Messages_({ loading, currentRoom, messages, rooms }: ChatContextI) {
   return (
     <div style={{ display: "flex", flexDirection: "row", alignItems: "stretch" }}>
       <div style={{ flexGrow: 2 }}>
-        <h1>
-          {currentRoom?.name}
-          <IconButton onClick={() => toggleShowChatEdit()}>
-            <Edit />
-          </IconButton>
-        </h1>
+        <b>{currentRoom?.name}</b> <small>({Object.keys(currentRoom?.members || []).length} Mitglieder)</small>
+        <IconButton onClick={() => toggleShowChatEdit()}>
+          <Edit />
+        </IconButton>
         <ChatEdit
           onClose={() => toggleShowChatEdit()}
           open={showChatEdit}
