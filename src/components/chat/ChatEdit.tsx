@@ -1,4 +1,15 @@
-import { Dialog, DialogTitle, List, ListItem, TextField } from "@mui/material"
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormGroup,
+  List,
+  ListItem,
+  TextField,
+} from "@mui/material"
 import * as React from "react"
 import { FormEvent, useEffect, useState } from "react"
 import userService from "../../services/UserService"
@@ -15,6 +26,12 @@ interface SimpleDialogI {
 function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & ChatContextI) {
   const [profiles, setProfiles] = useState<GenericProfile[]>([])
   const [newChatName, setNewChatName] = useState<string | undefined>(currentRoom?.name)
+
+  useEffect(() => {
+    if (currentRoom?.id != null) {
+      setNewChatName(currentRoom?.name)
+    }
+  }, [currentRoom])
 
   useEffect(() => {
     const getProfiles = async () => {
@@ -34,29 +51,54 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
         throw e
       })
     }
+    onClose()
   }
 
   return (
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>Chat bearbeiten</DialogTitle>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <TextField required label="Gruppenname" type="text" onChange={(e) => setNewChatName(e.target.value)} />
-      </form>
-      Benutzer hinzufügen
-      <List>
-        {profiles.map((profile, index) => (
-          <ListItem
-            button
-            id={profile.id}
-            key={index}
-            onClick={() => {
-              onItemClick(profile)
-            }}
-          >
-            {profile.displayName}
+      <DialogContent>
+        <List>
+          <ListItem>
+            <Box>
+              Chatname bearbeiten
+              <FormGroup onSubmit={handleSubmit}>
+                <TextField
+                  required
+                  label="Neuer Chatname"
+                  type="text"
+                  onChange={(e) => setNewChatName(e.target.value)}
+                  value={newChatName}
+                />
+              </FormGroup>
+            </Box>
           </ListItem>
-        ))}
-      </List>
+          <ListItem>
+            <Box>
+              Benutzer hinzufügen
+              <List>
+                {profiles.map((profile, index) => (
+                  <ListItem
+                    selected={Object.keys(currentRoom?.members || []).includes(profile.id)}
+                    button
+                    id={profile.id}
+                    key={index}
+                    onClick={() => {
+                      onItemClick(profile)
+                    }}
+                  >
+                    {profile.displayName}
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </ListItem>
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Abbrechen</Button>
+        <Button onClick={handleSubmit}>Speichern</Button>
+      </DialogActions>
     </Dialog>
   )
 }
