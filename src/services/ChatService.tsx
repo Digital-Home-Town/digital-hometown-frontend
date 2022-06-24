@@ -1,5 +1,5 @@
 import { realtimeDB } from "../firebase-config"
-import { get, push, ref, set } from "firebase/database"
+import { get, push, ref, set, remove } from "firebase/database"
 
 class ChatService {
   async getMessages(roomId: string) {
@@ -35,6 +35,10 @@ class ChatService {
 
   async addMember(roomId: string, userId: string, role: string = "admin") {
     await set(ref(realtimeDB, `rooms/${roomId}/members/${userId}`), { role: "admin" })
+  }
+
+  async removeMember(roomId: string, userId: string) {
+    await remove(ref(realtimeDB, `rooms/${roomId}/members/${userId}`))
   }
 }
 
