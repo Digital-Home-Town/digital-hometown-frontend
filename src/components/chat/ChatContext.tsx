@@ -27,8 +27,11 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log("register get rooms from realtime db")
+
     onValue(ref(realtimeDB, `rooms`), (snpsht) => {
       const rooms_ = snpsht.val()
+      console.log("get rooms from realtime db", rooms_)
 
       async function f(rooms_: { [roomId: string]: RoomI }) {
         const newRooms = []
@@ -36,10 +39,16 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           const room = rooms_[roomId]
           let name
           const members = room.members
-          delete members[currentUser.id]
-          if (Object.keys(members).length === 1) {
+
+          // do not show rooms where current user is not a member
+          if (!Object.keys(members).includes(currentUser.id)) {
+            continue
+          }
+
+          if (Object.keys(members).length - 1 === 1) {
             try {
-              const profile = await UserService.get(Object.keys(members)[0])
+              // only two users => get the name of the other user as room name
+              const profile = await UserService.get(Object.keys(members).filter((item) => item !== currentUser.id)[0])
               console.log("Chat name", profile?.displayName)
               name = profile?.displayName || room.name
             } catch (e) {
@@ -59,11 +68,10 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
   }, [])
 
   useEffect(() => {
-    // set current room with the first room in the list
-    if (rooms != null && rooms.length > 0) {
+    if (currentRoom == null) {
       setCurrentRoom(rooms[0])
-      setLoading(false)
     }
+    setLoading(false)
   }, [rooms])
 
   useEffect(() => {
@@ -80,10 +88,11 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     }
 
     func().then()
-  }, [currentRoom, rooms])
+  }, [currentRoom])
 
   const handleCurrentRoom = (roomId: string) => {
     if (rooms != null) setCurrentRoom(rooms.filter((room) => room.id === roomId)[0])
+    console.log("set current room", roomId)
   }
 
   const createRoom = () => {
