@@ -59,20 +59,22 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
       <DialogTitle>Chat bearbeiten</DialogTitle>
       <DialogContent>
         <List>
-          <ListItem>
-            <Box>
-              Chatname bearbeiten
-              <FormGroup onSubmit={handleSubmit}>
-                <TextField
-                  required
-                  label="Neuer Chatname"
-                  type="text"
-                  onChange={(e) => setNewChatName(e.target.value)}
-                  value={newChatName}
-                />
-              </FormGroup>
-            </Box>
-          </ListItem>
+          {currentRoom?.isGroup && (
+            <ListItem>
+              <Box>
+                Chatname bearbeiten
+                <FormGroup onSubmit={handleSubmit}>
+                  <TextField
+                    required
+                    label="Neuer Chatname"
+                    type="text"
+                    onChange={(e) => setNewChatName(e.target.value)}
+                    value={newChatName}
+                  />
+                </FormGroup>
+              </Box>
+            </ListItem>
+          )}
           <ListItem>
             <Box>
               Benutzer hinzufügen

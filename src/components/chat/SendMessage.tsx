@@ -21,15 +21,11 @@ function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) 
   }
 
   const handleSubmit = () => {
-    chatService
-      .sendMessage(currentRoom?.id as string, {
-        messageText: message,
-        sendAt: Date.now(),
-        sendBy: currentUser?.id as string,
-      })
-      .then(() => {
+    if (message.length > 0 && currentRoom != null && currentUser != null) {
+      chatService.sendMessage(currentRoom?.id as string, message, currentUser).then(() => {
         setMessage("")
       })
+    }
   }
 
   return (
@@ -58,6 +54,7 @@ function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) 
         fullWidth={true}
         onKeyPress={(e) => {
           if (!e.shiftKey && e.key === "Enter") {
+            e.preventDefault()
             handleSubmit()
           }
         }}
