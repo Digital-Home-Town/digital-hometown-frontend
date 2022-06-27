@@ -7,7 +7,7 @@ import ChatEdit from "./ChatEdit"
 import chatService from "../../services/ChatService"
 import { toast } from "react-toastify"
 
-function Messages_({ loading, currentRoom, messages, rooms }: ChatContextI) {
+function ChatRoom_({ loading, currentRoom, messages, rooms }: ChatContextI) {
   const endMsgRef = useRef<HTMLDivElement | null>(null)
   const [showChatEdit, toggleShowChatEdit] = useReducer((state: boolean) => !state, false)
 
@@ -59,8 +59,9 @@ function Messages_({ loading, currentRoom, messages, rooms }: ChatContextI) {
         <div>
           <div style={{ overflowY: "auto", minHeight: "65vh", maxHeight: "65vh" }}>
             <div>
-              {messages == null ||
-                Object.keys(messages).map((id, index) => <ChatMessage key={index} message={messages[id]} />)}
+              {messages.map((message, index) => (
+                <ChatMessage key={index} message={message} />
+              ))}
               <div ref={endMsgRef} />
             </div>
           </div>
@@ -70,4 +71,4 @@ function Messages_({ loading, currentRoom, messages, rooms }: ChatContextI) {
   )
 }
 
-export default withChat(Messages_)
+export default withChat(ChatRoom_)

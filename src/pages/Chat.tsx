@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 import { AuthContextI } from "../auth/AuthContext"
 import withAuth from "../auth/withAuth"
 import { ChatProvider } from "../components/chat/ChatContext"
-import ChatRoom from "../components/chat/Messages"
+import ChatRoom from "../components/chat/ChatRoom"
 import RoomsSideBar from "../components/chat/RoomsSideBar"
 import SendMessage from "../components/chat/SendMessage"
 

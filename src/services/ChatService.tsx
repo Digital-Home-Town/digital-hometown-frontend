@@ -2,14 +2,15 @@ import { realtimeDB } from "../firebase-config"
 import { get, push, ref, set, remove } from "firebase/database"
 
 class ChatService {
-  async getMessages(roomId: string) {
-    const snapshot = await get(ref(realtimeDB, `messages/${roomId}/messages`))
-    return snapshot.val()
-  }
-
-  async sendMessage(roomId: string, message: MessageI) {
+  async sendMessage(roomId: string, text: string, currentUser: GenericProfile) {
     try {
-      const resp = await push(ref(realtimeDB, `messages/${roomId}/messages`), message)
+      const sendAt = Date.now()
+      await set(ref(realtimeDB, `rooms/${roomId}/lastMessageSendAt`), sendAt)
+      const resp = await push(ref(realtimeDB, `messages/${roomId}/messages`), {
+        text: text,
+        sendAt: sendAt,
+        sendBy: currentUser.id,
+      })
       console.log("added message", resp.key)
     } catch (error) {
       throw error
