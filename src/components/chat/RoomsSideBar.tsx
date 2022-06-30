@@ -1,7 +1,7 @@
 import List from "@mui/material/List"
 import { Divider, Icon, IconButton, ListItem, ListItemText } from "@mui/material"
 import { ChatContextI, withChat } from "./ChatContext"
-import { Add, Groups, Person } from "@mui/icons-material"
+import { Add, Groups } from "@mui/icons-material"
 
 function RoomsSideBar({ currentRoom, setCurrentRoom, rooms, createRoom }: ChatContextI) {
   return (
