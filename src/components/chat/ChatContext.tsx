@@ -160,7 +160,7 @@ export function useChatContext() {
 }
 
 export function withChat<Props>(Component: React.ComponentType<Props & ChatContextI>) {
-  return function WithAuth(props: Props) {
+  return function WithChat(props: Props) {
     const chatContext = useChatContext()
 
     return <Component {...props} {...chatContext} />

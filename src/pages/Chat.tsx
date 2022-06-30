@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material"
 import React from "react"
 import { Navigate } from "react-router-dom"
+import ChatDrawer from "src/components/chat/ChatDrawer"
 
 import { AuthContextI } from "../auth/AuthContext"
 import withAuth from "../auth/withAuth"
