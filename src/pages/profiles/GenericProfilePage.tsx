@@ -44,9 +44,9 @@ function GenericProfilePage({ currentUser }: AuthContextI) {
     <ReactPlaceholder ready={!isLoading} type={"media"}>
       {profile ? (
         profile?.isOrg ? (
-          <ClubProfile profile={profile}></ClubProfile>
+          <ClubProfile profile={profile} />
         ) : (
-          <UserProfile profile={profile}></UserProfile>
+          <UserProfile profile={profile} />
         )
       ) : (
         <div>Du hast keinen Zugriff auf diese Seite</div>

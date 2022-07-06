@@ -16,6 +16,8 @@ import userService from "../../services/UserService"
 import chatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
 import { toast } from "react-toastify"
+import SaveButton from "../general/button/SaveButton"
+import CancelButton from "../general/button/CancelButton"
 
 interface SimpleDialogI {
   open: boolean
@@ -43,8 +45,7 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
     if (!profiles.length) getProfiles().then()
   }, [profiles])
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = () => {
     if (newChatName != null && currentRoom != null) {
       chatService.editRoom(currentRoom.id, newChatName).catch((e) => {
         toast.error("Der Name des Chatraums konnte nicht geändert werden")
@@ -98,8 +99,8 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
         </List>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Abbrechen</Button>
-        <Button onClick={handleSubmit}>Speichern</Button>
+        <CancelButton onClick={onClose} />
+        <SaveButton onClick={handleSubmit} />
       </DialogActions>
     </Dialog>
   )

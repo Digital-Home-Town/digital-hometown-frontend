@@ -21,7 +21,7 @@ const columns = [
     field: "age",
     headerName: "Alter",
     type: "number",
-    valueGetter: (params: { row: User }) => userService.getAge(params.row.dateOfBirth),
+    // valueGetter: (params: { row: User }) => userService.getAge(params.row.dateOfBirth),
   },
 ]
 

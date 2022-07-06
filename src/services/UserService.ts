@@ -1,3 +1,4 @@
+import { differenceInYears } from "date-fns"
 import { userCollection } from "src/firebase-config"
 
 import { GenericProfileService } from "./GenericProfileService"
@@ -24,20 +25,16 @@ class UserService extends GenericProfileService<User> {
     if (!user.clubs) user.clubs = []
     if (!user.clubRequests) user.clubRequests = []
     if (!user.friends) user.friends = []
+
+    delete user.age
+
     super.update(id, user)
   }
 
   getAge(dateOfBirth?: number) {
     const today = new Date()
     const birthday = new Date(dateOfBirth || 0)
-    let age = today.getFullYear() - birthday.getFullYear()
-    if (
-      today.getMonth() < birthday.getMonth() ||
-      (today.getMonth() === birthday.getMonth() && today.getDate() < birthday.getDay())
-    ) {
-      age--
-    }
-    return age
+    return differenceInYears(today, birthday)
   }
 }
 

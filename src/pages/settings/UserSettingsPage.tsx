@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import userService from "src/services/UserService"
 
-import withAuth from "../../auth/withAuth"
+import withAuth from "src/auth/withAuth"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
