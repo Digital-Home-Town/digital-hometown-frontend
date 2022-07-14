@@ -55,14 +55,14 @@ function Register(props: AuthProps & AuthContextI) {
 
   const checkEmail = () => validateEmail(userInput.email) || userInput.email === ""
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const displayName = (data.get("username") as string) || ""
     const email = (data.get("email") as string) || ""
     const password = (data.get("password") as string) || ""
 
-    signUpWithEmail(email, password, displayName, isOrg)
+    await signUpWithEmail(email, password, displayName, isOrg)
   }
 
   return currentUser ? (

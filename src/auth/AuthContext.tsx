@@ -1,4 +1,3 @@
-import React, { createContext, ReactNode, useEffect, useState } from "react"
 import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
@@ -8,6 +7,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth"
+import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
 import clubService from "src/services/ClubService"
@@ -21,7 +21,7 @@ export interface AuthContextI {
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null | undefined>>
   logOut: () => void
   logIn: (email: string, password: string) => void
-  signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => void
+  signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => Promise<void>
   signUpOAuth: (providerName: "google" | "facebook", isOrg: boolean) => void
   resetPassword: (email: string) => void
 }
@@ -97,52 +97,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }
 
-  const handleSignUpEmail = (email: string, password: string, displayName: string, isOrg: boolean) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async (response) => {
-        const user = response.user
-        if (user != null) {
-          toast.success(`Hallo ${displayName}, du bist nun registriert.`)
-          const id = user.uid
-          const isClub = await clubService.exists(id)
-          const isProfile = await userService.exists(id)
+  const handleSignUpEmail = async (email: string, password: string, displayName: string, isOrg: boolean) => {
+    const response = await createUserWithEmailAndPassword(auth, email, password)
+    const user = response.user
+    if (user == null) {
+      toast.error(`Hallo ${displayName} du konntest leider nicht eingeloggt werden`)
+    }
+    toast.success(`Hallo ${displayName}, du bist nun registriert.`)
+    const id = user.uid
+    const isClub = await clubService.exists(id)
+    const isProfile = await userService.exists(id)
+    console.log(user, isClub, isProfile)
+    let service
+    const profile: GenericProfile = {
+      id,
+      isOrg: false,
+      email: user.email || email,
+      displayName: displayName || "",
+      photoURL: user.photoURL || "",
+    }
 
-          let service
-          const profile: GenericProfile = {
-            id,
-            isOrg: false,
-            email: user.email || "",
-            displayName: user.displayName || "",
-            photoURL: user.photoURL || "",
-          }
-
-          if (isProfile) {
-            profile.isOrg = false
-            service = userService
-          } else if (isClub) {
-            profile.isOrg = true
-            service = clubService
-          } else {
-            profile.isOrg = isOrg
-            service = isOrg ? clubService : userService
-          }
-          service
-            .update(id, {
-              id,
-              isOrg,
-              email: user.email || "",
-              displayName: displayName || "",
-              photoURL: user.photoURL || "",
-            })
-            .catch(() => {
-              toast.error("Fehler beim Speichern des Profils.")
-            })
-        }
-      })
-      .catch((err) => {
-        toast.error("Registrierung war nicht erfolgreich")
-        throw err
-      })
+    if (isProfile) {
+      profile.isOrg = false
+      service = userService
+    } else if (isClub) {
+      profile.isOrg = true
+      service = clubService
+    } else {
+      profile.isOrg = isOrg
+      service = isOrg ? clubService : userService
+    }
+    setCurrentUser(profile)
+    await service.update(id, profile).catch(() => {
+      toast.error("Fehler beim Speichern des Profils.")
+    })
   }
 
   function handleOAuthSignIn(providerName: "google" | "facebook", isOrg: boolean) {

@@ -15,7 +15,7 @@ const columns = [
     field: "dateOfBirth",
     headerName: "Geburtstag",
     width: 200,
-    valueGetter: (params: { row: User }) => moment(params.row.dateOfBirth).format("DD.MM.YYYY"),
+    valueGetter: (params: { row: User }) => moment(params.row.dateOfBirth || 0).format("DD.MM.YYYY"),
   },
   {
     field: "age",
