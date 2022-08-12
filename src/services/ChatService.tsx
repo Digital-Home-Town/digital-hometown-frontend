@@ -1,29 +1,45 @@
 import { realtimeDB } from "../firebase-config"
-import { get, push, ref } from "firebase/database"
+import { get, push, ref, set, remove } from "firebase/database"
 
 class ChatService {
-  async getMessages(roomId: string) {
-    const snapshot = await get(ref(realtimeDB, `messages/${roomId}/messages`))
-    return snapshot.val()
-  }
-
-  async sendMessage(roomId: string, message: MessageI) {
+  async sendMessage(roomId: string, text: string, currentUser: GenericProfile) {
     try {
-      const resp = await push(ref(realtimeDB, `messages/${roomId}/messages`), message)
+      const sendAt = Date.now()
+      await set(ref(realtimeDB, `rooms/${roomId}/lastMessageSendAt`), sendAt)
+      const resp = await push(ref(realtimeDB, `messages/${roomId}/messages`), {
+        text: text,
+        sendAt: sendAt,
+        sendBy: currentUser.id,
+      })
       console.log("added message", resp.key)
     } catch (error) {
       throw error
     }
   }
 
-  async newRoom(members: { [uid: string]: { role: string } }) {
+  async createRoom(currentUser: GenericProfile, name: string) {
     try {
-      const resp = await push(ref(realtimeDB, `rooms`), { members: members })
+      const resp = await push(ref(realtimeDB, `rooms`), {
+        name: name,
+        members: { [currentUser.id]: { role: "admin" } },
+      })
       console.log("added new room", resp.key)
       return resp.key
     } catch (error) {
       throw error
     }
+  }
+
+  async editRoom(roomId: string, name: string) {
+    await set(ref(realtimeDB, `rooms/${roomId}/name`), name)
+  }
+
+  async addMember(roomId: string, userId: string, role: string = "admin") {
+    await set(ref(realtimeDB, `rooms/${roomId}/members/${userId}`), { role: "admin" })
+  }
+
+  async removeMember(roomId: string, userId: string) {
+    await remove(ref(realtimeDB, `rooms/${roomId}/members/${userId}`))
   }
 }
 

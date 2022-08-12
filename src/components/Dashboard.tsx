@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
+import ClubTable from "./table/ClubTable"
 import UserTable from "./table/UserTable"
 
 interface StartElementInterface {
@@ -32,16 +33,15 @@ function StartElement({ url, text, icon }: StartElementInterface) {
 function Dashboard({ currentUser }: AuthContextI) {
   return (
     <div>
-      Logged in as {currentUser?.email}
       <Grid container direction="row" alignItems="center" justifyContent="center">
-        <StartElement url="/profile/3d0EKr2oGLYwYjNcaNH8WrxyqUA2" text="Jonas" icon={Group} />
-        <StartElement url="/profile/JLwLJKfqskW2P1fJnZ50dVxuz352" text="Anderer Jonas" icon={Group} />
         <StartElement url="/" text="Gruppen" icon={Group} />
         <StartElement url="/dashboard/chat" text="Chat" icon={Chat} />
         <StartElement url="/" text="Termin" icon={CalendarToday} />
       </Grid>
       <h1>Alle Benutzer</h1>
       <UserTable></UserTable>
+      <h1>Alle Vereine</h1>
+      <ClubTable></ClubTable>
     </div>
   )
 }

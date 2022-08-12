@@ -5,8 +5,8 @@ import { SignIn } from "./"
 function SignInOrg() {
   return (
     <div>
-      <h1>Organisation</h1>
-      <SignIn />
+      <h1>Verein</h1>
+      <SignIn isOrg={true} />
     </div>
   )
 }

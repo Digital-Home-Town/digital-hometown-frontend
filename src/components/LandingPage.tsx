@@ -1,21 +1,22 @@
+import { Check } from "@mui/icons-material"
 import {
   Button,
-  Divider,
-  Grid,
   Card,
-  TextField,
-  Typography,
-  IconButton,
+  CardContent,
   CardHeader,
   CardMedia,
-  CardContent,
+  Divider,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
 } from "@mui/material"
-import { Check } from "@mui/icons-material"
-import { useNavigate } from "react-router"
-import brushesImg from "../img/brushes.jpg"
-import oldPeopleImg from "../img/old-people.jpg"
-import cafeImg from "../img/cafe-bremen.jpg"
 import { Box } from "@mui/system"
+import { useNavigate } from "react-router"
+
+import brushesImg from "../img/brushes.jpg"
+import cafeImg from "../img/cafe-bremen.jpg"
+import oldPeopleImg from "../img/old-people.jpg"
 
 function WhyDht() {
   const CARD_WIDTH = 250
@@ -87,7 +88,7 @@ function LogInAsOrganization() {
   const navigate = useNavigate()
   return (
     <div>
-      <Typography>Du bist Vertreter einer Organisation?</Typography>
+      <Typography>Du bist Vertreter einer Verein?</Typography>
       <br />
       <Button onClick={() => navigate("/organization/sign-in")} sx={{ marginRight: 0.5 }}>
         Anmelden

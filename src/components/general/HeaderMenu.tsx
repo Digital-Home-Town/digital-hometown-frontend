@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import profileService from "../../services/ProfileService"
 import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 
 function HeaderMenu({ currentUser }: AuthContextI) {
@@ -18,31 +17,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const [profile, setProfile] = useState<null | ProfileI>(null)
-  const [exists, setExists] = useState<null | Boolean>(null)
-
-  React.useEffect(() => {
-    const getProfile = async () => {
-      const profileData = await profileService.getProfile(currentUser?.id || "")
-      if (profileData) {
-        setProfile(profileData)
-      }
-    }
-    if (!profile) getProfile()
-  }, [currentUser?.id, profile])
-
-  React.useEffect(() => {
-    const getExists = async () => {
-      const exists = await profileService.existsProfile(currentUser?.id || "")
-      if (exists) {
-        setExists(exists)
-      }
-    }
-    if (!exists) getExists()
-  }, [currentUser?.id, exists])
-
   const getPhoto = () => {
-    if (profile?.photoURL) return profile.photoURL
     if (currentUser?.photoURL) return currentUser.photoURL
     return ""
   }
@@ -51,13 +26,13 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     {
       name: "Profil",
       event: () => {
-        navigate("/profile/" + currentUser?.id || "")
+        navigate("/profile/")
       },
     },
     {
       name: "Profil bearbeiten",
       event: () => {
-        navigate("/account")
+        return currentUser?.isOrg ? navigate("/club-settings") : navigate("/user-settings")
       },
     },
     {
@@ -76,13 +51,13 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     setAnchorElUser(null)
   }
   const handleClickName = () => {
-    navigate("/profile/" + currentUser?.id || "")
+    navigate("/profile/")
   }
 
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Button variant="text" color="inherit" onClick={handleClickName}>
-        <Typography>{exists ? profile?.displayName : currentUser?.displayName}</Typography>
+        <Typography>{currentUser?.displayName}</Typography>
         <Avatar alt="Profilfoto" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} style={{ margin: 10 }} />
       </Button>
       <Tooltip title="Open Menu">
@@ -126,7 +101,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
           }}
         />
         <Divider />
-        <MenuItem disabled>{exists ? profile?.displayName : currentUser?.displayName}</MenuItem>
+        <MenuItem disabled>{currentUser?.displayName}</MenuItem>
       </Menu>
     </Box>
   )
