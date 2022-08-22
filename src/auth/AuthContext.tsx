@@ -38,6 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      console.log("auth state changed", user)
       if (user != null) {
         setCurrentUser({
           id: auth.currentUser?.uid || "",
@@ -48,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userService
           .get(user.uid)
           .then((profile) => {
+            console.log(profile)
             if (!profile) {
               clubService
                 .get(user.uid)
@@ -60,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   setLoading(false)
                 })
             } else {
+              console.log(profile)
               setCurrentUser(profile)
               setLoading(false)
             }
@@ -75,6 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const handleEmailLogIn = (email: string, password: string) => {
+    console.log("log in with email", email)
     signInWithEmailAndPassword(auth, email, password)
       .then((registeredUser) => {
         toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)

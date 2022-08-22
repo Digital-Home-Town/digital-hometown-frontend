@@ -10,13 +10,30 @@ import withAuth from "src/auth/withAuth"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-<<<<<<< HEAD:src/components/profile/AccountPage.tsx
-import { data } from "./dummy_data/data"
+import image from "./alf.jpeg"
+import defaultImage from "./NoImage.png"
 
-function AccountPage({ currentUser }: AuthContextI) {
-=======
+export const data = {
+  loggedIn: true,
+  defaultImage: defaultImage,
+  valid_interests: ["sport", "culture", "traveling", "tv"],
+
+  first_name: "Alf",
+  surname: "Tanner",
+  adress: {
+    street: "Hemdale",
+    street_no: 167,
+    place: "Los Angeles, California",
+    postal_code: 1234,
+    country: "US",
+  },
+  phone_number: "555-4044",
+  image_url: image,
+  description: "I'am an troublesome, sarcastic, cynical, and i'm an hungry alien who loves to eat food such as pizza.",
+  interests: [],
+}
+
 function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
->>>>>>> temp:src/pages/settings/UserSettingsPage.tsx
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -67,11 +84,11 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
     pickValue(obj.pickSetter, obj.pickList, obj.value)
   }
 
-  var itemPick = valid_interests.map((item, index) => {
+  var itemPick = valid_interests.map((item: string, index: number) => {
     return <input type="Button" name={item} value={item} onClick={(e) => handleClick(e, true)} />
   })
 
-  var itemDrop = interests.map((item, index) => {
+  var itemDrop = interests.map((item: string, index: number) => {
     return <input type="Button" name={item} value={item} onClick={(e) => handleClick(e, false)} />
   })
 
