@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React from "react"
+import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import userService from "src/services/UserService"
@@ -35,6 +35,9 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
           throw e
         })
     }
+
+    dropValue(obj.dropSetter, obj.dropList, obj.value)
+    pickValue(obj.pickSetter, obj.pickList, obj.value)
   }
 
   return currentUser ? (
@@ -46,6 +49,35 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
         placeholder="Geburtstag"
         initialValue={currentUser?.dateOfBirth ? new Date(currentUser.dateOfBirth) : undefined}
       />
+      <br />
+      <img src={image != null ? image : data.defaultImage} alt="" />
+      <label>
+        <input
+          style={{ display: "none" }}
+          type="file"
+          accept="image/*"
+          onChange={(e: any) => {
+            setImage(URL.createObjectURL(e.target.files![0]))
+          }}
+        />
+        new
+      </label>
+      {image != null ? (
+        <input
+          type="button"
+          value="Delete"
+          onClick={() => {
+            setImage(null)
+          }}
+        />
+      ) : (
+        ""
+      )}
+      <Input name="description" placeholder="Beschreibung" initialValue="TODO" />
+      Interessen: <br />
+      Options: {itemPick}
+      <br />
+      My Picks:{itemDrop}
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Speichern
       </Button>
