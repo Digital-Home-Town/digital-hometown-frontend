@@ -2,4 +2,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  position: relative;
+}
+
+.emojiPicker {
+  position: absolute;
+  right: 5%;
+  top: -350px;
 }

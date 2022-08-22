@@ -1,5 +1,6 @@
 interface MessageI {
-  messageText: string
+  text: string
   sendAt: number
   sendBy: string
+  id: string
 }

@@ -1,8 +1,7 @@
-interface ProfileI {
+interface GenericProfile {
   id: string
+  isOrg: boolean
   displayName?: string
   email?: string
-  dateOfBirth?: number
-  age?: number
   photoURL?: string
 }

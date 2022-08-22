@@ -1,30 +1,28 @@
 import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
-import React, { useEffect, useState } from "react"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import profileService from "../../services/ProfileService"
+import { ChatContextI, withChat } from "./ChatContext"
 import classes from "./ChatMessage.module.css"
 
-function ChatMessageNoAuth({ currentUser, message }: AuthContextI & { message: MessageI }) {
-  const [user, setUser] = useState<ProfileI | null | undefined>(undefined)
-
-  useEffect(() => {
-    profileService.getProfile(message.sendBy).then((user) => setUser(user))
-  }, [message.sendBy])
-
+function ChatMessage_({ currentUser, message, currentRoom }: AuthContextI & ChatContextI & { message: MessageI }) {
   const isMyMsg = message.sendBy === currentUser?.id
 
   return (
-    <ListItem className={isMyMsg ? classes.ownMessageBubbleItem : ""}>
-      <Paper className={classes.messageBubble}>
-        <Typography fontSize="small" color="primary">
-          <b>{user?.displayName}</b>
-        </Typography>
-        <ListItemText primary={message.messageText} secondary={new Date(message.sendAt).toLocaleString()} />
-      </Paper>
-    </ListItem>
+    <>
+      {currentRoom != null && (
+        <ListItem className={isMyMsg ? classes.ownMessageBubbleItem : ""}>
+          <Paper className={classes.messageBubble}>
+            <Typography fontSize="small" color="primary">
+              <b>{currentRoom.members[message.sendBy].user.displayName}</b>
+            </Typography>
+            <ListItemText primary={message.text} secondary={new Date(message.sendAt).toLocaleString()} />
+          </Paper>
+        </ListItem>
+      )}
+    </>
   )
 }
 
-export default withAuth(ChatMessageNoAuth)
+const ChatMessage__ = withChat(ChatMessage_)
+export default withAuth(ChatMessage__)

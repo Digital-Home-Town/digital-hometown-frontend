@@ -12,7 +12,7 @@ import chatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
 import classes from "./SendMessage.module.css"
 
-function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI) {
+function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) {
   const [message, setMessage] = useState("")
   const [showEmojiPicker, toggleEmojiPicker] = useReducer((state: boolean) => !state, false)
 
@@ -21,15 +21,11 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
   }
 
   const handleSubmit = () => {
-    chatService
-      .sendMessage(currentRoomId as string, {
-        messageText: message,
-        sendAt: Date.now(),
-        sendBy: currentUser?.id as string,
-      })
-      .then(() => {
+    if (message.length > 0 && currentRoom != null && currentUser != null) {
+      chatService.sendMessage(currentRoom?.id as string, message, currentUser).then(() => {
         setMessage("")
       })
+    }
   }
 
   return (
@@ -42,7 +38,7 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
     >
       {showEmojiPicker && (
         <BrowserView>
-          <div style={{ position: "fixed", right: "5%", top: "50%" }}>
+          <div className={classes.emojiPicker}>
             <Picker onEmojiClick={(_, emojiObject) => onEmojiClick(emojiObject)} />
           </div>
         </BrowserView>
@@ -58,6 +54,7 @@ function SendMessage({ currentRoomId, currentUser }: AuthContextI & ChatContextI
         fullWidth={true}
         onKeyPress={(e) => {
           if (!e.shiftKey && e.key === "Enter") {
+            e.preventDefault()
             handleSubmit()
           }
         }}

@@ -4,15 +4,19 @@ import parse from "date-fns/parse"
 import React, { useState } from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
-import profileService from "src/services/ProfileService"
+import userService from "src/services/UserService"
 
-import withAuth from "../../auth/withAuth"
-import DatePicker from "../general/input/DatePicker"
-import Input from "../general/input/Input"
+import withAuth from "src/auth/withAuth"
+import DatePicker from "../../components/general/input/DatePicker"
+import Input from "../../components/general/input/Input"
 
+<<<<<<< HEAD:src/components/profile/AccountPage.tsx
 import { data } from "./dummy_data/data"
 
 function AccountPage({ currentUser }: AuthContextI) {
+=======
+function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
+>>>>>>> temp:src/pages/settings/UserSettingsPage.tsx
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -20,17 +24,22 @@ function AccountPage({ currentUser }: AuthContextI) {
     const email = (data.get("email") as string) || ""
     const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
     if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
-      const profile: ProfileI = {
-        id: currentUser.id,
+      const profile: User = {
+        ...currentUser,
         displayName: fullName,
         email: email,
         dateOfBirth: dateOfBirth,
       }
-      profileService.updateProfile(currentUser.id, profile).catch((e) => {
-        toast.error("Dein Profil konnte nicht aktualisiert werden.")
-        throw e
-      })
-      toast.success("Dein Profil wurde aktualisiert.")
+      userService
+        .update(currentUser.id, profile)
+        .then(() => {
+          setCurrentUser(profile)
+          toast.success("Dein Profil wurde aktualisiert.")
+        })
+        .catch((e) => {
+          toast.error("Dein Profil konnte nicht aktualisiert werden.")
+          throw e
+        })
     }
   }
 
@@ -113,4 +122,4 @@ function AccountPage({ currentUser }: AuthContextI) {
   )
 }
 
-export default withAuth(AccountPage)
+export default withAuth(UserSettingsPage)

@@ -1,12 +1,13 @@
-import withAuth from "../../auth/withAuth"
-import { AuthContextI } from "../../auth/AuthContext"
 import React from "react"
-import { Navigate } from "react-router-dom"
-import ChatRoom from "./Messages"
 import { Grid } from "@mui/material"
-import RoomsSideBar from "./RoomsSideBar"
-import { ChatProvider } from "./ChatContext"
-import SendMessage from "./SendMessage"
+import { Navigate } from "react-router-dom"
+
+import { AuthContextI } from "../auth/AuthContext"
+import withAuth from "../auth/withAuth"
+import { ChatProvider } from "../components/chat/ChatContext"
+import ChatRoom from "../components/chat/ChatRoom"
+import RoomsSideBar from "../components/chat/RoomsSideBar"
+import SendMessage from "../components/chat/SendMessage"
 
 function Chat({ currentUser }: AuthContextI) {
   return currentUser != null ? (
