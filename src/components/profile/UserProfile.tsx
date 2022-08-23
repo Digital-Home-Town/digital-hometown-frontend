@@ -1,5 +1,5 @@
 import { Edit } from "@mui/icons-material"
-import { Avatar, Button, Card, CardContent, Chip, Grid, IconButton, Typography } from "@mui/material"
+import { Card, CardContent, Chip, Grid, IconButton, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useEffect, useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
