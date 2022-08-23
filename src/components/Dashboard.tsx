@@ -30,7 +30,7 @@ function StartElement({ onClick, text, icon }: StartElementInterface) {
 }
 
 function Dashboard({ currentUser }: AuthContextI) {
-  const [postDialogOpen, setPostDialogOpen] = React.useState(true)
+  const [postDialogOpen, setPostDialogOpen] = React.useState(false)
   const navigate = useNavigate()
 
   return (
