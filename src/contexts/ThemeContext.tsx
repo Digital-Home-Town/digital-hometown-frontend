@@ -85,11 +85,17 @@ export const customThemeOptions = {
       defaultProps: {
         // margin: "dense" as const,
         variant: "standard" as const,
+        style: { marginBottom: "1rem", marginTop: "1rem" },
         // label: "TextField" as const,
       },
     },
     MuiPaper: {
       defaultProps: {},
+    },
+    MuiMenuItem: {
+      defaultProps: {
+        dense: true,
+      },
     },
     // MuiCardMedia: {
     //   defaultProps: {

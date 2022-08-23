@@ -1,4 +1,5 @@
-interface PostI {
-  id: string
+interface Post {
+  author: string
   text: string
+  type: string
 }
