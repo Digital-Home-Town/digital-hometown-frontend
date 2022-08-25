@@ -1,18 +1,19 @@
-import * as React from "react"
+import { FormControl, FormHelperText, Stack, TextField } from "@mui/material"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import { useTheme } from "@mui/material/styles"
-import { FormControl, FormHelperText, Stack, TextField } from "@mui/material"
-import { POST_TYPES } from "src/global"
-import BasicSelect from "../general/input/BasicSelect"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import * as React from "react"
 import { toast } from "react-toastify"
-import withAuth from "src/auth/withAuth"
-import PostService from "src/services/PostService"
 import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+import { POST_TYPES } from "src/global"
+import PostService from "src/services/PostService"
+
+import BasicSelect from "../general/input/BasicSelect"
 
 interface CreatePostDialogI {
   open: boolean
@@ -30,7 +31,9 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
     if (postType && postText && currentUser) {
       setOpen(false)
       toast.success("Dein Beitrag geht hinaus in deine Nachbarschaft!")
-      PostService.create({ type: postType, text: postText, author: currentUser.id })
+      PostService.create({ type: postType, text: postText, author: currentUser })
+      setPostText("")
+      setPostType(undefined)
     } else {
       toast.warn("Ein Beitrag muss einen Text enthalten und einem Beitragstyp zugewiesen sein!")
     }

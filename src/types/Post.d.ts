@@ -1,5 +1,5 @@
 interface Post {
-  author: string
+  author: User
   text: string
   type: string
 }
