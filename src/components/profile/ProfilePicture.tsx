@@ -6,9 +6,15 @@ interface ProfilePictureI {
   size?: number
 }
 
+
 function ProfilePicture({ profile, size }: ProfilePictureI) {
   return (
-    <Avatar alt="Not logged in" src={profile?.photoURL || ""} sx={{ height: size, width: size }}>
+    <Avatar
+      alt="profile-picture"
+      src={profile?.photoURL || ""}
+      sx={{ height: size, width: size }}
+      variant="rounded">
+
       {!profile?.photoURL && <Person />}
     </Avatar>
   )

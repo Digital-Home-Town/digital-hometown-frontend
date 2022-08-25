@@ -5,5 +5,6 @@ interface User extends GenericProfile {
   clubRequests?: Club[]
   friends?: Club[]
   photoURL?: string
-  interests?: Interest[]
+  interests?: string[]
+  desc?: string
 }

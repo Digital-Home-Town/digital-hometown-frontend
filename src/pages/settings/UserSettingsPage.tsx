@@ -34,6 +34,11 @@ export const data = {
 }
 
 function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
+  return null;
+}
+
+/*
+function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -138,5 +143,6 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
     <div>Du hast keinen Zugriff auf diese Seite</div>
   )
 }
+ */
 
 export default withAuth(UserSettingsPage)
