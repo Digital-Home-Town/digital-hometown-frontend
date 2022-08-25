@@ -11,8 +11,7 @@ import withAuth from "src/auth/withAuth"
 import HeaderMenu from "./HeaderMenu"
 
 import logo from "../../img/logo.png"
-import { Typography, 
-         Divider } from "@mui/material"
+import { Typography, Divider } from "@mui/material"
 import { ColorModeToggler } from "./HeaderMenuItems"
 
 import { useNavigate } from "react-router"
