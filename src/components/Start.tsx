@@ -6,7 +6,7 @@ import Dashboard from "./Dashboard"
 import LandingPage from "./LandingPage"
 
 function Start({ currentUser }: AuthContextI) {
-  return <div>{currentUser ? <Dashboard /> : <LandingPage />}</div>
+  return <div>{currentUser ? <Dashboard /> : <LandingPage isOrg={false} />}</div>
 }
 
 export default withAuth(Start)
