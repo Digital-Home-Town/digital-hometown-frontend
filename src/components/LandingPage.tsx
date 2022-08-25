@@ -20,7 +20,6 @@ import helfenImg from "../img/landing-page_helfen.png"
 import marketplaceImg from "../img/landing-page_marketplace.png"
 import vereineImg from "../img/landing-page_vereine.png"
 
-
 function DhtLandingPage() {
   const CARD_WIDTH = 240
   return (
@@ -32,47 +31,48 @@ function DhtLandingPage() {
         <Grid container spacing={2} style={{ marginTop: 1 }}>
           <Grid item>
             <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Vernetzen"/>
+              <CardHeader title="Vernetzen" />
               <CardMedia component="img" image={vernetzenImg} alt="Vernetzen" />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  Du bist auf der Suche nach Menschen mit ähnlichen Hobbys und Interessen? 
-                  Lerne deine Nachbarschaft kennen und finde heraus, was euch verbindet!
+                  Du bist auf der Suche nach Menschen mit ähnlichen Hobbys und Interessen? Lerne deine Nachbarschaft
+                  kennen und finde heraus, was euch verbindet!
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid item>
             <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Helfen"/>
+              <CardHeader title="Helfen" />
               <CardMedia component="img" image={helfenImg} alt="Helfen" />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  Du benötigst Unterstützung beim Bewältigen einer Aufgabe oder möchtest dein Wissen und Fähigkeiten teilen? 
-                  Lass es deine Nachbarschaft wissen!
+                  Du benötigst Unterstützung beim Bewältigen einer Aufgabe oder möchtest dein Wissen und Fähigkeiten
+                  teilen? Lass es deine Nachbarschaft wissen!
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid item>
             <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Entdecken"/>
+              <CardHeader title="Entdecken" />
               <CardMedia component="img" image={marketplaceImg} alt="Marketplace" />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  Du bist auf der Suche nach etwas neuem oder möchtest deiner Nachbarschaft etwas anbieten?    
-                  Im Marktplatz findest du alles, was zurzeit in deiner Nachbarschaft gesucht oder angeboten wird. 
+                  Du bist auf der Suche nach etwas neuem oder möchtest deiner Nachbarschaft etwas anbieten? Im
+                  Marktplatz findest du alles, was zurzeit in deiner Nachbarschaft gesucht oder angeboten wird.
                 </Typography>
               </CardContent>
             </Card>
-          </Grid><Grid item>
+          </Grid>
+          <Grid item>
             <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Vereine"/>
+              <CardHeader title="Vereine" />
               <CardMedia component="img" image={vereineImg} alt="Vereine" />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  Du willst informiert bleiben, was gerade in deinem lokalen Verein ansteht oder möchtest aktiv am Vereinsleben teilnehmen? 
-                  Hier bist du genau richtig!  
+                  Du willst informiert bleiben, was gerade in deinem lokalen Verein ansteht oder möchtest aktiv am
+                  Vereinsleben teilnehmen? Hier bist du genau richtig!
                 </Typography>
               </CardContent>
             </Card>
@@ -121,7 +121,12 @@ function ControlElements() {
   const GRID_SIZE = 110
 
   return (
-    <Grid container spacing={2} sx={{ marginTop: 1, marginBottom: 1 }} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    <Grid
+      container
+      spacing={2}
+      sx={{ marginTop: 1, marginBottom: 1 }}
+      style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
       <Grid item textAlign={"center"}>
         <Card sx={{ height: GRID_SIZE, padding: 1 }}>
           <SelectRegion />
@@ -139,7 +144,7 @@ function ControlElements() {
 function LandingPage(props: AuthProps) {
   const { isOrg } = props
   return (
-    <div>      
+    <div>
       <h1>Öffentliche Landing-Page</h1>
       <ControlElements />
       <Divider />
