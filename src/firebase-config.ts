@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { getDatabase } from "firebase/database"
 import { collection, CollectionReference, DocumentData, getFirestore } from "firebase/firestore"
+import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsI2qLoPZpcA5QFp1Dnz8TiNbrCqr8XNk",
@@ -16,6 +17,7 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig)
 export const firestore = getFirestore(app)
+export const storage = getStorage(app)
 export const realtimeDB = getDatabase(app)
 export const auth = getAuth(app)
 const createCollection = <T = DocumentData>(collectionName: string) => {
