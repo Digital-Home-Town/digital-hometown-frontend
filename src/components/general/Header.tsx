@@ -11,8 +11,10 @@ import withAuth from "src/auth/withAuth"
 import HeaderMenu from "./HeaderMenu"
 
 import logo from "../../img/logo.png"
-import { Typography } from "@mui/material"
+import { Typography, Divider } from "@mui/material"
 import { ColorModeToggler } from "./HeaderMenuItems"
+
+import { useNavigate } from "react-router"
 
 function Logo() {
   return (
@@ -24,6 +26,35 @@ function Logo() {
         </Button>
       </NavLink>
     </Box>
+  )
+}
+
+function LogInAsUser() {
+  const navigate = useNavigate()
+  return (
+    <div>
+      <Typography>Für Personen</Typography>
+      <br />
+      <Button onClick={() => navigate("/sign-in")} sx={{ marginRight: 0.5 }}>
+        Anmelden
+      </Button>
+
+      <Button onClick={() => navigate("/register")}>Registrieren</Button>
+    </div>
+  )
+}
+
+function LogInAsOrganization() {
+  const navigate = useNavigate()
+  return (
+    <div>
+      <Typography>Für Vereine</Typography>
+      <br />
+      <Button onClick={() => navigate("/organization/sign-in")} sx={{ marginRight: 0.5 }}>
+        Anmelden
+      </Button>
+      <Button onClick={() => navigate("/organization/register")}>Registrieren</Button>
+    </div>
   )
 }
 
@@ -50,6 +81,8 @@ function HeaderNotLoggedIn() {
           Dahoam
         </Typography>
       </Box>
+      <LogInAsUser />
+      <LogInAsOrganization />
       <ColorModeToggler />
     </Toolbar>
   )
