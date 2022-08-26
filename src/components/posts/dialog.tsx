@@ -23,16 +23,17 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
-  const [postType, setPostType] = React.useState<string | undefined>(undefined)
+  const [postTitle, setPostTitle] = React.useState<string>("")
   const [postText, setPostText] = React.useState<string>("")
+  const [postType, setPostType] = React.useState<string | undefined>(undefined)
 
   const handleSubmit = () => {
-    if (postType && postText && currentUser) {
+    if (postType && postText && currentUser && postTitle) {
       setOpen(false)
       toast.success("Dein Beitrag geht hinaus in deine Nachbarschaft!")
-      PostService.create({ type: postType, text: postText, author: currentUser.id })
+      PostService.create({ type: postType, text: postText, author: currentUser.id, title: postTitle })
     } else {
-      toast.warn("Ein Beitrag muss einen Text enthalten und einem Beitragstyp zugewiesen sein!")
+      toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
     }
   }
 
@@ -49,14 +50,22 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
             <TextField
               required
               fullWidth
+              type="text"
+              autoFocus
+              label="Gib deinem Beitrag einen Titel"
+              value={postTitle}
+              onChange={(e) => setPostTitle(e.target.value)}
+            />
+            <TextField
+              required
+              fullWidth
               value={postText}
               name="postText"
-              label="Schreibe deine Botschaft"
-              autoFocus
+              label="Schreibe deinen Beitrag"
               variant="outlined"
               multiline
               size="small"
-              minRows={6}
+              minRows={8}
               maxRows={400}
               placeholder="Dein Beitrag"
               onChange={(e) => setPostText(e.target.value as string)}
