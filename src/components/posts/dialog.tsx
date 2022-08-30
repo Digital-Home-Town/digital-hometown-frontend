@@ -14,6 +14,7 @@ import { POST_TYPES } from "src/global"
 import PostService from "src/services/PostService"
 
 import BasicSelect from "../general/input/BasicSelect"
+import TagSelect from "../general/input/TagSelect"
 
 interface CreatePostDialogI {
   open: boolean
@@ -27,12 +28,19 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
   const [postTitle, setPostTitle] = React.useState<string>("")
   const [postText, setPostText] = React.useState<string>("")
   const [postType, setPostType] = React.useState<string | undefined>(undefined)
+  const [postCategories, setPostCategories] = React.useState<string[]>([])
 
   const handleSubmit = () => {
     if (postType && postText && currentUser && postTitle) {
       setOpen(false)
       toast.success("Dein Beitrag geht hinaus in deine Nachbarschaft!")
-      PostService.create({ type: postType, text: postText, author: currentUser, title: postTitle })
+      PostService.create({
+        type: postType,
+        text: postText,
+        author: currentUser,
+        title: postTitle,
+        categories: postCategories,
+      })
     } else {
       toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
     }
@@ -48,22 +56,38 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
         <DialogTitle id="responsive-dialog-title">Erstelle einen Beitrag</DialogTitle>
         <DialogContent>
           <Stack spacing={2} style={{ width: 500 }}>
-            <TextField
-              required
-              fullWidth
-              type="text"
-              autoFocus
-              label="Gib deinem Beitrag einen Titel"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-            />
+            <div style={{ display: "flex" }}>
+              <div style={{ flexGrow: 1 }}>
+                <TextField
+                  required
+                  fullWidth
+                  type="text"
+                  autoFocus
+                  label="Gib deinem Beitrag einen Titel"
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                />
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <BasicSelect
+                  required
+                  name="postType"
+                  label="Beitragstyp auswählen"
+                  items={POST_TYPES.map((val) => {
+                    return { value: val, label: val }
+                  })}
+                  initialValue={postType}
+                  onChange={setPostType}
+                />
+              </div>
+            </div>
+
             <TextField
               required
               fullWidth
               value={postText}
               name="postText"
               label="Schreibe deinen Beitrag"
-              variant="outlined"
               multiline
               size="small"
               minRows={8}
@@ -71,15 +95,11 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
               placeholder="Dein Beitrag"
               onChange={(e) => setPostText(e.target.value as string)}
             />
-            <BasicSelect
-              required
-              name="postType"
-              label="Beitragstyp auswählen"
-              items={POST_TYPES.map((val) => {
-                return { value: val, label: val }
-              })}
-              initialValue={postType}
-              onChange={setPostType}
+
+            <TagSelect
+              label={"Beitragkategorien auswählen"}
+              placeholder={"Sport / Werkzeug / ..."}
+              onChange={setPostCategories}
             />
           </Stack>
         </DialogContent>

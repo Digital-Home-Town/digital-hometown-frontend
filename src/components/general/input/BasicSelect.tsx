@@ -1,5 +1,4 @@
 import * as React from "react"
-import Box from "@mui/material/Box"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
@@ -20,26 +19,23 @@ function BasicSelect({ label, items, name, required, initialValue, onChange }: B
   }
 
   return (
-    <Box sx={{ minWidth: 120, margin: "5pt" }}>
-      <FormControl fullWidth required={required}>
-        <InputLabel id="simple-select-label">{label}</InputLabel>
-        <Select
-          name={name}
-          required={required}
-          labelId="simple-select-label"
-          id="simple-select"
-          value={initialValue}
-          label={label}
-          onChange={handleChange}
-        >
-          {items.map((item) => (
-            <MenuItem key={item.value} value={item.value}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <FormControl fullWidth required={required}>
+      <InputLabel id="simple-select-label">{label}</InputLabel>
+      <Select
+        name={name}
+        required={required}
+        value={initialValue}
+        label={label}
+        variant="standard"
+        onChange={handleChange}
+      >
+        {items.map((item) => (
+          <MenuItem key={item.value} value={item.value}>
+            {item.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   )
 }
 

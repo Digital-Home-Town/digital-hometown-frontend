@@ -25,7 +25,11 @@ class PostService {
     const firebaseQuery = query(this.collection)
 
     const documents = await getDocs(firebaseQuery)
-    const profiles = documents.docs.map((doc) => doc.data())
+    const profiles = documents.docs.map((doc) => {
+      let profile_ = doc.data()
+      profile_.categories = profile_.categories || []
+      return profile_
+    })
     return profiles
   }
 
