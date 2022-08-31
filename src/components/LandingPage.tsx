@@ -1,13 +1,15 @@
-import { Check } from "@mui/icons-material"
+import { Check, Image } from "@mui/icons-material"
 import {
   Button,
   Card,
+  CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
   Divider,
   Grid,
   IconButton,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material"
@@ -20,66 +22,46 @@ import helfenImg from "../img/landing-page_helfen.png"
 import marketplaceImg from "../img/landing-page_marketplace.png"
 import vereineImg from "../img/landing-page_vereine.png"
 
+const cardContent = [
+  {
+    title: "Vernetzen",
+    text: "Du bist auf der Suche nach Menschen mit ähnlichen Hobbys und Interessen? Lerne deine Nachbarschaft kennen und finde heraus, was euch verbindet!",
+    img: vernetzenImg,
+  },
+  {
+    title: "Helfen",
+    text: "Du benötigst Unterstützung beim Bewältigen einer Aufgabe oder möchtest dein Wissen und Fähigkeiten teilen? Lass es deine Nachbarschaft wissen!",
+    img: helfenImg,
+  },
+  {
+    title: "Entdecken",
+    text: "Du bist auf der Suche nach etwas neuem oder möchtest deiner Nachbarschaft etwas anbieten? Im Marktplatz findest du alles, was zurzeit in deiner Nachbarschaft gesucht oder angeboten wird.",
+    img: marketplaceImg,
+  },
+  {
+    title: "Vereine",
+    text: "Du willst informiert bleiben, was gerade in deinem lokalen Verein ansteht oder möchtest aktiv am Vereinsleben teilnehmen? Hier bist du genau richtig!",
+    img: vereineImg,
+  },
+]
+
 function DhtLandingPage() {
-  const CARD_WIDTH = 240
   return (
-    <div>
-      <Card sx={{ padding: 1, margin: 1 }}>
-        <Box sx={{ textAlign: "center" }}>
-          <h3>Warum Digital Dahoam nutzen?</h3>
-        </Box>
-        <Grid container spacing={2} style={{ marginTop: 1 }}>
-          <Grid item>
-            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Vernetzen" />
-              <CardMedia component="img" image={vernetzenImg} alt="Vernetzen" />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  Du bist auf der Suche nach Menschen mit ähnlichen Hobbys und Interessen? Lerne deine Nachbarschaft
-                  kennen und finde heraus, was euch verbindet!
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item>
-            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Helfen" />
-              <CardMedia component="img" image={helfenImg} alt="Helfen" />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  Du benötigst Unterstützung beim Bewältigen einer Aufgabe oder möchtest dein Wissen und Fähigkeiten
-                  teilen? Lass es deine Nachbarschaft wissen!
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item>
-            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Entdecken" />
-              <CardMedia component="img" image={marketplaceImg} alt="Marketplace" />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  Du bist auf der Suche nach etwas neuem oder möchtest deiner Nachbarschaft etwas anbieten? Im
-                  Marktplatz findest du alles, was zurzeit in deiner Nachbarschaft gesucht oder angeboten wird.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item>
-            <Card sx={{ padding: 1, maxWidth: CARD_WIDTH }}>
-              <CardHeader title="Vereine" />
-              <CardMedia component="img" image={vereineImg} alt="Vereine" />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  Du willst informiert bleiben, was gerade in deinem lokalen Verein ansteht oder möchtest aktiv am
-                  Vereinsleben teilnehmen? Hier bist du genau richtig!
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+    <Grid container flexDirection="row" alignItems="stretch" justifyContent="center" spacing={2}>
+      {cardContent.map((card) => (
+        <Grid item xs={8} sm={4} md={3} key={card.title}>
+          <Card style={{ height: "100%" }}>
+            <CardHeader title={card.title} sx={{ textAlign: "center" }} />
+            <CardMedia component="img" image={card.img} alt={card.title} height="200px" />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                {card.text}
+              </Typography>
+            </CardContent>
+          </Card>
         </Grid>
-      </Card>
-    </div>
+      ))}
+    </Grid>
   )
 }
 
@@ -145,9 +127,7 @@ function LandingPage(props: AuthProps) {
   const { isOrg } = props
   return (
     <div>
-      <h1>Öffentliche Landing-Page</h1>
       <ControlElements />
-      <Divider />
       <DhtLandingPage />
     </div>
   )
