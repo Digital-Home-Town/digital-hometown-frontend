@@ -56,37 +56,34 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
         <DialogTitle id="responsive-dialog-title">Erstelle einen Beitrag</DialogTitle>
         <DialogContent>
           <Stack spacing={2} style={{ width: 500 }}>
-            <div style={{ display: "flex" }}>
-              <div style={{ flexGrow: 1 }}>
-                <TextField
-                  required
-                  fullWidth
-                  type="text"
-                  autoFocus
-                  label="Gib deinem Beitrag einen Titel"
-                  value={postTitle}
-                  onChange={(e) => setPostTitle(e.target.value)}
-                />
-              </div>
-              <div style={{ flexGrow: 1 }}>
-                <BasicSelect
-                  required
-                  name="postType"
-                  label="Beitragstyp auswählen"
-                  items={POST_TYPES.map((val) => {
-                    return { value: val, label: val }
-                  })}
-                  initialValue={postType}
-                  onChange={setPostType}
-                />
-              </div>
-            </div>
+            <Stack flexDirection="column">
+              <TextField
+                required
+                fullWidth
+                type="text"
+                autoFocus
+                label="Gib deinem Beitrag einen Titel"
+                value={postTitle}
+                onChange={(e) => setPostTitle(e.target.value)}
+              />
+              <BasicSelect
+                required
+                name="postType"
+                label="Beitragstyp auswählen"
+                items={POST_TYPES.map((val) => {
+                  return { value: val, label: val }
+                })}
+                initialValue={postType}
+                onChange={setPostType}
+              />
+            </Stack>
 
             <TextField
               required
               fullWidth
               value={postText}
               name="postText"
+              variant="outlined"
               label="Schreibe deinen Beitrag"
               multiline
               size="small"
