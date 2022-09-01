@@ -1,21 +1,17 @@
-import { Check, Image } from "@mui/icons-material"
+import { Check } from "@mui/icons-material"
 import {
   Button,
   Card,
-  CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
-  Divider,
   Grid,
   IconButton,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material"
-import { Box } from "@mui/system"
 import { useNavigate } from "react-router"
-import { AuthContextI, AuthProps } from "src/auth/AuthContext"
+import { AuthProps } from "src/auth/AuthContext"
 
 import vernetzenImg from "../img/landing-page_vernetzen.png"
 import helfenImg from "../img/landing-page_helfen.png"
@@ -125,6 +121,7 @@ function ControlElements() {
 
 function LandingPage(props: AuthProps) {
   const { isOrg } = props
+
   return (
     <div>
       <ControlElements />

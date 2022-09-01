@@ -1,5 +1,5 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Switch } from "@mui/material"
 import * as React from "react"
+import { Button, Card, CardActions, CardContent, CardHeader, Chip, Stack } from "@mui/material"
 
 interface PostProperties {
   post: Post
