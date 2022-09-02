@@ -14,7 +14,7 @@ function TagSelect({ label, placeholder, onChange }: TagSelectI) {
     <Autocomplete
       multiple
       id="tags-filled"
-      options={categories.map((option) => option.name)}
+      options={tags.map((option) => option.name)}
       defaultValue={[]}
       onChange={(e, value) => {
         onChange(value)
@@ -32,7 +32,7 @@ function TagSelect({ label, placeholder, onChange }: TagSelectI) {
 
 export default TagSelect
 
-const categories = [
+const tags = [
   { id: 1, name: "Kultur" },
   { id: 2, name: "Sport" },
   { id: 3, name: "Werkzeug" },

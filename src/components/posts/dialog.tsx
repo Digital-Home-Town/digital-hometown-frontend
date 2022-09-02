@@ -28,7 +28,7 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
   const [postTitle, setPostTitle] = React.useState<string>("")
   const [postText, setPostText] = React.useState<string>("")
   const [postType, setPostType] = React.useState<string | undefined>(undefined)
-  const [postCategories, setPostCategories] = React.useState<string[]>([])
+  const [postTags, setPostTags] = React.useState<string[]>([])
 
   const handleSubmit = () => {
     if (postType && postText && currentUser && postTitle) {
@@ -39,7 +39,7 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
         text: postText,
         author: currentUser,
         title: postTitle,
-        categories: postCategories,
+        tags: postTags,
       })
     } else {
       toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
@@ -94,9 +94,9 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
             />
 
             <TagSelect
-              label={"Beitragkategorien auswählen"}
+              label={"Beitragstags auswählen"}
               placeholder={"Sport / Werkzeug / ..."}
-              onChange={setPostCategories}
+              onChange={setPostTags}
             />
           </Stack>
         </DialogContent>
