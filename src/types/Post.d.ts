@@ -3,5 +3,5 @@ interface Post {
   title: string
   text: string
   type: string
-  categories: string[]
+  tags: string[]
 }

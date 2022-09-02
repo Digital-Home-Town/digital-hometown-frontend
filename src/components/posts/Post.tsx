@@ -13,7 +13,7 @@ function Post({ post }: PostProperties) {
       />
       <CardContent>{post.text}</CardContent>
       <Stack direction="row" justifyContent="flex-start" gap={1} sx={{ px: 1 }}>
-        {post.categories.map((category, val) => (
+        {post.tags.map((category, val) => (
           <Chip key={val} label={category} />
         ))}
       </Stack>
