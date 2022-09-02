@@ -93,11 +93,7 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
               onChange={(e) => setPostText(e.target.value as string)}
             />
 
-            <TagSelect
-              label={"Beitragstags auswählen"}
-              placeholder={"Sport / Werkzeug / ..."}
-              onChange={setPostTags}
-            />
+            <TagSelect label={"Beitragstags auswählen"} placeholder={"Sport / Werkzeug / ..."} onChange={setPostTags} />
           </Stack>
         </DialogContent>
         <DialogActions>
