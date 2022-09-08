@@ -89,7 +89,7 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
                       onItemClick(profile)
                     }}
                   >
-                    {profile.displayName}
+                    {profile?.displayName}
                   </ListItem>
                 ))}
               </List>

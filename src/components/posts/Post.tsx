@@ -8,7 +8,7 @@ function Post({ post }: PostProperties) {
   return (
     <Card>
       <CardHeader
-        subheader={"von " + post.author.displayName || post.author}
+        subheader={"von " + post.author?.displayName || post.author}
         title={"[" + post.type + "] " + post.title}
       />
       <CardContent>{post.text}</CardContent>

@@ -26,7 +26,7 @@ export class GenericProfileService<T extends GenericProfile> {
     console.log(`${this.collection.path}: updateAuth ${requestCount}`)
     if (auth.currentUser !== null) {
       await updateProfileFirebaseAuth(auth.currentUser, {
-        displayName: profile.displayName || null,
+        displayName: profile?.displayName || null,
         photoURL: profile.photoURL || null,
       })
     }
