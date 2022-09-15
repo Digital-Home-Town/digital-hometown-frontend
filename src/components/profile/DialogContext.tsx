@@ -14,6 +14,8 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import TextField from "@mui/material/TextField"
 
+import { interestOptions } from "./interestOptions"
+
 interface EditTextProps {
   open: boolean
   handleClose: () => void
@@ -22,18 +24,22 @@ interface EditTextProps {
 }
 
 export function DialogEditInterests({ open, handleClose, value, handleSaveValue }: EditTextProps) {
-  const validOptions = {
-    Sport: ["Fußball", "Klettern"],
-    Kultur: ["Musik", "Tanzen"],
-  }
-
   const [expanded, setExpanded] = React.useState<string | false>(false)
   const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false)
   }
 
-  let tempValue = ""
+  const [tempValue, setTempValue] = React.useState<string[]>(value)
 
+  const handleClick = (category: string, tag: string) => {
+    let newList: string[] = [...tempValue]
+    if (newList.includes(tag)) {
+      newList = newList.filter((item) => item !== tag)
+    } else {
+      newList = [...newList, tag]
+    }
+    setTempValue(newList)
+  }
   const handleSaveAndClose = (save: boolean) => {
     if (save) {
       handleSaveValue(tempValue)
@@ -47,20 +53,29 @@ export function DialogEditInterests({ open, handleClose, value, handleSaveValue 
       <DialogContent>
         <DialogContentText>Hier steht was zu tun ist!</DialogContentText>
 
-        {Object.keys(validOptions).map((key) => (
-          <Accordion>
-            <AccordionSummary>{key}</AccordionSummary>
-            <AccordionDetails>
-              {Object.values(validOptions[key as keyof typeof validOptions]).map((value: string, index: number) => {
-                return (
-                  <>
-                    <Chip key={index} label={value} />
-                  </>
-                )
-              })}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+        {interestOptions.map((data: any) => {
+          return (
+            <Accordion>
+              <AccordionSummary>{data.category}</AccordionSummary>
+              <AccordionDetails>
+                {data.tags.map((tag: string, index: number) => {
+                  return (
+                    <>
+                      <Chip
+                        key={index}
+                        label={tag}
+                        color={tempValue.includes(tag) ? "primary" : "default"}
+                        onClick={() => {
+                          handleClick(data.category, tag)
+                        }}
+                      />
+                    </>
+                  )
+                })}
+              </AccordionDetails>
+            </Accordion>
+          )
+        })}
       </DialogContent>
 
       <DialogActions>

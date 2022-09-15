@@ -27,25 +27,16 @@ function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthCont
     setValue(value)
   }
 
-  /*   // Dialog
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  } */
-
   // Interests
   const [openInterestsDialog, setOpenInterestsDialog] = React.useState(false)
   const toggleInterestsDialog = () => {
     setOpenInterestsDialog(!openInterestsDialog)
   }
 
-  const [interests, setInterests] = useState<string[]>([]) //profile?.interests ||
+  const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
   const saveInterests = (list: string[]) => {
-    updateProfileAttribute("interests", list, setInterests)
+    updateProfileAttribute("interests", list.sort(), setInterests)
   }
   const deleteInterest = (id: number) => {
     // Delete

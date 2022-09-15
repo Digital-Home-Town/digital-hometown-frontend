@@ -16,7 +16,7 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
         <Grid item xs={12}>
           <Stack direction="row" spacing={0.5} justifyContent="end">
             <Button variant="contained" onClick={() => setMsgView(!msgView)}>
-              Infos
+              {msgView ? "Infos" : "Posts"}
             </Button>
             <Button variant="contained">Folgen</Button>
             <Button variant="outlined">Blockieren</Button>
