@@ -4,4 +4,5 @@ interface Post {
   text: string
   type: string
   tags: string[]
+  created?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
 }

@@ -6,6 +6,7 @@ import withAuth from "src/auth/withAuth"
 import PostService from "src/services/PostService"
 
 import Posts from "./Posts"
+import ShowDialog from "./ShowDialog"
 
 function PostList({ currentUser }: AuthContextI) {
   const [posts, setPosts] = React.useState<Post[]>([])
