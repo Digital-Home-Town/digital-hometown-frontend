@@ -1,5 +1,5 @@
-import { Stack } from "@mui/material"
 import * as React from "react"
+import { Stack } from "@mui/material"
 
 import Post from "./Post"
 
@@ -11,7 +11,7 @@ function Posts(props: PostsProperties) {
   return (
     <Stack spacing={2}>
       {props.posts.map((post, index) => (
-        <Post key={index} post={post}></Post>
+        <Post post={post} key={index}></Post>
       ))}
     </Stack>
   )

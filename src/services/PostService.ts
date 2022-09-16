@@ -1,4 +1,4 @@
-import { CollectionReference, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
+import { CollectionReference, doc, getDoc, getDocs, orderBy, query, setDoc, serverTimestamp } from "firebase/firestore"
 import { postCollection } from "src/firebase-config"
 
 class PostService {
@@ -9,28 +9,31 @@ class PostService {
   }
 
   async create(post: Post) {
+    post.created = serverTimestamp()
     await setDoc(doc(this.collection), post)
   }
 
   async get(id: string) {
     const resp = await this.getDocument(id)
-    const profile = resp.data()
-    return profile
+    const post = resp.data()
+    if (post) {
+      post.tags = post.tags || []
+      post.created = post?.created.toDate().getTime() || 0
+    }
+    return post
   }
 
   async getAll() {
-    // const orderBy = profileQuery?.orderBy || "displayName"
-    // const limit = profileQuery?.limit || 10
-
-    const firebaseQuery = query(this.collection)
+    const firebaseQuery = query(this.collection, orderBy("created", "desc"))
 
     const documents = await getDocs(firebaseQuery)
-    const profiles = documents.docs.map((doc) => {
-      let profile_ = doc.data()
-      profile_.tags = profile_.tags || []
-      return profile_
+    const posts = documents.docs.map((doc) => {
+      let post_ = doc.data()
+      post_.tags = post_.tags || []
+      post_.created = post_?.created.toDate().getTime() || 0
+      return post_
     })
-    return profiles
+    return posts
   }
 
   async getDocument(id: string) {

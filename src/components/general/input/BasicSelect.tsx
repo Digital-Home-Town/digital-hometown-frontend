@@ -9,11 +9,12 @@ interface BasicSelectI {
   items: { value: string; label: string }[]
   name?: string
   required?: boolean
+  disabled?: boolean
   initialValue: string | undefined
   onChange: (value: string) => void
 }
 
-function BasicSelect({ label, items, name, required, initialValue, onChange }: BasicSelectI) {
+function BasicSelect({ label, items, name, required, disabled, initialValue, onChange }: BasicSelectI) {
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value as string)
   }
@@ -23,6 +24,7 @@ function BasicSelect({ label, items, name, required, initialValue, onChange }: B
       <InputLabel id="simple-select-label">{label}</InputLabel>
       <Select
         name={name}
+        disabled={disabled}
         required={required}
         value={initialValue}
         label={label}
@@ -41,6 +43,7 @@ function BasicSelect({ label, items, name, required, initialValue, onChange }: B
 
 BasicSelect.defaultProps = {
   required: false,
+  disabled: false,
 }
 
 export default BasicSelect

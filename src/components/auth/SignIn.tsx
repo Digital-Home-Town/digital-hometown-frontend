@@ -82,12 +82,12 @@ function SignIn(props: AuthProps & AuthContextI) {
           </Grid>
           <Grid container>
             <Grid item xs>
-              <Link variant="body2" onClick={() => navigate("/reset-password")}>
+              <Link component="button" onClick={() => navigate("/reset-password")}>
                 Passwort vergessen?
               </Link>
             </Grid>
             <Grid item>
-              <Link variant="body2" onClick={() => navigate("/register")}>
+              <Link component="button" onClick={() => navigate("/register")}>
                 Noch keinen Account? Registriere dich hier!
               </Link>
             </Grid>
