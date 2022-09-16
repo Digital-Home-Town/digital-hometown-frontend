@@ -1,12 +1,12 @@
-import { CalendarToday, Chat, Edit, Group } from "@mui/icons-material"
+import { CalendarToday, Chat, Edit, Group, List } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import CreatePostDialog from "./posts/dialog"
 
+import CreatePostDialog from "./posts/CreateDialog"
 import ClubTable from "./table/ClubTable"
 import UserTable from "./table/UserTable"
 
@@ -30,7 +30,7 @@ function StartElement({ onClick, text, icon }: StartElementInterface) {
 }
 
 function Dashboard({ currentUser }: AuthContextI) {
-  const [postDialogOpen, setPostDialogOpen] = React.useState(true)
+  const [postDialogOpen, setPostDialogOpen] = React.useState(false)
   const navigate = useNavigate()
 
   return (
@@ -40,6 +40,7 @@ function Dashboard({ currentUser }: AuthContextI) {
         <StartElement onClick={() => navigate("/dashboard/chat")} text="Chat" icon={Chat} />
         <StartElement onClick={() => navigate("/")} text="Termin" icon={CalendarToday} />
         <StartElement onClick={() => setPostDialogOpen(true)} text="Neuer Beitrag" icon={Edit} />
+        <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />
       </Grid>
       <h1>Alle Benutzer</h1>
       <UserTable></UserTable>

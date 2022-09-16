@@ -14,7 +14,7 @@ function ChatMessage_({ currentUser, message, currentRoom }: AuthContextI & Chat
         <ListItem className={isMyMsg ? classes.ownMessageBubbleItem : ""}>
           <Paper className={classes.messageBubble}>
             <Typography fontSize="small" color="primary">
-              <b>{currentRoom.members[message.sendBy].user.displayName}</b>
+              <b>{currentRoom.members[message.sendBy]?.user?.displayName}</b>
             </Typography>
             <ListItemText primary={message.text} secondary={new Date(message.sendAt).toLocaleString()} />
           </Paper>

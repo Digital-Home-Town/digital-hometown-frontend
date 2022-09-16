@@ -49,12 +49,12 @@ function ResetPassword({ currentUser, resetPassword }: AuthContextI) {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link onClick={() => navigate("/sign-in")} variant="body2">
+              <Link onClick={() => navigate("/sign-in")} component="button">
                 Anmelden
               </Link>
             </Grid>
             <Grid item>
-              <Link onClick={() => navigate("/register")} variant="body2">
+              <Link onClick={() => navigate("/register")} component="button">
                 Noch keinen Account? Registriere dich hier!
               </Link>
             </Grid>

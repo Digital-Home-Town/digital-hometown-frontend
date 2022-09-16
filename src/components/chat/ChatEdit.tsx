@@ -1,6 +1,6 @@
+import * as React from "react"
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,8 +10,7 @@ import {
   ListItem,
   TextField,
 } from "@mui/material"
-import * as React from "react"
-import { FormEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import userService from "../../services/UserService"
 import chatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
@@ -90,7 +89,7 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
                       onItemClick(profile)
                     }}
                   >
-                    {profile.displayName}
+                    {profile?.displayName}
                   </ListItem>
                 ))}
               </List>

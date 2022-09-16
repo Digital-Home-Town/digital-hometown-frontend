@@ -21,6 +21,7 @@ import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
+import PostList from "./posts/PostList"
 import Start from "./Start"
 
 toast.configure()
@@ -58,6 +59,7 @@ function App() {
                     <Route path="/user-settings" element={<UserSettingsPage />} />
                     <Route path="/club-settings" element={<ClubSettingsPage />} />
                     <Route path="/profile" element={<GenericProfilePage />} />
+                    <Route path="/posts" element={<PostList />} />
                     <Route path="/profile/:id" element={<GenericProfilePage />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/dashboard">

@@ -26,3 +26,4 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 
 export const userCollection = createCollection<User>("users")
 export const clubCollection = createCollection<Club>("clubs")
+export const postCollection = createCollection<Post>("posts")

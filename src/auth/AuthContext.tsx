@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     console.log("log in with email", email)
     signInWithEmailAndPassword(auth, email, password)
       .then((registeredUser) => {
-        toast.success(`Hallo ${registeredUser.user.displayName}, du hast dich erfolgreich angemeldet.`)
+        toast.success(`Hallo ${registeredUser.user?.displayName}, du hast dich erfolgreich angemeldet.`)
       })
       .catch((err) => {
         toast.error("Fehler bei der Authentifizierung. Bitte überprüfe deinen Nutzernamen und Passwort!")
@@ -102,7 +102,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const handleSignUpEmail = async (email: string, password: string, displayName: string, isOrg: boolean) => {
-    const response = await createUserWithEmailAndPassword(auth, email, password)
+    let response
+    try {
+      response = await createUserWithEmailAndPassword(auth, email, password)
+    } catch (err: any) {
+      toast.error("Fehler beim Registrieren. Bitte überprüfe deine Eingaben! " + err.message)
+      throw err
+    }
     const user = response.user
     if (user == null) {
       toast.error(`Hallo ${displayName} du konntest leider nicht eingeloggt werden`)
