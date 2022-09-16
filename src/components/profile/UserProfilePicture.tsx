@@ -12,9 +12,9 @@ import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
 import { updateProfileAttribute } from "./updateProfileAttribute"
-import { ProfilePicture } from "./ProfilePicture"
 
 function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+  const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
   const [_file, setFile] = useState(null)
@@ -86,25 +86,27 @@ function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthC
       <Avatar alt="profile-picture" src={imageUrl} sx={{ height: 128, width: 128 }} variant="rounded">
         {!imageUrl && <Person fontSize="large" />}
       </Avatar>
-      <div>
-        <form onSubmit={handleUpload}>
-          <label htmlFor="file-input">
-            <EditIcon />
-          </label>
-
-          <input
-            style={{ display: "none" }}
-            id="file-input"
-            type="file"
-            accept="image/*"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              addImage(e)
-            }}
-          />
-
-          <ClearIcon onClick={deleteImage} />
-        </form>
-      </div>
+      {!readOnly ? (
+        <div>
+          <form onSubmit={handleUpload}>
+            <label htmlFor="file-input">
+              <EditIcon />
+            </label>
+            <input
+              style={{ display: "none" }}
+              id="file-input"
+              type="file"
+              accept="image/*"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                addImage(e)
+              }}
+            />
+            <ClearIcon onClick={deleteImage} />
+          </form>
+        </div>
+      ) : (
+        ""
+      )}
     </Grid>
   )
 }

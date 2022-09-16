@@ -24,11 +24,7 @@ interface EditTextProps {
 }
 
 export function DialogEditInterests({ open, handleClose, value, handleSaveValue }: EditTextProps) {
-  const [expanded, setExpanded] = React.useState<string | false>(false)
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
+  // BUG: initial value isnt updated while list is updated through chip-closing :(
   const [tempValue, setTempValue] = React.useState<string[]>(value)
 
   const handleClick = (category: string, tag: string) => {

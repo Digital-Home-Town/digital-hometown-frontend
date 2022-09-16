@@ -1,31 +1,15 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 
-import { Person } from "@mui/icons-material"
-import ClearIcon from "@mui/icons-material/Clear"
-import EditIcon from "@mui/icons-material/Edit"
-import { Avatar, Button, Card, Chip, Grid, Stack, Typography } from "@mui/material"
-
-import "firebase/compat/storage"
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { Chip, Grid, Typography } from "@mui/material"
 
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import { storage } from "src/firebase-config"
-import userService from "src/services/UserService"
 import { DialogEditText, DialogEditInterests } from "./DialogContext"
+import { updateProfileAttribute } from "./updateProfileAttribute"
 
 function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   // Internal
-  const updateProfileAttribute = (attr: string, value: any, setValue: (param: any) => void) => {
-    // Update
-    if (profile) {
-      var list = { [attr]: value }
-      const updatedUser: User = { ...profile, ...list }
-      userService.update(updatedUser.id, updatedUser)
-    }
-    // Change State
-    setValue(value)
-  }
+  const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
 
   // Interests
   const [openInterestsDialog, setOpenInterestsDialog] = React.useState(false)
@@ -36,13 +20,13 @@ function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthCont
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
   const saveInterests = (list: string[]) => {
-    updateProfileAttribute("interests", list.sort(), setInterests)
+    updateProfileAttribute(profile, "interests", list.sort(), setInterests)
   }
   const deleteInterest = (id: number) => {
     // Delete
     const newList = [...interests]
     newList.splice(id, 1)
-    updateProfileAttribute("interests", newList, setInterests)
+    updateProfileAttribute(profile, "interests", newList, setInterests)
   }
 
   // Description
@@ -56,7 +40,7 @@ function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthCont
   const [desc, setDesc] = useState<string>(profile?.desc || defaultDesc)
 
   const saveDescription = (value: string) => {
-    updateProfileAttribute("desc", value || defaultDesc, setDesc)
+    updateProfileAttribute(profile, "desc", value || defaultDesc, setDesc)
   }
 
   // PROFILE
@@ -68,16 +52,32 @@ function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthCont
           Interessen:{" "}
           <Typography variant="body2" gutterBottom>
             {interests.map((item, i) => (
-              <Chip key={i} label={item} onDelete={() => deleteInterest(i)} />
+              <Chip
+                key={i}
+                label={item}
+                onDelete={
+                  !readOnly
+                    ? (i) => {
+                        deleteInterest(i)
+                      }
+                    : undefined
+                }
+              />
             ))}
 
-            <Chip label="Add" variant="outlined" onClick={toggleInterestsDialog} />
-            <DialogEditInterests
-              open={openInterestsDialog}
-              handleClose={toggleInterestsDialog}
-              value={interests}
-              handleSaveValue={saveInterests}
-            />
+            {!readOnly ? (
+              <>
+                <Chip label="Add" variant="outlined" onClick={toggleInterestsDialog} />
+                <DialogEditInterests
+                  open={openInterestsDialog}
+                  handleClose={toggleInterestsDialog}
+                  value={interests}
+                  handleSaveValue={saveInterests}
+                />
+              </>
+            ) : (
+              ""
+            )}
           </Typography>
         </Typography>
         <Grid item xs={12}>
@@ -88,12 +88,16 @@ function UserProfileInfo({ profile, currentUser }: ProfileProps<User> & AuthCont
             <Typography variant="body2" gutterBottom onClick={toggleDescDialog}>
               {desc}
             </Typography>
-            <DialogEditText
-              open={openDescDialog}
-              handleClose={toggleDescDialog}
-              value={desc}
-              handleSaveValue={saveDescription}
-            />
+            {!readOnly ? (
+              <DialogEditText
+                open={openDescDialog}
+                handleClose={toggleDescDialog}
+                value={desc}
+                handleSaveValue={saveDescription}
+              />
+            ) : (
+              ""
+            )}
           </Typography>
         </Grid>
       </Grid>

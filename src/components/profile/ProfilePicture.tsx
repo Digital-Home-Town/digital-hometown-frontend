@@ -5,7 +5,6 @@ interface ProfilePictureI {
   profile?: User
   size?: number
 }
-
 export function ProfilePicture({ profile, size }: ProfilePictureI) {
   return (
     <Avatar alt="profile-picture" src={profile?.photoURL || ""} sx={{ height: size, width: size }} variant="rounded">
