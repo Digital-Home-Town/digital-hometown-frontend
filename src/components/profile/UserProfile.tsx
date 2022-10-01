@@ -1,65 +1,44 @@
-import { Edit } from "@mui/icons-material"
-import { Card, CardContent, Chip, Grid, IconButton, Typography } from "@mui/material"
-import Box from "@mui/material/Box"
-import { useEffect, useState } from "react"
+import React from "react"
+import { Button, Grid, Stack, Card, Typography } from "@mui/material"
+
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import ProfilePicture from "./ProfilePicture"
+
+import UserProfileInfo from "./UserProfileInfo"
+import UserProfilePicture from "./UserProfilePicture"
 
 function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
-  const [editable, setEditable] = useState<boolean>(false)
-  const [mouseOverAvatar, setMouseOverAvatar] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (currentUser && profile && currentUser.id === profile?.id) {
-      setEditable(true)
-    }
-  }, [currentUser, profile])
+  const [msgView, setMsgView] = React.useState(false)
 
   return (
-    <Box sx={{ mt: 1 }}>
-      <Card>
-        <CardContent>
-          <Grid container>
-            <Grid textAlign="center">
-              <IconButton
-                onMouseOver={() => {
-                  setMouseOverAvatar(true)
-                  setTimeout(() => {
-                    setMouseOverAvatar(false)
-                  }, 1000)
-                }}
-              >
-                {mouseOverAvatar && editable ? (
-                  <Edit sx={{ height: "128px", width: "128px" }} />
-                ) : (
-                  <ProfilePicture profile={profile || undefined} size={128} />
-                )}
-              </IconButton>
-              <Typography variant="h6" gutterBottom>
-                {profile?.displayName || "Kein Name"}
-              </Typography>
-            </Grid>
-            <Grid>
-              <Typography variant="body1" gutterBottom>
-                Email: {profile?.email || "Keine Email"}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Alter: {profile?.age || "Kein Alter angegeben"}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Intessen:{" "}
-                {(profile?.interests || []).map((interest, i) => (
-                  <Chip key={i} label={interest.name} />
-                ))}
-              </Typography>
-            </Grid>
-          </Grid>
+    <Card>
+      <Grid container>
+        <Grid item xs={12}>
+          <Stack direction="row" spacing={0.5} justifyContent="end">
+            <Button variant="contained" onClick={() => setMsgView(!msgView)}>
+              {msgView ? "Infos" : "Posts"}
+            </Button>
+            <Button variant="contained">Folgen</Button>
+            <Button variant="outlined">Blockieren</Button>
+          </Stack>
+        </Grid>
+        <Grid item xs={2}>
+          <UserProfilePicture profile={profile} />
+        </Grid>
 
-          {/* {editable && <EditButton small={true} onClick={() => {}} />} */}
-        </CardContent>
-      </Card>
-    </Box>
+        <Grid container item xs={10}>
+          <Grid item lg={12} xs={12}>
+            {/*Name*/}
+            <Typography variant="h6" gutterBottom>
+              {profile?.displayName || "Kein Name"}
+            </Typography>
+          </Grid>
+          <Grid item lg={12} xs={12}>
+            {msgView ? "Some message!" : <UserProfileInfo profile={profile} />}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Card>
   )
 }
 

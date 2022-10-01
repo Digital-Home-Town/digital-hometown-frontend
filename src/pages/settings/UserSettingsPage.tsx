@@ -1,141 +1,27 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import parse from "date-fns/parse"
-import React, { useState } from "react"
-import { toast } from "react-toastify"
-import { AuthContextI } from "src/auth/AuthContext"
-import userService from "src/services/UserService"
+import { Stack, Typography } from "@mui/material"
 
 import withAuth from "src/auth/withAuth"
-import DatePicker from "../../components/general/input/DatePicker"
-import Input from "../../components/general/input/Input"
-
-import image from "./alf.jpeg"
-import defaultImage from "./NoImage.png"
-
-export const data = {
-  loggedIn: true,
-  defaultImage: defaultImage,
-  valid_interests: ["sport", "culture", "traveling", "tv"],
-
-  first_name: "Alf",
-  surname: "Tanner",
-  adress: {
-    street: "Hemdale",
-    street_no: 167,
-    place: "Los Angeles, California",
-    postal_code: 1234,
-    country: "US",
-  },
-  phone_number: "555-4044",
-  image_url: image,
-  description: "I'am an troublesome, sarcastic, cynical, and i'm an hungry alien who loves to eat food such as pizza.",
-  interests: [],
-}
+import { AuthContextI } from "src/auth/AuthContext"
 
 function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const fullName = (data.get("fullName") as string) || ""
-    const email = (data.get("email") as string) || ""
-    const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
-    if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
-      const profile: User = {
-        ...currentUser,
-        displayName: fullName,
-        email: email,
-        dateOfBirth: dateOfBirth,
-      }
-      userService
-        .update(currentUser.id, profile)
-        .then(() => {
-          setCurrentUser(profile)
-          toast.success("Dein Profil wurde aktualisiert.")
-        })
-        .catch((e) => {
-          toast.error("Dein Profil konnte nicht aktualisiert werden.")
-          throw e
-        })
-    }
-  }
+  return (
+    <>
+      {currentUser ? (
+        <Stack spacing={0.5}>
+          <Typography variant="h6" gutterBottom>
+            Account-Einstellungen
+          </Typography>
+          <div>Name</div>
+          <div>Email</div>
+          <div>Geburtstag</div>
+          <div>PLZ</div>
 
-  const [image, setImage] = useState<null | string>(data.image_url)
-  const [interests, setInterests] = useState(data.interests)
-  const [valid_interests, setValidInterests] = useState(data.valid_interests)
-
-  const dropValue = (setter: any, list: any, value: any) => {
-    setter((items: any) => list.filter((val: any, i: any) => val !== value))
-  }
-  const pickValue = (setter: any, list: any, value: any) => {
-    setter([...list, value])
-  }
-
-  const handleClick = (e: any, pick: any) => {
-    var obj = {
-      value: e.currentTarget.name,
-      pickList: pick ? interests : valid_interests,
-      pickSetter: pick ? setInterests : setValidInterests,
-      dropList: pick ? valid_interests : interests,
-      dropSetter: pick ? setValidInterests : setInterests,
-    }
-
-    dropValue(obj.dropSetter, obj.dropList, obj.value)
-    pickValue(obj.pickSetter, obj.pickList, obj.value)
-  }
-
-  var itemPick = valid_interests.map((item: string, index: number) => {
-    return <input type="Button" name={item} value={item} onClick={(e) => handleClick(e, true)} />
-  })
-
-  var itemDrop = interests.map((item: string, index: number) => {
-    return <input type="Button" name={item} value={item} onClick={(e) => handleClick(e, false)} />
-  })
-
-  return currentUser ? (
-    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <Input name="fullName" placeholder="Voller Name" initialValue={currentUser?.displayName || ""} />
-      <Input name="email" placeholder="Email" initialValue={currentUser?.email || ""} />
-      <DatePicker
-        name="dateOfBirth"
-        placeholder="Geburtstag"
-        initialValue={currentUser?.dateOfBirth ? new Date(currentUser.dateOfBirth) : undefined}
-      />
-      <br />
-      <img src={image != null ? image : data.defaultImage} alt="" />
-      <label>
-        <input
-          style={{ display: "none" }}
-          type="file"
-          accept="image/*"
-          onChange={(e: any) => {
-            setImage(URL.createObjectURL(e.target.files![0]))
-          }}
-        />
-        new
-      </label>
-      {image != null ? (
-        <input
-          type="button"
-          value="Delete"
-          onClick={() => {
-            setImage(null)
-          }}
-        />
+          <div>Account löschen</div>
+        </Stack>
       ) : (
-        ""
+        <div>Du hast keinen Zugriff auf diese Seite</div>
       )}
-      <Input name="description" placeholder="Beschreibung" initialValue="TODO" />
-      Interessen: <br />
-      Options: {itemPick}
-      <br />
-      My Picks:{itemDrop}
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Speichern
-      </Button>
-    </Box>
-  ) : (
-    <div>Du hast keinen Zugriff auf diese Seite</div>
+    </>
   )
 }
 
