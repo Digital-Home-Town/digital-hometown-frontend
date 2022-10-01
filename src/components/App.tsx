@@ -21,63 +21,72 @@ import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import MuiPlayground from "./playground/mui/MuiPlayground"
+import { PostProvider } from "./posts/PostContext"
 import PostList from "./posts/PostList"
 import Start from "./Start"
 
 toast.configure()
+
+function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeContextProvider defaultColor={"light" as const}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
+        <AuthProvider>
+          <PostProvider>{children}</PostProvider>
+        </AuthProvider>
+      </LocalizationProvider>
+    </ThemeContextProvider>
+  )
+}
 
 /**
  * Main app component
  */
 function App() {
   return (
-    <ThemeContextProvider defaultColor={"light" as const}>
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-        <AuthProvider>
-          <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              bgcolor: "background.default",
-              color: "text.primary",
-            }}
-            style={{ minHeight: "100vh" }}
-          >
-            {/* HashRouter only needed because github pages put the root to github.io/<name> */}
-            <HashRouter>
-              <Header />
-              <Container component="main" maxWidth="lg">
-                <Box mt={1} mb={1}>
-                  <Routes>
-                    <Route path="/" element={<Start />} />
-                    <Route path="/health" element={<BackendHealth />} />
-                    <Route path="/mui" element={<MuiPlayground />} />
-                    <Route path="/sign-in" element={<SignIn isOrg={false} />} />
-                    <Route path="/sign-out" element={<SignOut />} />
-                    <Route path="/register" element={<Register isOrg={false} />} />
-                    <Route path="/user-settings" element={<UserSettingsPage />} />
-                    <Route path="/club-settings" element={<ClubSettingsPage />} />
-                    <Route path="/profile" element={<GenericProfilePage />} />
-                    <Route path="/posts" element={<PostList />} />
-                    <Route path="/profile/:id" element={<GenericProfilePage />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
-                    <Route path="/dashboard">
-                      <Route path="chat" element={<Chat />} />
-                    </Route>
-                    <Route path="/organization">
-                      <Route path="sign-in" element={<SignInOrg />} />
-                      <Route path="register" element={<RegisterOrg />} />
-                    </Route>
-                  </Routes>
-                </Box>
-              </Container>
-            </HashRouter>
-            <Footer />
-          </Box>
-        </AuthProvider>
-      </LocalizationProvider>
-    </ThemeContextProvider>
+    <Providers>
+      <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          bgcolor: "background.default",
+          color: "text.primary",
+        }}
+        style={{ minHeight: "100vh" }}
+      >
+        {/* HashRouter only needed because github pages put the root to github.io/<name> */}
+        <HashRouter>
+          <Header />
+          <Container component="main" maxWidth="lg">
+            <Box mt={1} mb={1}>
+              <Routes>
+                <Route path="/" element={<Start />} />
+                <Route path="/health" element={<BackendHealth />} />
+                <Route path="/mui" element={<MuiPlayground />} />
+                <Route path="/sign-in" element={<SignIn isOrg={false} />} />
+                <Route path="/sign-out" element={<SignOut />} />
+                <Route path="/register" element={<Register isOrg={false} />} />
+                <Route path="/user-settings" element={<UserSettingsPage />} />
+                <Route path="/club-settings" element={<ClubSettingsPage />} />
+                <Route path="/profile" element={<GenericProfilePage />} />
+                <Route path="/posts" element={<PostList />} />
+                <Route path="/profile/:id" element={<GenericProfilePage />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/dashboard">
+                  <Route path="chat" element={<Chat />} />
+                </Route>
+                <Route path="/organization">
+                  <Route path="sign-in" element={<SignInOrg />} />
+                  <Route path="register" element={<RegisterOrg />} />
+                </Route>
+              </Routes>
+            </Box>
+          </Container>
+        </HashRouter>
+        <Footer />
+      </Box>
+    </Providers>
   )
 }
 

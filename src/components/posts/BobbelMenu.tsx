@@ -1,10 +1,14 @@
 import * as React from "react"
-import { MoreVert, ChatBubble, Person } from "@mui/icons-material"
+import { MoreVert, ChatBubble, Person, DeleteForever } from "@mui/icons-material"
 import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material"
 import { useNavigate } from "react-router"
+import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+import usePostContext from "./PostContext"
 
-function BobbelMenu({ post }: { post: Post }) {
+function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
   const navigate = useNavigate()
+  const { deletePost } = usePostContext()
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const [openMenu, setOpenMenu] = React.useState(false)
 
@@ -26,9 +30,17 @@ function BobbelMenu({ post }: { post: Post }) {
           </ListItemIcon>
           <ListItemText> Nachricht an Autor</ListItemText>
         </MenuItem>
+        {currentUser?.id === post.author.id && (
+          <MenuItem onClick={() => deletePost(post)}>
+            <ListItemIcon>
+              <DeleteForever />
+            </ListItemIcon>
+            <ListItemText> Beitrag löschen</ListItemText>
+          </MenuItem>
+        )}
       </Menu>
     </div>
   )
 }
 
-export default BobbelMenu
+export default withAuth(BobbelMenu)

@@ -1,4 +1,5 @@
 interface Post {
+  id?: string
   author: User
   title: string
   text: string
