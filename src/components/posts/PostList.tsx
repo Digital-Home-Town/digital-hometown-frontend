@@ -3,24 +3,12 @@ import * as React from "react"
 import { Navigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import PostService from "src/services/PostService"
+import usePostContext from "./PostContext"
 
 import Posts from "./Posts"
-import ShowDialog from "./ShowDialog"
 
 function PostList({ currentUser }: AuthContextI) {
-  const [posts, setPosts] = React.useState<Post[]>([])
-
-  React.useEffect(() => {
-    const getPosts = async () => {
-      const data = await PostService.getAll()
-      console.log(data)
-      if (data) {
-        setPosts(data)
-      }
-    }
-    if (!posts.length) getPosts()
-  }, [posts])
+  const { posts } = usePostContext()
 
   return currentUser ? (
     <Box sx={{ mt: 1 }}>
