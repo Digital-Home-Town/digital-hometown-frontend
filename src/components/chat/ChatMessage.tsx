@@ -1,9 +1,8 @@
-import { ListItem, ListItemText, Paper, Typography } from "@mui/material"
+import { Grid, ListItem, ListItemText, Paper, TextField, Typography } from "@mui/material"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
 import { ChatContextI, withChat } from "./ChatContext"
-import classes from "./ChatMessage.module.css"
 
 function ChatMessage_({ currentUser, message, currentRoom }: AuthContextI & ChatContextI & { message: MessageI }) {
   const isMyMsg = message.sendBy === currentUser?.id
@@ -11,14 +10,19 @@ function ChatMessage_({ currentUser, message, currentRoom }: AuthContextI & Chat
   return (
     <>
       {currentRoom != null && (
-        <ListItem className={isMyMsg ? classes.ownMessageBubbleItem : ""}>
-          <Paper className={classes.messageBubble}>
-            <Typography fontSize="small" color="primary">
-              <b>{currentRoom.members[message.sendBy]?.user?.displayName}</b>
-            </Typography>
-            <ListItemText primary={message.text} secondary={new Date(message.sendAt).toLocaleString()} />
-          </Paper>
-        </ListItem>
+        <Grid
+          item
+          component={Paper}
+          sx={{ padding: "10px 30px", marginBottom: "5px", marginLeft: isMyMsg ? "50px" : "0px" }}
+        >
+          <Typography fontSize="small" color="primary">
+            <b>{currentRoom.members[message.sendBy]?.user?.displayName}</b>
+          </Typography>
+          <ListItemText
+            primary={<Typography component={"pre"}>{message.text}</Typography>}
+            secondary={new Date(message.sendAt).toLocaleString()}
+          />
+        </Grid>
       )}
     </>
   )

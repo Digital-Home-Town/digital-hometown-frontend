@@ -73,9 +73,7 @@ function App() {
                 <Route path="/posts" element={<PostList />} />
                 <Route path="/profile/:id" element={<GenericProfilePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/dashboard">
-                  <Route path="chat" element={<Chat />} />
-                </Route>
+                <Route path="/chat/:id" element={<Chat />} />
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
                   <Route path="register" element={<RegisterOrg />} />
