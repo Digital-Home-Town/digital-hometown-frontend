@@ -8,7 +8,7 @@ import { BrowserView } from "react-device-detect"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
-import chatService from "../../services/ChatService"
+import ChatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
 import classes from "./SendMessage.module.css"
 
@@ -22,7 +22,7 @@ function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) 
 
   const handleSubmit = () => {
     if (message.length > 0 && currentRoom != null && currentUser != null) {
-      chatService.sendMessage(currentRoom?.id as string, message, currentUser).then(() => {
+      ChatService.sendMessage(currentRoom?.id as string, message, currentUser).then(() => {
         setMessage("")
       })
     }

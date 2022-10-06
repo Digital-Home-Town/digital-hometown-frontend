@@ -37,7 +37,7 @@ function Dashboard({ currentUser }: AuthContextI) {
     <div>
       <Grid container direction="row" alignItems="center" justifyContent="center">
         <StartElement onClick={() => navigate("/")} text="Gruppen" icon={Group} />
-        <StartElement onClick={() => navigate("/dashboard/chat")} text="Chat" icon={Chat} />
+        <StartElement onClick={() => navigate("/chat/first")} text="Chat" icon={Chat} />
         <StartElement onClick={() => navigate("/")} text="Termin" icon={CalendarToday} />
         <StartElement onClick={() => setPostDialogOpen(true)} text="Neuer Beitrag" icon={Edit} />
         <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />

@@ -1,7 +1,6 @@
 import {
   CollectionReference,
   doc,
-  getDoc,
   getDocs,
   orderBy,
   query,

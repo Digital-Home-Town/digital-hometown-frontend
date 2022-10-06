@@ -12,7 +12,7 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import userService from "../../services/UserService"
-import chatService from "../../services/ChatService"
+import ChatService from "../../services/ChatService"
 import { ChatContextI, withChat } from "./ChatContext"
 import { toast } from "react-toastify"
 import SaveButton from "../general/button/SaveButton"
@@ -46,7 +46,7 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
 
   const handleSubmit = () => {
     if (newChatName != null && currentRoom != null) {
-      chatService.editRoom(currentRoom.id, newChatName).catch((e) => {
+      ChatService.renameRoom(currentRoom.id, newChatName).catch((e) => {
         toast.error("Der Name des Chatraums konnte nicht geändert werden")
         throw e
       })
@@ -59,7 +59,7 @@ function ChatEdit({ open, onItemClick, onClose, currentRoom }: SimpleDialogI & C
       <DialogTitle>Chat bearbeiten</DialogTitle>
       <DialogContent>
         <List>
-          {currentRoom?.isGroup && (
+          {currentRoom?.group && (
             <ListItem>
               <Box>
                 Chatname bearbeiten

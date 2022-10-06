@@ -1,10 +1,10 @@
-import { getDatabase, limitToLast, onValue, orderByChild, orderByValue, query, ref } from "firebase/database"
+import { onValue, orderByChild, query, ref } from "firebase/database"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 
 import Loader from "../../auth/Loader"
 import { realtimeDB } from "../../firebase-config"
-import chatService from "../../services/ChatService"
+import ChatService from "../../services/ChatService"
 import { toast } from "react-toastify"
 import UserService from "../../services/UserService"
 
@@ -12,14 +12,23 @@ export interface ChatContextI {
   rooms: RoomI[]
   currentRoom: RoomI | undefined
   setCurrentRoom: (roomId: string) => void
-  createRoom: () => void
+  createGroup: () => void
+  createChat: (chatPartner: GenericProfile) => void
   messages: MessageI[]
   loading: boolean
 }
 
 const ChatContext = createContext<undefined | ChatContextI>(undefined)
 
-export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: GenericProfile }) {
+export function ChatProvider({
+  children,
+  currentUser,
+  defaultChatId,
+}: {
+  children: ReactNode
+  currentUser: GenericProfile
+  defaultChatId?: string
+}) {
   const [rooms, setRooms] = useState<RoomI[]>([])
 
   const [currentRoom, setCurrentRoom] = useState<RoomI | undefined>(undefined)
@@ -39,7 +48,6 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
         for (const roomId in rooms_) {
           const room = rooms_[roomId]
           let name
-          let isGroup = true
 
           // do not show rooms where current user is not a member
           if (!Object.keys(room.members).includes(currentUser.id)) {
@@ -63,7 +71,6 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
               const user = room.members[Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]].user
               console.log("Chat name", user?.displayName)
               name = user?.displayName || room.name
-              isGroup = false
             } catch (e) {
               toast.error("Die Daten deines Chatpartners konnten nicht geladen werden.")
               throw e
@@ -71,7 +78,7 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           } else {
             name = room.name
           }
-          newRooms.push({ ...room, name: name, isGroup: isGroup, id: roomId })
+          newRooms.push({ ...room, name: name, id: roomId })
         }
         // newRooms.reverse()
         console.log("new rooms", rooms_, newRooms)
@@ -85,7 +92,11 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
 
   useEffect(() => {
     if (currentRoom == null) {
-      setCurrentRoom(rooms[0])
+      if (defaultChatId != null && defaultChatId !== "first") {
+        setCurrentRoom(rooms.find((room) => room.id === defaultChatId))
+      } else {
+        setCurrentRoom(rooms[0])
+      }
     } else {
       setCurrentRoom(rooms.find((room) => room.id === currentRoom.id))
     }
@@ -125,9 +136,17 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     console.log("set current room", roomId)
   }
 
-  const createRoom = () => {
-    chatService.createRoom(currentUser, "Neuer Chat von " + currentUser.displayName).catch(() => {
+  const createGroup = () => {
+    ChatService.createRoom(currentUser, "Neuer Chat von " + currentUser.displayName).catch((error) => {
       toast.error("Es konnte kein neuer Chat-Raum erstellt werden.")
+      throw error
+    })
+  }
+
+  const createChat = (chatPartner: GenericProfile) => {
+    ChatService.createChat(currentUser, chatPartner).catch((error) => {
+      toast.error("Es konnte kein neuer persönlicher Chat erstellt werden.")
+      throw error
     })
   }
 
@@ -138,7 +157,8 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           rooms: rooms,
           currentRoom: currentRoom,
           setCurrentRoom: handleCurrentRoom,
-          createRoom: createRoom,
+          createGroup: createGroup,
+          createChat: createChat,
           messages: messages,
           loading: loading,
         }}

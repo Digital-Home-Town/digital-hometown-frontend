@@ -10,8 +10,8 @@ import {
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
-import clubService from "src/services/ClubService"
-import userService from "src/services/UserService"
+import clubService from "../services/ClubService"
+import userService from "../services/UserService"
 
 import { auth } from "../firebase-config"
 import Loader from "./Loader"
