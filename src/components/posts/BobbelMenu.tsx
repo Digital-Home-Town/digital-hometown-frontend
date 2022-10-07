@@ -5,12 +5,23 @@ import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import usePostContext from "./PostContext"
+import ChatService from "src/services/ChatService"
+import Loader from "src/auth/Loader"
 
 function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
   const navigate = useNavigate()
   const { deletePost } = usePostContext()
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const [openMenu, setOpenMenu] = React.useState(false)
+
+  if (currentUser == null) {
+    return <Loader />
+  }
+
+  const messageToAuthor = async () => {
+    const key = await ChatService.createChat(currentUser, post.author)
+    navigate(`/chat/${key}`)
+  }
 
   return (
     <div>
@@ -24,7 +35,11 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
           </ListItemIcon>
           <ListItemText>Zum Autor</ListItemText>
         </MenuItem>
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            messageToAuthor()
+          }}
+        >
           <ListItemIcon>
             <ChatBubble />
           </ListItemIcon>

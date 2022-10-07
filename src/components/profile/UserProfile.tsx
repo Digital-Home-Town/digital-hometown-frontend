@@ -6,9 +6,22 @@ import withAuth from "src/auth/withAuth"
 
 import UserProfileInfo from "./UserProfileInfo"
 import UserProfilePicture from "./UserProfilePicture"
+import { useNavigate } from "react-router"
+import ChatService from "src/services/ChatService"
+import Loader from "src/auth/Loader"
 
 function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+  const navigate = useNavigate()
   const [msgView, setMsgView] = React.useState(false)
+
+  if (currentUser == null || profile == null) {
+    return <Loader />
+  }
+
+  const openChat = async () => {
+    const key = await ChatService.createChat(currentUser, profile)
+    navigate(`/chat/${key}`)
+  }
 
   return (
     <Card>
@@ -19,6 +32,9 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
               {msgView ? "Infos" : "Posts"}
             </Button>
             <Button variant="contained">Folgen</Button>
+            <Button variant="contained" onClick={openChat}>
+              Nachricht
+            </Button>
             <Button variant="outlined">Blockieren</Button>
           </Stack>
         </Grid>
