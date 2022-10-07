@@ -44,17 +44,17 @@ class ChatService {
     const rooms = await this.getRooms()
     const keys = Object.keys(rooms).filter((key: string) => {
       if (rooms[key].members == null) return false
-      return rooms[key].group && rooms[key].members[chatPartner.id] != null
+      return !rooms[key].group && rooms[key].members[chatPartner.id] != null
     })
-    return { chatExists: keys.length > 0, chats: keys.map((key: string) => rooms[key]) }
+    return { chatExists: keys.length > 0, key: keys[0] || null }
   }
 
   async createChat(currentUser: GenericProfile, chatPartner: GenericProfile) {
     try {
-      const { chatExists, chats } = await this.checkIfChatExists(chatPartner)
-      console.log("chatExists", chatExists, "chats", chats)
+      const { chatExists, key } = await this.checkIfChatExists(chatPartner)
+      console.log("chatExists", chatExists)
       if (chatExists) {
-        return chats[0].id
+        return key
       }
 
       const resp = await push(ref(realtimeDB, `rooms`), {
