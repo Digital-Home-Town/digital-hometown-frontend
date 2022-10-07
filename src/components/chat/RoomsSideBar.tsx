@@ -1,11 +1,9 @@
 import List from "@mui/material/List"
-import { Avatar, Divider, Icon, IconButton, ListItem, ListItemIcon, ListItemText } from "@mui/material"
+import { Avatar, Divider, Icon, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import { ChatContextI, withChat } from "./ChatContext"
 import { Groups, Person } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import userService from "src/services/UserService"
-import { useParams } from "react-router"
-import { useNavigate } from "react-router"
 
 function SelectUser({ setSelectedUser }: { setSelectedUser: (user: GenericProfile | null) => void }) {
   const [users, setUsers] = useState<GenericProfile[]>([])
@@ -30,7 +28,7 @@ function SelectUser({ setSelectedUser }: { setSelectedUser: (user: GenericProfil
               <ListItemIcon>
                 <Avatar src={user.photoURL} />
               </ListItemIcon>
-              <ListItemText primary={user.displayName} />
+              <ListItemText primary={user.displayName || user.email} />
             </ListItem>
             <Divider />
           </div>

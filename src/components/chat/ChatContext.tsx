@@ -7,6 +7,7 @@ import { realtimeDB } from "../../firebase-config"
 import ChatService from "../../services/ChatService"
 import { toast } from "react-toastify"
 import UserService from "../../services/UserService"
+import clubService from "src/services/ClubService"
 
 export interface ChatContextI {
   rooms: RoomI[]
@@ -59,23 +60,28 @@ export function ChatProvider({
               const user = await UserService.get(userId)
               if (user) {
                 room.members[userId].user = user
+              } else {
+                const club = await clubService.get(userId)
+                room.members[userId].user = club
               }
             } else {
               room.members[userId].user = currentUser
             }
           }
 
-          if (Object.keys(room.members).length - 1 === 1) {
+          if (!room.group) {
+            // personal chats
             try {
-              // only two users => get the name of the other user as room name
-              const user = room.members[Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]].user
+              const chatPartnerId = Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]
+              const user = room.members[chatPartnerId].user
               console.log("Chat name", user?.displayName)
-              name = user?.displayName || room.name
+              name = user?.displayName || user.email
             } catch (e) {
               toast.error("Die Daten deines Chatpartners konnten nicht geladen werden.")
               throw e
             }
           } else {
+            // group chats
             name = room.name
           }
           newRooms.push({ ...room, name: name, id: roomId })

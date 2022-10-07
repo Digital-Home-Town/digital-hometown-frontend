@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef } from "react"
 import ChatMessage from "./ChatMessage"
 import { ChatContextI, withChat } from "./ChatContext"
-import { Divider, Grid, IconButton, List, ListItem, Paper as div } from "@mui/material"
+import { Divider, Grid, IconButton, ListItem } from "@mui/material"
 import { Edit } from "@mui/icons-material"
 import ChatEdit from "./ChatEdit"
 import ChatService from "../../services/ChatService"
