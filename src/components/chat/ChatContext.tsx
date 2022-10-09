@@ -94,7 +94,7 @@ export function ChatProvider({
         console.error("Error", e)
       },
     )
-  }, [])
+  }, [currentUser])
 
   useEffect(() => {
     if (currentRoom == null) {
@@ -179,7 +179,7 @@ export function useChatContext() {
   const context = React.useContext(ChatContext)
 
   if (context === undefined) {
-    throw new Error("useAuthContext should be used within an AuthProvider.")
+    throw new Error("useChatContext should be used within an ChatProvider.")
   }
 
   return context

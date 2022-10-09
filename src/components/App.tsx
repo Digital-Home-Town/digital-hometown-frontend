@@ -12,10 +12,10 @@ import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
 import GenericProfilePage from "src/pages/profiles/GenericProfilePage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
+import ChatPage from "src/pages/ChatPage"
+import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
-import Chat from "../pages/Chat"
-import UserSettingsPage from "../pages/settings/UserSettingsPage"
 import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
@@ -73,7 +73,7 @@ function App() {
                 <Route path="/posts" element={<PostList />} />
                 <Route path="/profile/:id" element={<GenericProfilePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/chat/:id" element={<Chat />} />
+                <Route path="/chat/:id" element={<ChatPage />} />
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
                   <Route path="register" element={<RegisterOrg />} />
