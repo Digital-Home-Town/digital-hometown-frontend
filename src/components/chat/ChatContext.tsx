@@ -42,16 +42,17 @@ export function ChatProvider({
     onValue(
       query(ref(realtimeDB, `rooms`), orderByChild("lastMessageSendAt")),
       async (snpsht) => {
-        const rooms_ = snpsht.val()
-        console.log("get rooms from realtime db", rooms_)
+        const roomsFromDb = snpsht.val()
+        console.log("get rooms from realtime db", roomsFromDb)
 
         const newRooms = []
-        for (const roomId in rooms_) {
-          const room = rooms_[roomId]
+        for (const roomId in roomsFromDb) {
+          const room = roomsFromDb[roomId]
           let name
 
           // do not show rooms where current user is not a member
           if (!Object.keys(room.members).includes(currentUser.id)) {
+            // console.warn("user is not a member of this room", currentUser.id, roomId)
             continue
           }
 
@@ -87,7 +88,7 @@ export function ChatProvider({
           newRooms.push({ ...room, name: name, id: roomId })
         }
         // newRooms.reverse()
-        console.log("new rooms", rooms_, newRooms)
+        console.log("new rooms", roomsFromDb, newRooms)
         setRooms(newRooms.sort((a, b) => b.lastMessageSendAt - a.lastMessageSendAt))
       },
       (e) => {

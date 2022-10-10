@@ -1,5 +1,6 @@
 import { realtimeDB } from "../firebase-config"
 import { push, ref, set, remove, child, get } from "firebase/database"
+import { updateCurrentUser } from "firebase/auth"
 
 class ChatService {
   async sendMessage(roomId: string, text: string, currentUser: GenericProfile) {
@@ -40,18 +41,21 @@ class ChatService {
     }
   }
 
-  async checkIfChatExists(chatPartner: GenericProfile) {
+  async checkIfChatExists(currentUser: GenericProfile, chatPartner: GenericProfile) {
     const rooms = await this.getRooms()
     const keys = Object.keys(rooms).filter((key: string) => {
       if (rooms[key].members == null) return false
-      return !rooms[key].group && rooms[key].members[chatPartner.id] != null
+      return (
+        !rooms[key].group && rooms[key].members[chatPartner.id] != null && rooms[key].members[currentUser.id] != null
+      )
     })
+    console.log("checkIfChatExists", keys.length > 0, keys)
     return { chatExists: keys.length > 0, key: keys[0] || null }
   }
 
   async createChat(currentUser: GenericProfile, chatPartner: GenericProfile) {
     try {
-      const { chatExists, key } = await this.checkIfChatExists(chatPartner)
+      const { chatExists, key } = await this.checkIfChatExists(currentUser, chatPartner)
       console.log("chatExists", chatExists)
       if (chatExists) {
         return key

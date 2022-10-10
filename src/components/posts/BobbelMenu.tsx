@@ -29,23 +29,26 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
         <MoreVert />
       </IconButton>
       <Menu anchorEl={anchorRef.current} open={openMenu} onClick={() => setOpenMenu(false)}>
-        <MenuItem onClick={() => navigate(`/profile/${post.author.id}`)}>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          <ListItemText>Zum Autor</ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            messageToAuthor()
-          }}
-        >
-          <ListItemIcon>
-            <ChatBubble />
-          </ListItemIcon>
-          <ListItemText> Nachricht an Autor</ListItemText>
-        </MenuItem>
-        {currentUser?.id === post.author.id && (
+        {currentUser?.id !== post.author.id ? (
+          <div>
+            <MenuItem onClick={() => navigate(`/profile/${post.author.id}`)}>
+              <ListItemIcon>
+                <Person />
+              </ListItemIcon>
+              <ListItemText>Zum Autor</ListItemText>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                messageToAuthor()
+              }}
+            >
+              <ListItemIcon>
+                <ChatBubble />
+              </ListItemIcon>
+              <ListItemText> Nachricht an Autor</ListItemText>
+            </MenuItem>
+          </div>
+        ) : (
           <MenuItem onClick={() => deletePost(post)}>
             <ListItemIcon>
               <DeleteForever />
