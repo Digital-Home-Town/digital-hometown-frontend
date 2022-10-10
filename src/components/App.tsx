@@ -7,7 +7,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { de } from "date-fns/locale"
 import React from "react"
-import { HashRouter, Route, Routes } from "react-router-dom"
+import { Route, Routes, BrowserRouter } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
 import GenericProfilePage from "src/pages/profiles/GenericProfilePage"
@@ -31,9 +31,7 @@ function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContextProvider defaultColor={"light" as const}>
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-        <AuthProvider>
-          <PostProvider>{children}</PostProvider>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </LocalizationProvider>
     </ThemeContextProvider>
   )
@@ -56,7 +54,8 @@ function App() {
         style={{ minHeight: "100vh" }}
       >
         {/* HashRouter only needed because github pages put the root to github.io/<name> */}
-        <HashRouter>
+        {/* <HashRouter> */}
+        <BrowserRouter>
           <Header />
           <Container component="main" maxWidth="lg">
             <Box mt={1} mb={1}>
@@ -70,7 +69,14 @@ function App() {
                 <Route path="/user-settings" element={<UserSettingsPage />} />
                 <Route path="/club-settings" element={<ClubSettingsPage />} />
                 <Route path="/profile" element={<GenericProfilePage />} />
-                <Route path="/posts" element={<PostList />} />
+                <Route
+                  path="/posts"
+                  element={
+                    <PostProvider>
+                      <PostList />
+                    </PostProvider>
+                  }
+                />
                 <Route path="/profile/:id" element={<GenericProfilePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/chat/:id" element={<ChatPage />} />
@@ -81,7 +87,8 @@ function App() {
               </Routes>
             </Box>
           </Container>
-        </HashRouter>
+          {/* </HashRouter> */}
+        </BrowserRouter>
         <Footer />
       </Box>
     </Providers>
