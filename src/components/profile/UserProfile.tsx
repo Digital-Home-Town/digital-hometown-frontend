@@ -31,11 +31,15 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
             <Button variant="contained" onClick={() => setMsgView(!msgView)}>
               {msgView ? "Infos" : "Posts"}
             </Button>
-            <Button variant="contained">Folgen</Button>
-            <Button variant="contained" onClick={openChat}>
-              Nachricht
-            </Button>
-            <Button variant="outlined">Blockieren</Button>
+            {currentUser.id !== profile.id && (
+              <>
+                <Button variant="contained">Folgen</Button>
+                <Button variant="contained" onClick={openChat}>
+                  Nachricht
+                </Button>
+                <Button variant="outlined">Blockieren</Button>
+              </>
+            )}
           </Stack>
         </Grid>
         <Grid item xs={2}>
