@@ -33,6 +33,7 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
             </Button>
             {currentUser.id !== profile.id && (
               <>
+                {/* do not show buttons if it is the own profile */}
                 <Button variant="contained">Folgen</Button>
                 <Button variant="contained" onClick={openChat}>
                   Nachricht
