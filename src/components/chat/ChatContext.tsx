@@ -75,8 +75,8 @@ export function ChatProvider({
             try {
               const chatPartnerId = Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]
               const user = room.members[chatPartnerId].user
-              console.log("Chat name", user?.displayName)
-              name = user?.displayName || user.email
+              console.log("Chat partner is user", user?.displayName, user)
+              name = user?.displayName || user?.email
             } catch (e) {
               toast.error("Die Daten deines Chatpartners konnten nicht geladen werden.")
               throw e

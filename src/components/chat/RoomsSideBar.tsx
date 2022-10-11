@@ -4,16 +4,21 @@ import { ChatContextI, withChat } from "./ChatContext"
 import { Groups, Person } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import userService from "src/services/UserService"
+import withAuth from "src/auth/withAuth"
+import { AuthContextI } from "src/auth/AuthContext"
 
-function SelectUser({ setSelectedUser }: { setSelectedUser: (user: GenericProfile | null) => void }) {
+function SelectUser_({
+  setSelectedUser,
+  currentUser,
+}: { setSelectedUser: (user: GenericProfile | null) => void } & AuthContextI) {
   const [users, setUsers] = useState<GenericProfile[]>([])
 
   useEffect(() => {
     userService.getAll().then((users: GenericProfile[]) => {
       console.log(users)
-      setUsers(users)
+      setUsers(users.filter((user) => user.id !== currentUser?.id))
     })
-  }, [])
+  }, [currentUser])
 
   return (
     <div>
@@ -37,6 +42,8 @@ function SelectUser({ setSelectedUser }: { setSelectedUser: (user: GenericProfil
     </div>
   )
 }
+
+const SelectUser = withAuth(SelectUser_)
 
 function SelectChat_({ rooms, setCurrentRoom, currentRoom }: ChatContextI) {
   return (
