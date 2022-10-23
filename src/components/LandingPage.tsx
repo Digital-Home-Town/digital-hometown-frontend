@@ -1,28 +1,26 @@
-import { Check, Image } from "@mui/icons-material"
+import { Check } from "@mui/icons-material"
 import {
   Button,
   Card,
-  CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
   Grid,
   IconButton,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material"
 import { useNavigate } from "react-router"
 import { AuthProps } from "src/auth/AuthContext"
 
-import vernetzenImg from "../img/landing-page_vernetzen.png"
 import helfenImg from "../img/landing-page_helfen.png"
-import marketplaceImg from "../img/landing-page_marketplace.png"
-import vereineImg from "../img/landing-page_vereine.png"
-import praesentationImg from "../img/landing-page_praesentation.png"
 import kommunikationImg from "../img/landing-page_kommunikation.png"
+import marketplaceImg from "../img/landing-page_marketplace.png"
 import nachrichtenImg from "../img/landing-page_nachrichten.png"
+import praesentationImg from "../img/landing-page_praesentation.png"
 import veranstaltungenImg from "../img/landing-page_veranstaltungen.png"
+import vereineImg from "../img/landing-page_vereine.png"
+import vernetzenImg from "../img/landing-page_vernetzen.png"
 
 const cardContent = [
   {

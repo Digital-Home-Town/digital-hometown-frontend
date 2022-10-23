@@ -1,14 +1,15 @@
+import { Button, Card, Grid, Stack, Typography } from "@mui/material"
 import React from "react"
-import { Button, Grid, Stack, Card, Typography } from "@mui/material"
-
+import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
+import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
+import ChatService from "src/services/ChatService"
 
+import { PostProvider } from "../posts/PostContext"
 import UserProfileInfo from "./UserProfileInfo"
 import UserProfilePicture from "./UserProfilePicture"
-import { useNavigate } from "react-router"
-import ChatService from "src/services/ChatService"
-import Loader from "src/auth/Loader"
+import UserProfilePosts from "./UserProfilePosts"
 
 function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const navigate = useNavigate()
@@ -55,7 +56,13 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
             </Typography>
           </Grid>
           <Grid item lg={12} xs={12}>
-            {msgView ? "Some message!" : <UserProfileInfo profile={profile} />}
+            {msgView ? (
+              <PostProvider>
+                <UserProfilePosts profile={profile} />
+              </PostProvider>
+            ) : (
+              <UserProfileInfo profile={profile} />
+            )}
           </Grid>
         </Grid>
       </Grid>
