@@ -115,18 +115,21 @@ function SwitchLandingPageType(props: AuthProps) {
   const { isOrg } = props
   return (
     <div>
-      {isOrg?
-      <Typography>Du bist kein Vereinsvorstand und möchtest zurück zu deiner Landing Page?</Typography>
-      :       
-      <Typography>Du bist Vorstand eines Vereins oder einer Organisation? Hier siehst du deine Vorteile.</Typography>}
+      {isOrg ? (
+        <Typography>Du bist kein Vereinsvorstand und möchtest zurück zu deiner Landing Page?</Typography>
+      ) : (
+        <Typography>Du bist Vorstand eines Vereins oder einer Organisation? Hier siehst du deine Vorteile.</Typography>
+      )}
       <br />
-      {isOrg?
-      <Button onClick={() => navigate("/")} sx={{ marginRight: 0.5 }}>
-        Für Privatpersonen
-      </Button> :      
-      <Button onClick={() => navigate("/organization/landingpage")} sx={{ marginRight: 0.5 }}>
-        Für Vereine
-      </Button>}
+      {isOrg ? (
+        <Button onClick={() => navigate("/")} sx={{ marginRight: 0.5 }}>
+          Für Privatpersonen
+        </Button>
+      ) : (
+        <Button onClick={() => navigate("/organization/landingpage")} sx={{ marginRight: 0.5 }}>
+          Für Vereine
+        </Button>
+      )}
     </div>
   )
 }
@@ -170,7 +173,7 @@ function ControlElements(props: AuthProps) {
       </Grid>
       <Grid item textAlign={"center"}>
         <Card sx={{ height: GRID_SIZE, padding: 1 }}>
-          {isOrg ? <SwitchLandingPageType isOrg={true} /> : <SwitchLandingPageType isOrg={false}/>}
+          {isOrg ? <SwitchLandingPageType isOrg={true} /> : <SwitchLandingPageType isOrg={false} />}
         </Card>
       </Grid>
     </Grid>
@@ -181,8 +184,8 @@ function LandingPage(props: AuthProps) {
   const { isOrg } = props
   return (
     <div>
-      {isOrg ? <ControlElements isOrg={true} /> : <ControlElements isOrg={false}/>}
-      {isOrg ? <DhtLandingPageOrg /> : <DhtLandingPage />}      
+      {isOrg ? <ControlElements isOrg={true} /> : <ControlElements isOrg={false} />}
+      {isOrg ? <DhtLandingPageOrg /> : <DhtLandingPage />}
     </div>
   )
 }
