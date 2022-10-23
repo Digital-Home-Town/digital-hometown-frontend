@@ -7,7 +7,7 @@ import Container from "@mui/material/Container"
 import Toolbar from "@mui/material/Toolbar"
 import * as React from "react"
 import { useNavigate } from "react-router"
-import { NavLink } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
@@ -54,6 +54,7 @@ function LogInAsOrganization() {
 }
 
 function HeaderNotLoggedIn() {
+  const sampleLocation = useLocation()
   return (
     <Toolbar sx={{ alignItems: "center", paddingY: 3 }}>
       <Box sx={{ flexGrow: 1, textAlign: "right", display: { xs: "none", md: "block" } }}>
@@ -76,7 +77,7 @@ function HeaderNotLoggedIn() {
           Dahoam
         </Typography>
       </Box>
-      {window.location.pathname.includes("organization") ? <LogInAsOrganization /> : <LogInAsUser />}
+      {sampleLocation.pathname.includes("organization") ? <LogInAsOrganization /> : <LogInAsUser />}
       <ColorModeToggler />
     </Toolbar>
   )
