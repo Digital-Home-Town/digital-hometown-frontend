@@ -1,4 +1,3 @@
-// import React from "react"
 import { Check, Image } from "@mui/icons-material"
 import {
   Button,
@@ -180,8 +179,6 @@ function ControlElements(props: AuthProps) {
 
 function LandingPage(props: AuthProps) {
   const { isOrg } = props
-  // const [msgView, setMsgView] = React.useState(false)
-
   return (
     <div>
       {isOrg ? <ControlElements isOrg={true} /> : <ControlElements isOrg={false}/>}
