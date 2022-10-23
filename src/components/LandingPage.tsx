@@ -1,3 +1,4 @@
+// import React from "react"
 import { Check, Image } from "@mui/icons-material"
 import {
   Button,
@@ -19,6 +20,10 @@ import vernetzenImg from "../img/landing-page_vernetzen.png"
 import helfenImg from "../img/landing-page_helfen.png"
 import marketplaceImg from "../img/landing-page_marketplace.png"
 import vereineImg from "../img/landing-page_vereine.png"
+import praesentationImg from "../img/landing-page_praesentation.png"
+import kommunikationImg from "../img/landing-page_kommunikation.png"
+import nachrichtenImg from "../img/landing-page_nachrichten.png"
+import veranstaltungenImg from "../img/landing-page_veranstaltungen.png"
 
 const cardContent = [
   {
@@ -43,6 +48,29 @@ const cardContent = [
   },
 ]
 
+const cardContentOrg = [
+  {
+    title: "Präsentation",
+    text: "Was macht euren Verein wirklich aus?  Präsentiert euch in der Nachbarschaft und zeigt allen wofür Ihr steht!",
+    img: praesentationImg,
+  },
+  {
+    title: "Kommunikation",
+    text: "Etwas Wichtiges muss mit den Mitgliedern des Vereins geklärt werden? Nutze hierfür die vereinsinternen Chats!",
+    img: kommunikationImg,
+  },
+  {
+    title: "Nachrichten",
+    text: "Was gibt es für Neuigkeiten in eurem Verein? Teile es allen Mitgliedern und Interessierten mit!",
+    img: nachrichtenImg,
+  },
+  {
+    title: "Veranstaltungen",
+    text: "Eine Veranstaltung steht in Kürze an? Informiere die Nachbarschaft darüber!",
+    img: veranstaltungenImg,
+  },
+]
+
 function DhtLandingPage() {
   return (
     <Grid container flexDirection="row" alignItems="stretch" justifyContent="center" spacing={2}>
@@ -63,15 +91,43 @@ function DhtLandingPage() {
   )
 }
 
-function SwitchLandingPageType() {
+function DhtLandingPageOrg() {
+  return (
+    <Grid container flexDirection="row" alignItems="stretch" justifyContent="center" spacing={2}>
+      {cardContentOrg.map((card) => (
+        <Grid item xs={8} sm={4} md={3} key={card.title}>
+          <Card style={{ height: "100%" }}>
+            <CardHeader title={card.title} sx={{ textAlign: "center" }} />
+            <CardMedia component="img" image={card.img} alt={card.title} height="200px" />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                {card.text}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  )
+}
+
+function SwitchLandingPageType(props: AuthProps) {
   const navigate = useNavigate()
+  const { isOrg } = props
   return (
     <div>
-      <Typography>Du bist Vorstand eines Vereins oder einer Organisation? Hier siehst du deine Vorteile.</Typography>
+      {isOrg?
+      <Typography>Du bist kein Vereinsvorstand und möchtest zurück zu deiner Landing Page?</Typography>
+      :       
+      <Typography>Du bist Vorstand eines Vereins oder einer Organisation? Hier siehst du deine Vorteile.</Typography>}
       <br />
+      {isOrg?
       <Button onClick={() => navigate("/")} sx={{ marginRight: 0.5 }}>
+        Für Privatpersonen
+      </Button> :      
+      <Button onClick={() => navigate("/organization/landingpage")} sx={{ marginRight: 0.5 }}>
         Für Vereine
-      </Button>
+      </Button>}
     </div>
   )
 }
@@ -97,8 +153,9 @@ function SelectRegion() {
   )
 }
 
-function ControlElements() {
+function ControlElements(props: AuthProps) {
   const GRID_SIZE = 110
+  const { isOrg } = props
 
   return (
     <Grid
@@ -114,7 +171,7 @@ function ControlElements() {
       </Grid>
       <Grid item textAlign={"center"}>
         <Card sx={{ height: GRID_SIZE, padding: 1 }}>
-          <SwitchLandingPageType />
+          {isOrg ? <SwitchLandingPageType isOrg={true} /> : <SwitchLandingPageType isOrg={false}/>}
         </Card>
       </Grid>
     </Grid>
@@ -123,11 +180,12 @@ function ControlElements() {
 
 function LandingPage(props: AuthProps) {
   const { isOrg } = props
+  // const [msgView, setMsgView] = React.useState(false)
 
   return (
     <div>
-      <ControlElements />
-      <DhtLandingPage />
+      {isOrg ? <ControlElements isOrg={true} /> : <ControlElements isOrg={false}/>}
+      {isOrg ? <DhtLandingPageOrg /> : <DhtLandingPage />}      
     </div>
   )
 }

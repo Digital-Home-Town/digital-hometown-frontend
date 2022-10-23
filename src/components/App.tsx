@@ -24,6 +24,7 @@ import MuiPlayground from "./playground/mui/MuiPlayground"
 import { PostProvider } from "./posts/PostContext"
 import PostList from "./posts/PostList"
 import Start from "./Start"
+import LandingPageOrg from "./LandingPageOrg"
 
 toast.configure()
 
@@ -83,6 +84,7 @@ function App() {
                 <Route path="/organization">
                   <Route path="sign-in" element={<SignInOrg />} />
                   <Route path="register" element={<RegisterOrg />} />
+                  <Route path="LandingPage" element={<LandingPageOrg />} />
                 </Route>
               </Routes>
             </Box>
