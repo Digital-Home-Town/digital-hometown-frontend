@@ -1,9 +1,7 @@
 import LandingPage from "./LandingPage"
 
 function LandingPageOrg() {
-  return (
-      <LandingPage isOrg={true} />
-  )
+  return <LandingPage isOrg={true} />
 }
 
 export default LandingPageOrg
