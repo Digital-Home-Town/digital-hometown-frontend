@@ -4,4 +4,5 @@ interface GenericProfile {
   displayName?: string
   email?: string
   photoURL?: string
+  postCode?: number
 }

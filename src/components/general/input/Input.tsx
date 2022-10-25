@@ -5,6 +5,9 @@ export interface InputProps {
   name: string
   placeholder: string
   initialValue: string | number | undefined
+  error?: boolean | undefined
+  helperText?: string
+  settings?: {}
 }
 function Input(props: InputProps) {
   const [value, setValue] = React.useState<string | number | undefined>(props.initialValue)
@@ -25,10 +28,13 @@ function Input(props: InputProps) {
       type={typeof props.initialValue === "number" ? "number" : "text"}
       label={props.placeholder}
       name={props.name}
+      inputProps={{ ...props.settings }}
       // autoFocus
       onChange={handleChange}
       value={value != null ? value : ""}
       sx={{ mt: 2, mb: 2 }}
+      error={props.error}
+      helperText={props.helperText}
     />
   )
 }
