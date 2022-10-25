@@ -30,7 +30,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
       },
     },
     {
-      name: "Profil bearbeiten",
+      name: "Account",
       event: () => {
         return currentUser?.isOrg ? navigate("/club-settings") : navigate("/user-settings")
       },
