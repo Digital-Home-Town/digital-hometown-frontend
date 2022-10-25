@@ -1,5 +1,3 @@
-import React from "react"
-
 import {
   Button,
   Card,
@@ -8,13 +6,14 @@ import {
   Chip,
   Dialog,
   DialogActions,
-  Stack,
-  Link,
-  DialogTitle,
   DialogContent,
+  Link,
+  Stack,
   Typography,
 } from "@mui/material"
+import React from "react"
 import { useNavigate } from "react-router"
+
 import BobbelMenu from "./BobbelMenu"
 
 interface ShowDialogI {

@@ -1,16 +1,15 @@
-import React, { useRef, useState } from "react"
+import "firebase/compat/storage"
 
 import { Person } from "@mui/icons-material"
 import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import { Avatar, Grid } from "@mui/material"
-
-import "firebase/compat/storage"
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage"
-
+import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
+
 import { updateProfileAttribute } from "./updateProfileAttribute"
 
 function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
@@ -70,7 +69,7 @@ function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthC
     const imageRef = ref(storage, path)
     // upload file
     // https://firebase.google.com/docs/storage/web/upload-files
-    const uploaded = await uploadBytes(imageRef, file)
+    await uploadBytes(imageRef, file)
     // get url
     // https://firebase.google.com/docs/storage/web/download-files
     const url = await getDownloadURL(imageRef)

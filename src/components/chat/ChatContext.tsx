@@ -1,25 +1,35 @@
-import { getDatabase, limitToLast, onValue, orderByChild, orderByValue, query, ref } from "firebase/database"
+import { onValue, orderByChild, query, ref } from "firebase/database"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 
 import Loader from "../../auth/Loader"
 import { realtimeDB } from "../../firebase-config"
-import chatService from "../../services/ChatService"
+import ChatService from "../../services/ChatService"
 import { toast } from "react-toastify"
 import UserService from "../../services/UserService"
+import clubService from "src/services/ClubService"
 
 export interface ChatContextI {
   rooms: RoomI[]
   currentRoom: RoomI | undefined
   setCurrentRoom: (roomId: string) => void
-  createRoom: () => void
+  createGroup: () => void
+  createChat: (chatPartner: GenericProfile) => void
   messages: MessageI[]
   loading: boolean
 }
 
 const ChatContext = createContext<undefined | ChatContextI>(undefined)
 
-export function ChatProvider({ children, currentUser }: { children: ReactNode; currentUser: GenericProfile }) {
+export function ChatProvider({
+  children,
+  currentUser,
+  defaultChatId,
+}: {
+  children: ReactNode
+  currentUser: GenericProfile
+  defaultChatId?: string
+}) {
   const [rooms, setRooms] = useState<RoomI[]>([])
 
   const [currentRoom, setCurrentRoom] = useState<RoomI | undefined>(undefined)
@@ -32,17 +42,17 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     onValue(
       query(ref(realtimeDB, `rooms`), orderByChild("lastMessageSendAt")),
       async (snpsht) => {
-        const rooms_ = snpsht.val()
-        console.log("get rooms from realtime db", rooms_)
+        const roomsFromDb = snpsht.val()
+        console.log("get rooms from realtime db", roomsFromDb)
 
         const newRooms = []
-        for (const roomId in rooms_) {
-          const room = rooms_[roomId]
+        for (const roomId in roomsFromDb) {
+          const room = roomsFromDb[roomId]
           let name
-          let isGroup = true
 
           // do not show rooms where current user is not a member
           if (!Object.keys(room.members).includes(currentUser.id)) {
+            // console.warn("user is not a member of this room", currentUser.id, roomId)
             continue
           }
 
@@ -51,41 +61,49 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
               const user = await UserService.get(userId)
               if (user) {
                 room.members[userId].user = user
+              } else {
+                const club = await clubService.get(userId)
+                room.members[userId].user = club
               }
             } else {
               room.members[userId].user = currentUser
             }
           }
 
-          if (Object.keys(room.members).length - 1 === 1) {
+          if (!room.group) {
+            // personal chats
             try {
-              // only two users => get the name of the other user as room name
-              const user = room.members[Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]].user
-              console.log("Chat name", user?.displayName)
-              name = user?.displayName || room.name
-              isGroup = false
+              const chatPartnerId = Object.keys(room.members).filter((userId) => userId !== currentUser.id)[0]
+              const user = room.members[chatPartnerId].user
+              console.log("Chat partner is user", user?.displayName, user)
+              name = user?.displayName || user?.email
             } catch (e) {
               toast.error("Die Daten deines Chatpartners konnten nicht geladen werden.")
               throw e
             }
           } else {
+            // group chats
             name = room.name
           }
-          newRooms.push({ ...room, name: name, isGroup: isGroup, id: roomId })
+          newRooms.push({ ...room, name: name, id: roomId })
         }
         // newRooms.reverse()
-        console.log("new rooms", rooms_, newRooms)
+        console.log("new rooms", roomsFromDb, newRooms)
         setRooms(newRooms.sort((a, b) => b.lastMessageSendAt - a.lastMessageSendAt))
       },
       (e) => {
         console.error("Error", e)
       },
     )
-  }, [])
+  }, [currentUser])
 
   useEffect(() => {
     if (currentRoom == null) {
-      setCurrentRoom(rooms[0])
+      if (defaultChatId != null && defaultChatId !== "first") {
+        setCurrentRoom(rooms.find((room) => room.id === defaultChatId))
+      } else {
+        setCurrentRoom(rooms[0])
+      }
     } else {
       setCurrentRoom(rooms.find((room) => room.id === currentRoom.id))
     }
@@ -125,9 +143,17 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
     console.log("set current room", roomId)
   }
 
-  const createRoom = () => {
-    chatService.createRoom(currentUser, "Neuer Chat von " + currentUser.displayName).catch(() => {
+  const createGroup = () => {
+    ChatService.createRoom(currentUser, "Neuer Chat von " + currentUser.displayName).catch((error) => {
       toast.error("Es konnte kein neuer Chat-Raum erstellt werden.")
+      throw error
+    })
+  }
+
+  const createChat = (chatPartner: GenericProfile) => {
+    ChatService.createChat(currentUser, chatPartner).catch((error) => {
+      toast.error("Es konnte kein neuer persönlicher Chat erstellt werden.")
+      throw error
     })
   }
 
@@ -138,7 +164,8 @@ export function ChatProvider({ children, currentUser }: { children: ReactNode; c
           rooms: rooms,
           currentRoom: currentRoom,
           setCurrentRoom: handleCurrentRoom,
-          createRoom: createRoom,
+          createGroup: createGroup,
+          createChat: createChat,
           messages: messages,
           loading: loading,
         }}
@@ -153,7 +180,7 @@ export function useChatContext() {
   const context = React.useContext(ChatContext)
 
   if (context === undefined) {
-    throw new Error("useAuthContext should be used within an AuthProvider.")
+    throw new Error("useChatContext should be used within an ChatProvider.")
   }
 
   return context
