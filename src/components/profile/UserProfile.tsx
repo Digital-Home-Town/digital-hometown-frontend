@@ -13,7 +13,6 @@ import UserProfilePicture from "./UserProfilePicture"
 
 function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const navigate = useNavigate()
-  const [msgView, setMsgView] = React.useState(false)
 
   if (currentUser == null || profile == null) {
     return <Loader />
