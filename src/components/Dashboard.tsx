@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
-import CreatePostDialog from "./posts/CreateDialog"
+import CreatePostDialog from "./posts/CreatePostDialog"
 import ClubTable from "./table/ClubTable"
 import UserTable from "./table/UserTable"
 
