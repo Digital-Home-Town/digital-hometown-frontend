@@ -6,7 +6,7 @@ import withAuth from "src/auth/withAuth"
 import usePostContext from "../posts/PostContext"
 import Posts from "../posts/Posts"
 
-function UserProfilePosts({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+function GenericProfilePosts({ profile, currentUser }: ProfileProps<User | Club> & AuthContextI) {
   const posts = usePostContext().posts.filter((p) => p.author.id === profile?.id)
 
   return (
@@ -17,4 +17,4 @@ function UserProfilePosts({ profile, currentUser }: ProfileProps<User> & AuthCon
   )
 }
 
-export default withAuth(UserProfilePosts)
+export default withAuth(GenericProfilePosts)

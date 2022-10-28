@@ -1,15 +1,14 @@
+import { Card, CardContent, CardHeader, Chip, Link, Stack, Typography } from "@mui/material"
 import * as React from "react"
-import { Button, Card, CardActions, CardContent, CardHeader, Chip, Stack, Typography, Link } from "@mui/material"
-import ShowDialog from "./ShowDialog"
-import BobbelMenu from "./BobbelMenu"
 import { useNavigate } from "react-router"
+
+import BobbelMenu from "./BobbelMenu"
 
 interface PostProperties {
   post: Post
 }
 function Post({ post }: PostProperties) {
   const navigate = useNavigate()
-  const [postDialogOpen, setPostDialogOpen] = React.useState(false)
   return (
     <Card>
       <CardHeader
@@ -21,29 +20,17 @@ function Post({ post }: PostProperties) {
             </Link>
           </span>
         }
-        title={
-          post.title
-          // <span>
-          //   <Typography>{post.title}</Typography>
-          //   <Typography fontSize="small">{post.type}</Typography>
-          // </span>
-        }
+        title={post.title}
         action={<BobbelMenu post={post} />}
       />
       <CardContent>
         <Typography>{post.text}</Typography>
+        <Stack direction="row" justifyContent="flex-start" gap={1} marginTop={2}>
+          {post.tags.map((category, val) => (
+            <Chip key={val} label={category} />
+          ))}
+        </Stack>
       </CardContent>
-      <Stack direction="row" justifyContent="flex-start" gap={1} sx={{ px: 1 }}>
-        {post.tags.map((category, val) => (
-          <Chip key={val} label={category} />
-        ))}
-      </Stack>
-      <CardActions>
-        <Button size="small" onClick={() => setPostDialogOpen(true)}>
-          Öffnen
-        </Button>
-      </CardActions>
-      <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
     </Card>
   )
 }

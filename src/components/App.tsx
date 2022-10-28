@@ -7,12 +7,12 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { de } from "date-fns/locale"
 import React from "react"
-import { Route, Routes, BrowserRouter } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
+import ChatPage from "src/pages/ChatPage"
 import GenericProfilePage from "src/pages/profiles/GenericProfilePage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
-import ChatPage from "src/pages/ChatPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
@@ -20,11 +20,11 @@ import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
+import LandingPageOrg from "./LandingPageOrg"
 import MuiPlayground from "./playground/mui/MuiPlayground"
 import { PostProvider } from "./posts/PostContext"
 import PostList from "./posts/PostList"
 import Start from "./Start"
-import LandingPageOrg from "./LandingPageOrg"
 
 toast.configure()
 

@@ -5,4 +5,8 @@ interface GenericProfile {
   email?: string
   photoURL?: string
   postCode?: number
+  dateOfBirth?: number
+  age?: number
+  interests?: string[]
+  desc?: string
 }

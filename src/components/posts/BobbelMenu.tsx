@@ -1,18 +1,21 @@
+import { ChatBubble, DeleteForever, Info, MoreVert, Person } from "@mui/icons-material"
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 import * as React from "react"
-import { MoreVert, ChatBubble, Person, DeleteForever } from "@mui/icons-material"
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
-import withAuth from "src/auth/withAuth"
-import usePostContext from "./PostContext"
-import ChatService from "src/services/ChatService"
 import Loader from "src/auth/Loader"
+import withAuth from "src/auth/withAuth"
+import ChatService from "src/services/ChatService"
+
+import usePostContext from "./PostContext"
+import ShowDialog from "./ShowDialog"
 
 function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
   const navigate = useNavigate()
   const { deletePost } = usePostContext()
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const [openMenu, setOpenMenu] = React.useState(false)
+  const [postDialogOpen, setPostDialogOpen] = React.useState(false)
 
   if (currentUser == null) {
     return <Loader />
@@ -31,6 +34,12 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
       <Menu anchorEl={anchorRef.current} open={openMenu} onClick={() => setOpenMenu(false)}>
         {currentUser?.id !== post.author.id ? (
           <div>
+            <MenuItem onClick={() => setPostDialogOpen(true)}>
+              <ListItemIcon>
+                <Info />
+              </ListItemIcon>
+              <ListItemText>Details</ListItemText>
+            </MenuItem>
             <MenuItem onClick={() => navigate(`/profile/${post.author.id}`)}>
               <ListItemIcon>
                 <Person />
@@ -57,6 +66,7 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
           </MenuItem>
         )}
       </Menu>
+      <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
     </div>
   )
 }
