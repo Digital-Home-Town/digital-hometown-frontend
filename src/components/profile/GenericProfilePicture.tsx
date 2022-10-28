@@ -14,7 +14,6 @@ import userService from "src/services/UserService"
 function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
-  let profilePicture = profile?.photoURL || ""
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
   const [_file, setFile] = useState(null)
 
@@ -35,7 +34,6 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     // BUG : updatedUser keeps old data
     const url = ""
     userService.updateAttribute(profile, { photoURL: url })
-    profilePicture = url
     setImageUrl(url)
 
     // (3) set new state
@@ -70,7 +68,6 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
 
     // update profile data
     userService.updateAttribute(profile, { photoURL: url })
-    profilePicture = ""
     setImageUrl(url)
   }
 
@@ -78,31 +75,26 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     <Grid item xs={4} padding={3}>
       {/* TODO: url-state-change
       <ProfilePicture profile={profile || undefined} size={128} /> */}
-      <Avatar alt="profile-picture" src={profilePicture || imageUrl} sx={{ height: 128, width: 128 }} variant="rounded">
-        {!profilePicture && !imageUrl && <Person fontSize="large" />}
+      <Avatar alt="profile-picture" src={imageUrl} sx={{ height: 128, width: 128 }} variant="rounded">
+        {!imageUrl && <Person fontSize="large" />}
       </Avatar>
       {!readOnly ? (
-        <Stack direction="row" spacing={5} alignItems={"center"} justifyContent={"center"} width={100} margin={1}>
-          <form onSubmit={handleUpload}>
-            <label htmlFor="file-input">
-              <IconButton>
-                <PhotoCamera />
-                <input
-                  style={{ display: "none" }}
-                  id="file-input"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    addImage(e)
-                  }}
-                />
-              </IconButton>
-            </label>
+        <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"center"} width={100} margin={1}>
+          <IconButton component="label" onSubmit={handleUpload}>
+            <input
+              hidden
+              type="file"
+              accept="image/*"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                addImage(e)
+              }}
+            />
+            <PhotoCamera />
+          </IconButton>
 
-            <IconButton color="error" onClick={deleteImage}>
-              <ClearIcon />
-            </IconButton>
-          </form>
+          <IconButton color="error" onClick={deleteImage}>
+            <ClearIcon />
+          </IconButton>
         </Stack>
       ) : (
         ""

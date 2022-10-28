@@ -36,6 +36,7 @@ export class GenericProfileService<T extends GenericProfile> {
     // Update
     if (profile) {
       const updatedUser = { ...profile, ...attributes }
+      profile = updatedUser
       this.update(updatedUser.id, updatedUser)
         .then(() => {
           toast.success("Dein Profil wurde aktualisiert.")
