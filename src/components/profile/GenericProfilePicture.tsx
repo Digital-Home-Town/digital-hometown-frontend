@@ -4,13 +4,12 @@ import { Person } from "@mui/icons-material"
 import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import { Avatar, Grid } from "@mui/material"
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
-
-import { updateProfileAttribute } from "./updateProfileAttribute"
+import userService from "src/services/UserService"
 
 function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
@@ -26,19 +25,21 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
 
     // (1) get ref & delete file
     // https://firebase.google.com/docs/storage/web/delete-files
-    const desertRef = ref(storage, profile?.photoURL)
-    deleteObject(desertRef)
-      .then(() => {
-        // File deleted successfully
-      })
-      .catch((error) => {
-        // Uh-oh, an error occurred!
-      })
+    // Jonas: Why tho?
+    // const desertRef = ref(storage, profile?.photoURL)
+    // deleteObject(desertRef)
+    //   .then(() => {
+    //     // File deleted successfully
+    //   })
+    //   .catch((error) => {
+    //     // Uh-oh, an error occurred!
+    //   })
 
     // (2) update profile data
     // BUG : updatedUser keeps old data
     const url = ""
-    updateProfileAttribute(profile, "photoURL", url, setImageUrl)
+    userService.updateAttribute(profile, { photoURL: url })
+    setImageUrl(url)
 
     // (3) set new state
     setFile(null)
@@ -73,7 +74,8 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     const url = await getDownloadURL(imageRef)
 
     // update profile data
-    updateProfileAttribute(profile, "photoURL", url, setImageUrl)
+    userService.updateAttribute(profile, { photoURL: url })
+    setImageUrl(url)
   }
 
   return (

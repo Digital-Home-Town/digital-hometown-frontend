@@ -32,6 +32,21 @@ export class GenericProfileService<T extends GenericProfile> {
     }
   }
 
+  updateAttribute(profile: any, attributes: Partial<T>) {
+    // Update
+    if (profile) {
+      const updatedUser = { ...profile, ...attributes }
+      this.update(updatedUser.id, updatedUser)
+        .then(() => {
+          toast.success("Dein Profil wurde aktualisiert.")
+        })
+        .catch((e) => {
+          toast.error("Dein Profil konnte nicht aktualisiert werden.")
+          throw e
+        })
+    }
+  }
+
   async update(id: string, profile: GenericProfile) {
     requestCount++
     console.log(`${this.collection.path}: update ${requestCount}`)

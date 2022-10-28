@@ -2,9 +2,9 @@ import { Chip, Grid, Typography } from "@mui/material"
 import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
+import userService from "src/services/UserService"
 
 import { DialogEditInterests, DialogEditText } from "./DialogContext"
-import { updateProfileAttribute } from "./updateProfileAttribute"
 
 function GenericProfileInfo({ profile, currentUser }: ProfileProps<User | Club> & AuthContextI) {
   // Internal
@@ -19,13 +19,17 @@ function GenericProfileInfo({ profile, currentUser }: ProfileProps<User | Club> 
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
   const saveInterests = (list: string[]) => {
-    updateProfileAttribute(profile, "interests", list.sort(), setInterests)
+    const interests = list.sort()
+    userService.updateAttribute(profile, { interests: interests })
+    setInterests(interests)
   }
   const deleteInterest = (id: number) => {
     // Delete
     const newList = [...interests]
     newList.splice(id, 1)
-    updateProfileAttribute(profile, "interests", newList, setInterests)
+
+    userService.updateAttribute(profile, { interests: newList })
+    setInterests(newList)
   }
 
   // Description
@@ -38,8 +42,9 @@ function GenericProfileInfo({ profile, currentUser }: ProfileProps<User | Club> 
   const defaultDesc = "Bitte ausfüllen."
   const [desc, setDesc] = useState<string>(profile?.desc || defaultDesc)
 
-  const saveDescription = (value: string) => {
-    updateProfileAttribute(profile, "desc", value || defaultDesc, setDesc)
+  const saveDescription = (desc: string) => {
+    userService.updateAttribute(profile, { desc: desc || defaultDesc })
+    setDesc(desc)
   }
 
   // PROFILE
