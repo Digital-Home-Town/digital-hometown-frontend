@@ -25,48 +25,43 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
   }
 
   return (
-    <Card>
-      <Grid container>
-        <Grid item xs={12}>
-          <Stack direction="row" spacing={0.5} justifyContent="end">
-            <Button variant="contained" onClick={() => setMsgView(!msgView)}>
-              {msgView ? "Infos" : "Posts"}
-            </Button>
-            {currentUser.id !== profile.id && (
-              <>
-                {/* do not show buttons if it is the own profile */}
-                <Button variant="contained">Folgen</Button>
-                <Button variant="contained" onClick={openChat}>
-                  Nachricht
-                </Button>
-                <Button variant="outlined">Blockieren</Button>
-              </>
-            )}
-          </Stack>
-        </Grid>
-        <Grid item xs={2}>
-          <UserProfilePicture profile={profile} />
-        </Grid>
+    <div>
+      <Card>
+        <Grid container>
+          <Grid item xs={12}>
+            <Stack direction="row" spacing={0.5} justifyContent="end">
+              {currentUser.id !== profile.id && (
+                <>
+                  {/* do not show buttons if it is the own profile */}
+                  <Button variant="contained" onClick={openChat}>
+                    Nachricht
+                  </Button>
+                </>
+              )}
+            </Stack>
+          </Grid>
+          <Grid item xs={2}>
+            <UserProfilePicture profile={profile} />
+          </Grid>
 
-        <Grid container item xs={10}>
-          <Grid item lg={12} xs={12}>
-            {/*Name*/}
-            <Typography variant="h6" gutterBottom>
-              {profile?.displayName || "Kein Name"}
-            </Typography>
-          </Grid>
-          <Grid item lg={12} xs={12}>
-            {msgView ? (
-              <PostProvider>
-                <UserProfilePosts profile={profile} />
-              </PostProvider>
-            ) : (
+          <Grid container item xs={10}>
+            <Grid item lg={12} xs={12}>
+              {/*Name*/}
+              <Typography variant="h6" gutterBottom>
+                {profile?.displayName || "Kein Name"}
+              </Typography>
+            </Grid>
+            <Grid item lg={12} xs={12}>
               <UserProfileInfo profile={profile} />
-            )}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Card>
+      </Card>
+
+      <PostProvider>
+        <UserProfilePosts profile={profile} />
+      </PostProvider>
+    </div>
   )
 }
 
