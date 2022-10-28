@@ -1,4 +1,5 @@
-import { Chip, Grid, Typography } from "@mui/material"
+import EditIcon from "@mui/icons-material/Edit"
+import { Chip, Grid, IconButton, Typography } from "@mui/material"
 import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -98,6 +99,9 @@ function GenericProfileInfo({ profile, currentUser }: ProfileProps<User | Club> 
                 Beschreibung: <br />
                 {/*<Button onClick={handleEditDesc}>Add Desc</Button>*/}
                 <Typography variant="body2" gutterBottom onClick={toggleDescDialog}>
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
                   {desc}
                 </Typography>
                 {!readOnly ? (
