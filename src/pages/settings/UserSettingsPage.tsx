@@ -1,19 +1,18 @@
-import React, { useState } from "react"
-import { toast } from "react-toastify"
-
 import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-
 import parse from "date-fns/parse"
-
+import React, { useState } from "react"
+import { toast } from "react-toastify"
+import { AuthContextI } from "src/auth/AuthContext"
+import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
-import { AuthContextI } from "src/auth/AuthContext"
+
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
+function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI) {
   const delimiter: string = " "
   const fullName: string[] = (currentUser?.displayName || "").split(delimiter)
 
@@ -23,7 +22,7 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
 
-  const [formValues, setFormValues] = useState({
+  const [formValues] = useState({
     givenName: {
       value: givenName,
       error: false,
@@ -50,25 +49,20 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
       errorMessage: "Fehlerhafte PLZ",
     },
   })
-
-  const handleChange = (evt: any) => {
-    //const { name, value }: { string, string | number } = evt.target //vs evt.currentTarget.value ?
-    const name: string = evt.target.name
-    const value: any = evt.target.value
-    console.log(name)
-
-    // TODO:
-    //  * Validation
-    //  * Disable submit button
-    //  * Implement formValues into handleSubmit
-
-    // setFormValues({
-    //   ...formValues,
-    //   [name]: {
-    //     ...formValues[name as keyof ObjectType],
-    //     value,
-    //   },
-    // })
+  if (currentUser == null) {
+    return <Loader />
+  }
+  const handleDelete = () => {
+    userService
+      .delete(currentUser.id)
+      .then(() => {
+        logOut()
+        toast.success("Dein Profil wurde gelöscht.")
+      })
+      .catch((e) => {
+        toast.error("Dein Profil konnte nicht gelöscht werden.")
+        throw e
+      })
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,7 +78,7 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
 
     const postCode: number = Number(data.get("postCode")) || 0
 
-    if (fullName.length > 0 && email.length > 0 && dateOfBirth && currentUser) {
+    if (fullName.length > 0 && email.length > 0 && dateOfBirth) {
       const profile: User = {
         ...currentUser,
         displayName: fullName,
@@ -102,6 +96,8 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
           toast.error("Dein Profil konnte nicht aktualisiert werden.")
           throw e
         })
+    } else {
+      toast.error("Fehler in deinen Daten")
     }
   }
 
@@ -113,7 +109,7 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
             Account-Einstellungen
           </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} onChange={handleChange} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Input
               name="givenName"
               placeholder="Vorname"
@@ -148,14 +144,15 @@ function UserSettingsPage({ currentUser, setCurrentUser }: AuthContextI) {
               helperText={formValues.postCode.error ? formValues.postCode.errorMessage : ""}
               settings={{ min: "1", max: "5" }}
             />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Speichern
-            </Button>
+            <Stack direction="row" spacing={2} marginY={2} alignItems={"center"} justifyContent={"center"}>
+              <Button type="submit" variant="contained" color="success">
+                Speichern
+              </Button>
+              <Button variant="contained" color="error" onClick={handleDelete}>
+                Benutzer löschen
+              </Button>
+            </Stack>
           </Box>
-          {/* TODO */}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Account löschen
-          </Button>
         </Stack>
       ) : (
         <div>Du hast keinen Zugriff auf diese Seite</div>

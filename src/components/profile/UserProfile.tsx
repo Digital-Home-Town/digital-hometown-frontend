@@ -8,8 +8,8 @@ import ChatService from "src/services/ChatService"
 
 import { PostProvider } from "../posts/PostContext"
 import GenericProfileInfo from "./GenericProfileInfo"
+import GenericProfilePicture from "./GenericProfilePicture"
 import GenericProfilePosts from "./GenericProfilePosts"
-import UserProfilePicture from "./UserProfilePicture"
 
 function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const navigate = useNavigate()
@@ -28,7 +28,7 @@ function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI
       <Card>
         <Grid container>
           <Grid item xs={2}>
-            <UserProfilePicture profile={profile} />
+            <GenericProfilePicture profile={profile} />
           </Grid>
 
           <GenericProfileInfo profile={profile} />

@@ -12,15 +12,13 @@ import { storage } from "src/firebase-config"
 
 import { updateProfileAttribute } from "./updateProfileAttribute"
 
-function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
   const [_file, setFile] = useState(null)
 
   function deleteImage() {
-    console.log("delete")
-    console.log(profile?.photoURL)
     if (!profile?.photoURL) {
       setImageUrl("")
       return
@@ -110,4 +108,4 @@ function UserProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthC
   )
 }
 
-export default withAuth(UserProfilePicture)
+export default withAuth(GenericProfilePicture)

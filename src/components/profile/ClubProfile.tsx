@@ -8,8 +8,8 @@ import ChatService from "src/services/ChatService"
 
 import { PostProvider } from "../posts/PostContext"
 import GenericProfileInfo from "./GenericProfileInfo"
+import UserProfilePicture from "./GenericProfilePicture"
 import GenericProfilePosts from "./GenericProfilePosts"
-import UserProfilePicture from "./UserProfilePicture"
 
 function ClubProfile({ profile, currentUser }: ProfileProps<Club> & AuthContextI) {
   const navigate = useNavigate()
