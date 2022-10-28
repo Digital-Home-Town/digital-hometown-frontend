@@ -1,4 +1,4 @@
-import { Menu as MenuIcon } from "@mui/icons-material"
+import { Edit, Menu as MenuIcon } from "@mui/icons-material"
 import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom"
 
 import { AuthContextI } from "../../auth/AuthContext"
 import withAuth from "../../auth/withAuth"
+import CreatePostDialog from "../posts/CreatePostDialog"
 import { ColorModeToggler, CustomMenuItem } from "./HeaderMenuItems"
 
 function HeaderMenu({ currentUser }: AuthContextI) {
+  const [postDialogOpen, setPostDialogOpen] = React.useState(false)
   const navigate = useNavigate()
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
@@ -56,6 +58,9 @@ function HeaderMenu({ currentUser }: AuthContextI) {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
+      <IconButton onClick={() => setPostDialogOpen(true)} color="inherit">
+        <Edit />
+      </IconButton>
       <Button variant="text" color="inherit" onClick={handleClickName}>
         <Typography>{currentUser?.displayName}</Typography>
         <Avatar alt="Profilfoto" src={getPhoto()} imgProps={{ referrerPolicy: "no-referrer" }} style={{ margin: 10 }} />
@@ -103,6 +108,7 @@ function HeaderMenu({ currentUser }: AuthContextI) {
         <Divider />
         <MenuItem disabled>{currentUser?.displayName}</MenuItem>
       </Menu>
+      <CreatePostDialog open={postDialogOpen} setOpen={setPostDialogOpen} />
     </Box>
   )
 }
