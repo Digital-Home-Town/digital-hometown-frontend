@@ -41,6 +41,10 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
         title: postTitle,
         tags: postTags,
       })
+      setPostTitle("")
+      setPostText("")
+      setPostType(undefined)
+      setPostTags([])
     } else {
       toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
     }
