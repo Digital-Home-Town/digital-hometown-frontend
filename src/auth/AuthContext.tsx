@@ -36,8 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
-  console.log("currentUser", currentUser)
-
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       console.log("auth state changed", user)

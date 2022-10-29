@@ -23,7 +23,7 @@ function BlockedPage({ currentUser }: AuthContextI) {
         const blockedUsers = (currentUser?.blocked || [])
           .map((id) => {
             const found = datas.find((data) => id === data.id)
-            return { id: found?.id || "", name: found?.displayName || "" }
+            return { id: found?.id || "", name: (found?.displayName || "") + " (" + (found?.email || "") + ")" }
           })
           .filter((blockedUser) => blockedUser.id !== "")
         setBlocked(blockedUsers)

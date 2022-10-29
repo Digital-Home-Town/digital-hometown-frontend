@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useEffect } from "react"
 import ReactPlaceholder from "react-placeholder"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
 import ClubProfile from "src/components/profile/ClubProfile"
 import UserProfile from "src/components/profile/UserProfile"
@@ -11,7 +11,13 @@ import userService from "src/services/UserService"
 import withAuth from "../../auth/withAuth"
 
 function GenericProfilePage({ currentUser }: AuthContextI) {
+  const navigate = useNavigate()
   const { id } = useParams()
+
+  if (id && currentUser?.blocked?.includes(id)) {
+    // toast.warn("Du hast den Nutzer blockiert")
+    navigate("/")
+  }
   const [profile, setProfile] = React.useState<null | GenericProfile>(null)
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
 

@@ -11,7 +11,7 @@ import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
 import userService from "src/services/UserService"
 
-function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+function GenericProfilePicture({ profile, currentUser, setCurrentUser }: ProfileProps<User> & AuthContextI) {
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
@@ -40,6 +40,7 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     setImageUrl(url)
     if (currentUser) {
       currentUser.photoURL = ""
+      setCurrentUser(currentUser)
     }
 
     // (3) set new state
@@ -76,6 +77,7 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     userService.updateAttribute(profile, { photoURL: url })
     if (currentUser) {
       currentUser.photoURL = url
+      setCurrentUser(currentUser)
     }
     setImageUrl(url)
   }

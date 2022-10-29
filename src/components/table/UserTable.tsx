@@ -3,6 +3,7 @@ import moment from "moment"
 import * as React from "react"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
+import { AuthContextI } from "src/auth/AuthContext"
 import userService from "src/services/UserService"
 
 import withAuth from "../../auth/withAuth"
@@ -25,7 +26,7 @@ const columns = [
   },
 ]
 
-function UserTable() {
+function UserTable({ currentUser }: AuthContextI) {
   const navigate = useNavigate()
   const [profiles, setProfiles] = React.useState<User[]>([])
 
@@ -33,11 +34,12 @@ function UserTable() {
     const getProfiles = async () => {
       const profilesData = await userService.getAll()
       if (profilesData) {
-        setProfiles(profilesData)
+        const data = profilesData.filter((profile) => !currentUser?.blocked?.includes(profile.id))
+        setProfiles(data)
       }
     }
     if (!profiles.length) getProfiles()
-  }, [profiles])
+  }, [currentUser?.blocked, profiles])
 
   return profiles ? (
     <div style={{ height: 400, width: "100%" }}>

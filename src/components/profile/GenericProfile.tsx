@@ -16,7 +16,7 @@ import GenericProfileInfo from "./GenericProfileInfo"
 import GenericProfilePicture from "./GenericProfilePicture"
 import GenericProfilePosts from "./GenericProfilePosts"
 
-function GenericProfile({ profile, currentUser }: ProfileProps<User | Club> & AuthContextI) {
+function GenericProfile({ profile, currentUser, setCurrentUser }: ProfileProps<User | Club> & AuthContextI) {
   const navigate = useNavigate()
 
   const [editMode, setEditMode] = useState<boolean>(true)
@@ -32,10 +32,12 @@ function GenericProfile({ profile, currentUser }: ProfileProps<User | Club> & Au
     navigate(`/chat/${key}`)
   }
 
-  const block = () => {
+  const block = async () => {
     const blockedUsers = currentUser.blocked || []
     blockedUsers?.push(profile.id)
-    userService.updateAttribute(currentUser, { blocked: blockedUsers })
+    await userService.updateAttribute(currentUser, { blocked: blockedUsers })
+    currentUser.blocked = blockedUsers
+    setCurrentUser(currentUser)
     navigate("/")
   }
 
