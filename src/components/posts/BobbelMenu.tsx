@@ -1,5 +1,17 @@
-import { ChatBubble, DeleteForever, Info, MoreVert, Person } from "@mui/icons-material"
-import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
+import {
+  ChatBubble,
+  DeleteForever,
+  Info,
+  MoreVert,
+  Person,
+} from "@mui/icons-material"
+import {
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -58,12 +70,20 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
             </MenuItem>
           </div>
         ) : (
-          <MenuItem onClick={() => deletePost(post)}>
-            <ListItemIcon>
-              <DeleteForever />
-            </ListItemIcon>
-            <ListItemText> Beitrag löschen</ListItemText>
-          </MenuItem>
+          <div>
+            <MenuItem onClick={() => setPostDialogOpen(true)}>
+              <ListItemIcon>
+                <Info />
+              </ListItemIcon>
+              <ListItemText>Details</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={() => deletePost(post)}>
+              <ListItemIcon>
+                <DeleteForever />
+              </ListItemIcon>
+              <ListItemText> Beitrag löschen</ListItemText>
+            </MenuItem>
+          </div>
         )}
       </Menu>
       <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
