@@ -1,7 +1,7 @@
 import { EmojiEmotions } from "@mui/icons-material"
 import SendIcon from "@mui/icons-material/Send"
 import { IconButton, InputAdornment, TextField } from "@mui/material"
-import Picker, { IEmojiData } from "emoji-picker-react"
+import Picker, { EmojiClickData } from "emoji-picker-react"
 import * as React from "react"
 import { useReducer, useState } from "react"
 import { BrowserView } from "react-device-detect"
@@ -16,7 +16,7 @@ function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) 
   const [message, setMessage] = useState("")
   const [showEmojiPicker, toggleEmojiPicker] = useReducer((state: boolean) => !state, false)
 
-  const onEmojiClick = (emojiObject: IEmojiData) => {
+  const onEmojiClick = (emojiObject: EmojiClickData) => {
     if (emojiObject.emoji != null) setMessage((prev) => prev + emojiObject.emoji)
   }
 
@@ -39,7 +39,7 @@ function SendMessage({ currentRoom, currentUser }: AuthContextI & ChatContextI) 
       {showEmojiPicker && (
         <BrowserView>
           <div className={classes.emojiPicker}>
-            <Picker onEmojiClick={(_, emojiObject) => onEmojiClick(emojiObject)} />
+            <Picker onEmojiClick={(emojiObject, _) => onEmojiClick(emojiObject)} />
           </div>
         </BrowserView>
       )}
