@@ -1,11 +1,19 @@
-import List from "@mui/material/List"
-import { Avatar, Divider, Icon, ListItem, ListItemIcon, ListItemText } from "@mui/material"
-import { ChatContextI, withChat } from "./ChatContext"
 import { Groups, Person } from "@mui/icons-material"
+import {
+  Avatar,
+  Divider,
+  Icon,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material"
+import List from "@mui/material/List"
 import { useEffect, useState } from "react"
-import userService from "src/services/UserService"
-import withAuth from "src/auth/withAuth"
 import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+import userService from "src/services/UserService"
+
+import { ChatContextI, withChat } from "./ChatContext"
 
 function SelectUser_({
   setSelectedUser,
@@ -15,7 +23,6 @@ function SelectUser_({
 
   useEffect(() => {
     userService.getAll().then((users: GenericProfile[]) => {
-      console.log(users)
       setUsers(users.filter((user) => user.id !== currentUser?.id))
     })
   }, [currentUser])

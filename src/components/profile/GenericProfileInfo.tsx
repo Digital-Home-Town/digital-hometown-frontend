@@ -21,7 +21,7 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
 
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
-  if (interests !== profile?.interests && profile) {
+  if (profile?.interests && (interests !== profile?.interests || interests.length !== 0)) {
     setInterests(profile.interests || [])
   }
   const saveInterests = (list: string[]) => {
@@ -31,7 +31,7 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
   }
 
   const [desc, setDesc] = useState<string>(profile?.desc || "")
-  if (desc !== profile?.desc && profile) {
+  if (profile?.desc && desc !== profile?.desc) {
     setDesc(profile.desc || "")
   }
   const handleDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {

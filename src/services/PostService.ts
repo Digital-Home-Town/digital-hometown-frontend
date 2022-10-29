@@ -51,7 +51,6 @@ class PostService {
       post_.id = doc.id
       post_.tags = post_.tags || []
       post_.created = post_?.created.toDate().getTime() || 0
-      console.log("Post", post_)
       return post_
     })
     return posts

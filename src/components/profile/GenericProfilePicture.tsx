@@ -49,12 +49,10 @@ function GenericProfilePicture({ profile, currentUser, setCurrentUser }: Profile
 
   function addImage(e: any) {
     e.preventDefault()
-    console.log("add")
 
     const file = e.target.files[0]
 
     if (console) {
-      console.log("setFile")
       handleUpload(file)
     }
   }

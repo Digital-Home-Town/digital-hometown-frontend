@@ -1,5 +1,3 @@
-import React, { KeyboardEvent, useState } from "react"
-
 import { Edit, LocationOn, ShoppingCartRounded } from "@mui/icons-material"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import FavoriteIcon from "@mui/icons-material/Favorite"
@@ -34,6 +32,7 @@ import Container from "@mui/material/Container"
 import IconButton, { IconButtonProps } from "@mui/material/IconButton"
 import { styled } from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
+import React, { KeyboardEvent, useState } from "react"
 
 import paellaImg from "../../../img/paella.png"
 
@@ -199,7 +198,6 @@ function FormDialog() {
   }
 
   function handleSubmit() {
-    console.log("Submitted")
     setOpen(false)
   }
 
