@@ -1,4 +1,4 @@
-import { List } from "@mui/icons-material"
+import { List, Star } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 import React from "react"
@@ -33,10 +33,6 @@ function Dashboard() {
 
   return (
     <div>
-      <Grid container direction="row" alignItems="center" justifyContent="center">
-        <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />
-        <StartElement onClick={() => navigate("/merkzettel")} text="Merkzettel" icon={List} />
-      </Grid>
       <h1>Alle Benutzer</h1>
       <UserTable></UserTable>
       <h1>Alle Vereine</h1>

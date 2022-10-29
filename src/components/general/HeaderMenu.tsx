@@ -1,4 +1,4 @@
-import { Chat, Edit, Menu as MenuIcon } from "@mui/icons-material"
+import { Chat, Edit, Menu as MenuIcon, Star, List } from "@mui/icons-material"
 import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -69,6 +69,12 @@ function HeaderMenu({ currentUser }: AuthContextI) {
       </IconButton>
       <IconButton onClick={() => navigate("/chat/first")} color="inherit">
         <Chat />
+      </IconButton>
+      <IconButton onClick={() => navigate("/merkzettel")} color="inherit">
+        <Star />
+      </IconButton>
+      <IconButton onClick={() => navigate("/posts")} color="inherit">
+        <List />
       </IconButton>
       <Button variant="text" color="inherit" onClick={handleClickName}>
         <Typography>{currentUser?.displayName}</Typography>
