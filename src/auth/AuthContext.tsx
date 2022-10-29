@@ -164,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const isProfile = await userService.exists(id)
 
         let service
-        const profile: GenericProfile = {
+        let profile: GenericProfile = {
           id,
           isOrg: false,
           email: user.email || "",
@@ -173,11 +173,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         if (isProfile) {
-          profile.isOrg = false
           service = userService
+          const existing = await service.get(id)
+          profile = { ...profile, ...existing }
+          profile.isOrg = false
         } else if (isClub) {
-          profile.isOrg = true
           service = clubService
+          const existing = await service.get(id)
+          profile = { ...profile, ...existing }
+
+          profile.isOrg = true
         } else {
           profile.isOrg = isOrg
           service = isOrg ? clubService : userService
