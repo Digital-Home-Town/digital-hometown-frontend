@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import { Box, CardMedia, IconButton } from "@mui/material"
 import { Stack } from "@mui/system"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
@@ -15,26 +15,14 @@ function GenericProfilePicture({ profile, currentUser, setCurrentUser }: Profile
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
-  if (imageUrl !== profile?.photoURL && profile) {
+
+  useEffect(() => {
     setImageUrl(profile.photoURL || "")
-  }
+  }, [profile, currentUser])
+
   const [_file, setFile] = useState(null)
 
   function deleteImage() {
-    // (1) get ref & delete file
-    // https://firebase.google.com/docs/storage/web/delete-files
-    // Jonas: Why tho?
-    // const desertRef = ref(storage, profile?.photoURL)
-    // deleteObject(desertRef)
-    //   .then(() => {
-    //     // File deleted successfully
-    //   })
-    //   .catch((error) => {
-    //     // Uh-oh, an error occurred!
-    //   })
-
-    // (2) update profile data
-    // BUG : updatedUser keeps old data
     const url = ""
     userService.updateAttribute(profile, { photoURL: url })
     setImageUrl(url)
@@ -43,7 +31,6 @@ function GenericProfilePicture({ profile, currentUser, setCurrentUser }: Profile
       setCurrentUser(currentUser)
     }
 
-    // (3) set new state
     setFile(null)
   }
 

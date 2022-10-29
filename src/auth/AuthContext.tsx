@@ -18,7 +18,7 @@ import Loader from "./Loader"
 
 export interface AuthContextI {
   currentUser: User | Club | undefined | null
-  setCurrentUser: React.Dispatch<React.SetStateAction<User | null | undefined>>
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | Club | undefined | null>>
   logOut: () => void
   logIn: (email: string, password: string) => void
   signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => Promise<void>

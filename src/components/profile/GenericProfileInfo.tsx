@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
@@ -19,21 +19,20 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
   // Internal
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
 
+  const [desc, setDesc] = useState<string>(profile?.desc || "")
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
-  if (profile?.interests && (interests !== profile?.interests || interests.length !== 0)) {
+  useEffect(() => {
+    setDesc(profile.desc || "")
     setInterests(profile.interests || [])
-  }
+  }, [profile, currentUser])
+
   const saveInterests = (list: string[]) => {
     const interests = list.sort()
     userService.updateAttribute(profile, { interests: interests })
     setInterests(interests)
   }
 
-  const [desc, setDesc] = useState<string>(profile?.desc || "")
-  if (profile?.desc && desc !== profile?.desc) {
-    setDesc(profile.desc || "")
-  }
   const handleDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const desc = event.target.value
     setDesc(desc)

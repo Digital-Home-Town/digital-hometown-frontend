@@ -1,4 +1,4 @@
 interface ProfileProps<T> {
-  profile: T | null
+  profile: T
   editMode?: boolean
 }
