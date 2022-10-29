@@ -120,6 +120,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
             <Input
               name="surName"
               placeholder="Nachname"
+              optional={true}
               initialValue={surName}
               error={formValues.surName.error}
               helperText={formValues.surName.error ? formValues.surName.errorMessage : ""}
@@ -139,10 +140,11 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
             <Input
               name="postCode"
               placeholder="Postleitzahl"
-              initialValue={currentUser?.postCode || ""}
+              optional={true}
+              initialValue={currentUser?.postCode || 0}
               error={formValues.postCode.error}
               helperText={formValues.postCode.error ? formValues.postCode.errorMessage : ""}
-              settings={{ min: "1", max: "5" }}
+              settings={{ min: "1", max: "99999" }}
             />
             <Stack direction="row" spacing={2} marginY={2} alignItems={"center"} justifyContent={"center"}>
               <Button type="submit" variant="contained" color="success">
