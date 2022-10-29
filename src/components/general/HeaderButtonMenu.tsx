@@ -19,7 +19,7 @@ function HeaderButtonMenu({ currentUser }: AuthContextI) {
           <Star />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Beitr#ge">
+      <Tooltip title="Beiträge">
         <IconButton onClick={() => navigate("/posts")} color="inherit">
           <List />
         </IconButton>

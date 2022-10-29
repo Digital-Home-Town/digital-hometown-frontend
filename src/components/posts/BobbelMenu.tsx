@@ -37,6 +37,27 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
         <MoreVert />
       </IconButton>
       <Menu anchorEl={anchorRef.current} open={openMenu} onClick={() => setOpenMenu(false)}>
+        <MenuItem
+          onClick={() => {
+            togglePostFavorites()
+          }}
+        >
+          {currentUser?.favoritePosts?.includes(post.id || "") ? (
+            <>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText> Aus Merkzettel entfernen</ListItemText>
+            </>
+          ) : (
+            <>
+              <ListItemIcon>
+                <Star />
+              </ListItemIcon>
+              <ListItemText> Beitrag in Merkzettel</ListItemText>
+            </>
+          )}
+        </MenuItem>
         {currentUser?.id !== post.author.id ? (
           <div>
             <MenuItem onClick={() => setPostDialogOpen(true)}>
@@ -78,27 +99,6 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
             </MenuItem>
           </div>
         )}
-        <MenuItem
-          onClick={() => {
-            togglePostFavorites()
-          }}
-        >
-          {currentUser?.favoritePosts?.includes(post.id || "") ? (
-            <>
-              <ListItemIcon>
-                <StarBorder />
-              </ListItemIcon>
-              <ListItemText> Aus Merkzettel entfernen</ListItemText>
-            </>
-          ) : (
-            <>
-              <ListItemIcon>
-                <Star />
-              </ListItemIcon>
-              <ListItemText> Beitrag in Merkzettel</ListItemText>
-            </>
-          )}
-        </MenuItem>
       </Menu>
       <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
     </div>

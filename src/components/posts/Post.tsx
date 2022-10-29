@@ -1,22 +1,20 @@
 import { Card, CardContent, CardHeader, Chip, Link, Stack } from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
-import { AuthContextI } from "src/auth/AuthContext"
-import withAuth from "src/auth/withAuth"
 
 import BobbelMenu from "./BobbelMenu"
 
 interface PostProperties {
   post: Post
 }
-function Post({ currentUser, post }: PostProperties & AuthContextI) {
+function Post({ post }: PostProperties) {
   const navigate = useNavigate()
   return (
     <Card>
       <CardHeader
         subheader={
           <span>
-            von{" "}
+            {post.type} von{" "}
             <Link component="button" onClick={() => navigate(`/profile/${post.author.id}`)}>
               {post.author?.displayName}
             </Link>
@@ -33,13 +31,8 @@ function Post({ currentUser, post }: PostProperties & AuthContextI) {
           ))}
         </Stack>
       </CardContent>
-      {/* <CardActions>
-        <Stack direction="row" justifyContent="flex-start" gap={1}>
-          <IconButton>{currentUser?.favoritePosts?.includes(post.id || "") ? <Star /> : <StarBorder />}</IconButton>
-        </Stack>
-      </CardActions> */}
     </Card>
   )
 }
 
-export default withAuth(Post)
+export default Post

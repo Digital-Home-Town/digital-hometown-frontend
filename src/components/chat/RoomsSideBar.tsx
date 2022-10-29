@@ -84,7 +84,7 @@ function RoomsSideBar({ rooms, createGroup, createChat }: ChatContextI) {
   ) : (
     <div>
       {rooms !== null && (
-        <List component="nav">
+        <List component="nav" style={{ maxHeight: "75vh", overflowY: "auto" }}>
           <ListItem
             button
             onClick={() => {
