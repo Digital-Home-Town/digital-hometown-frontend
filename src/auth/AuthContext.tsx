@@ -179,12 +179,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           profile.isOrg = isOrg
           service = isOrg ? clubService : userService
+          service.update(id, profile).catch((e) => {
+            toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+            throw e
+          })
         }
 
-        service.update(id, profile).catch((e) => {
-          toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-          throw e
-        })
         setCurrentUser(profile)
       })
       .catch((err) => {
