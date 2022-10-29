@@ -1,5 +1,13 @@
 import SaveIcon from "@mui/icons-material/Save"
-import { Box, CardContent, Chip, IconButton, Stack, TextField, Typography } from "@mui/material"
+import {
+  Box,
+  CardContent,
+  Chip,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material"
 import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -20,6 +28,9 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
   }
 
   const [desc, setDesc] = useState<string>(profile?.desc || "")
+  if (desc !== profile?.desc && profile) {
+    setDesc(profile.desc || "")
+  }
   const handleDescChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const desc = event.target.value
     setDesc(desc)
