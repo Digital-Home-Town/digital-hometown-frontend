@@ -7,6 +7,7 @@ export interface InputProps {
   initialValue: string | number | undefined
   error?: boolean | undefined
   helperText?: string
+  optional?: boolean
   settings?: {}
 }
 function Input(props: InputProps) {
@@ -22,7 +23,7 @@ function Input(props: InputProps) {
   }
   return (
     <TextField
-      required
+      required={!props.optional}
       fullWidth
       id={props.name}
       type={typeof props.initialValue === "number" ? "number" : "text"}

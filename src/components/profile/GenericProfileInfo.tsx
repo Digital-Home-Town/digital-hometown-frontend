@@ -1,13 +1,5 @@
 import SaveIcon from "@mui/icons-material/Save"
-import {
-  Box,
-  CardContent,
-  Chip,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material"
+import { Box, CardContent, Chip, IconButton, Stack, TextField, Typography } from "@mui/material"
 import React, { useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -67,7 +59,7 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
         </Stack>
         <Stack marginTop={2}>
           Beschreibung:
-          {editMode ? (
+          {!readOnly && editMode ? (
             <Stack direction="row">
               <TextField
                 disabled={readOnly || !editMode}

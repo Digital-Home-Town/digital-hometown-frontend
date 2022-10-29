@@ -126,9 +126,10 @@ function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
               name="postCode"
               placeholder="Postleitzahl"
               initialValue={currentUser?.postCode || ""}
+              optional={true}
               error={formValues.postCode.error}
               helperText={formValues.postCode.error ? formValues.postCode.errorMessage : ""}
-              settings={{ min: "1", max: "5" }}
+              settings={{ min: "1", max: "99999" }}
             />
             <Stack direction="row" spacing={2} marginY={2} alignItems={"center"} justifyContent={"center"}>
               <Button type="submit" variant="contained" color="success">

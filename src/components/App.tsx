@@ -13,6 +13,7 @@ import { toast, ToastContainer } from "react-toastify"
 import { AuthProvider } from "src/auth/AuthContext"
 import ChatPage from "src/pages/ChatPage"
 import GenericProfilePage from "src/pages/profiles/GenericProfilePage"
+import BlockedPage from "src/pages/settings/BlockedPage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
@@ -81,6 +82,7 @@ function App() {
                   <Route path="/register" element={<Register isOrg={false} />} />
                   <Route path="/user-settings" element={<UserSettingsPage />} />
                   <Route path="/club-settings" element={<ClubSettingsPage />} />
+                  <Route path="/blocked" element={<BlockedPage />} />
                   <Route path="/profile" element={<GenericProfilePage />} />
                   <Route
                     path="/posts"
