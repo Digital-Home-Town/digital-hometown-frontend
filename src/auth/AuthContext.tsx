@@ -36,6 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
+  console.log("currentUser", currentUser)
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       console.log("auth state changed", user)
@@ -49,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userService
           .get(user.uid)
           .then((profile) => {
-            console.log(profile)
+            console.log("firebase profile", profile)
             if (!profile) {
               clubService
                 .get(user.uid)
@@ -62,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   setLoading(false)
                 })
             } else {
-              console.log(profile)
+              console.log("Update user profile", profile)
               setCurrentUser(profile)
               setLoading(false)
             }
@@ -184,8 +186,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             throw e
           })
         }
-
-        setCurrentUser(profile)
       })
       .catch((err) => {
         toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)
