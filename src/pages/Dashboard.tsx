@@ -1,9 +1,8 @@
-import { Chat, Edit, List } from "@mui/icons-material"
+import { List } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import withAuth from "src/auth/withAuth"
 
 import CreatePostDialog from "../components/posts/CreatePostDialog"
 import ClubTable from "../components/table/ClubTable"
@@ -21,7 +20,7 @@ function StartElement({ onClick, text, icon }: StartElementInterface) {
   return (
     <Grid item m={1}>
       <Button variant="contained" sx={{ flexDirection: "column" }} onClick={onClick}>
-        <Icon sx={{ fontSize: "150px" }} />
+        <Icon sx={{ fontSize: "100px" }} />
         <Typography>{text}</Typography>
       </Button>
     </Grid>
@@ -35,8 +34,6 @@ function Dashboard() {
   return (
     <div>
       <Grid container direction="row" alignItems="center" justifyContent="center">
-        <StartElement onClick={() => navigate("/chat/first")} text="Chat" icon={Chat} />
-        <StartElement onClick={() => setPostDialogOpen(true)} text="Neuer Beitrag" icon={Edit} />
         <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />
         <StartElement onClick={() => navigate("/merkzettel")} text="Merkzettel" icon={List} />
       </Grid>

@@ -1,5 +1,5 @@
+import { Chat } from "@mui/icons-material"
 import EditIcon from "@mui/icons-material/Edit"
-import MessageIcon from "@mui/icons-material/Message"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Button, Card, Stack } from "@mui/material"
@@ -52,7 +52,7 @@ function GenericProfile({ profile, currentUser, setCurrentUser }: ProfileProps<U
         {currentUser.id !== profile.id && (
           <>
             {/* do not show buttons if it is the own profile */}
-            <Button variant="contained" onClick={openChat} startIcon={<MessageIcon />}>
+            <Button variant="contained" onClick={openChat} startIcon={<Chat />}>
               Schreib mir!
             </Button>
             <Button variant="contained" color="error" onClick={block} startIcon={<RemoveCircleOutlineIcon />}>

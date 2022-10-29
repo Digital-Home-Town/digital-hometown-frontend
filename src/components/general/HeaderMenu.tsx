@@ -1,4 +1,4 @@
-import { Edit, Menu as MenuIcon } from "@mui/icons-material"
+import { Chat, Edit, Menu as MenuIcon } from "@mui/icons-material"
 import { Button, Divider, Menu, MenuItem, Typography } from "@mui/material"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -66,6 +66,9 @@ function HeaderMenu({ currentUser }: AuthContextI) {
     <Box sx={{ flexGrow: 0 }}>
       <IconButton onClick={() => setPostDialogOpen(true)} color="inherit">
         <Edit />
+      </IconButton>
+      <IconButton onClick={() => navigate("/chat/first")} color="inherit">
+        <Chat />
       </IconButton>
       <Button variant="text" color="inherit" onClick={handleClickName}>
         <Typography>{currentUser?.displayName}</Typography>
