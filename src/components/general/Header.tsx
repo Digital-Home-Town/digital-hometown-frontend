@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 import AppBar from "@mui/material/AppBar"
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
@@ -12,6 +12,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
 import logo from "../../img/logo.png"
+import HeaderButtonMenu from "./HeaderButtonMenu"
 import HeaderMenu from "./HeaderMenu"
 import { ColorModeToggler } from "./HeaderMenuItems"
 
@@ -89,9 +90,10 @@ function Header({ currentUser }: AuthContextI) {
       <Container maxWidth="xl">
         {currentUser ? (
           <Toolbar disableGutters>
-            <div style={{ flexGrow: 1 }}>
+            <Stack direction="row" style={{ flexGrow: 1 }}>
               <Logo />
-            </div>
+              <HeaderButtonMenu />
+            </Stack>
             <HeaderMenu />
           </Toolbar>
         ) : (
