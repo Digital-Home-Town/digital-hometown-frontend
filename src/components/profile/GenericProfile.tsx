@@ -33,7 +33,7 @@ function GenericProfile({ profile, currentUser }: ProfileProps<User | Club> & Au
   }
 
   const block = () => {
-    const blockedUsers = currentUser.blocked
+    const blockedUsers = currentUser.blocked || []
     blockedUsers?.push(profile.id)
     userService.updateAttribute(currentUser, { blocked: blockedUsers })
   }
