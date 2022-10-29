@@ -67,7 +67,7 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
         </Stack>
         <Stack marginTop={2}>
           Beschreibung:
-          {editMode ? (
+          {!readOnly && editMode ? (
             <Stack direction="row">
               <TextField
                 disabled={readOnly || !editMode}
