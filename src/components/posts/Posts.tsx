@@ -5,6 +5,7 @@ import Post from "./Post"
 
 interface PostsProperties {
   posts: Post[]
+  notFoundText: string
 }
 
 function Posts(props: PostsProperties) {
@@ -13,10 +14,14 @@ function Posts(props: PostsProperties) {
       {props.posts.length ? (
         props.posts.map((post, index) => <Post post={post} key={index}></Post>)
       ) : (
-        <p>Leider keine Beiträge abgeben</p>
+        <p>{props.notFoundText}</p>
       )}
     </Stack>
   )
+}
+
+Posts.defaultProps = {
+  notFoundText: "Leider keine Beiträge abgeben",
 }
 
 export default Posts

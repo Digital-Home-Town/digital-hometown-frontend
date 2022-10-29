@@ -98,7 +98,14 @@ function App() {
                     <Route path="register" element={<RegisterOrg />} />
                     <Route path="LandingPage" element={<LandingPageOrg />} />
                   </Route>
-                  <Route path="/merkzettel" element={<Merkzettel />} />
+                  <Route
+                    path="/merkzettel"
+                    element={
+                      <PostProvider>
+                        <Merkzettel />
+                      </PostProvider>
+                    }
+                  />
                 </Routes>
               </Box>
             </Container>
