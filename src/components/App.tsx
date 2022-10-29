@@ -67,7 +67,7 @@ function App() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            bgcolor: mode === "dark" ? grey[800] : grey[300],
+            bgcolor: mode === "dark" ? grey[800] : grey[200],
             color: "text.primary",
           }}
           style={{ minHeight: "100vh" }}
