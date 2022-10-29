@@ -48,6 +48,19 @@ export class GenericProfileService<T extends GenericProfile> {
     }
   }
 
+  async togglePostFavorites(profile: GenericProfile, postId: string) {
+    if (profile.favoritePosts) {
+      if (profile.favoritePosts.includes(postId)) {
+        profile.favoritePosts = profile.favoritePosts.filter((p) => p !== postId)
+      } else {
+        profile.favoritePosts.push(postId)
+      }
+    } else {
+      profile.favoritePosts = [postId]
+    }
+    this.update(profile.id, profile)
+  }
+
   async update(id: string, profile: GenericProfile) {
     requestCount++
     console.log(`${this.collection.path}: update ${requestCount}`)

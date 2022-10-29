@@ -9,4 +9,5 @@ interface GenericProfile {
   age?: number
   interests?: string[]
   desc?: string
+  favoritePosts?: string[]
 }
