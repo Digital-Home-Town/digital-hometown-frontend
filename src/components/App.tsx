@@ -18,8 +18,14 @@ import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
-import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
-import BackendHealth from "./BackendHealth"
+import {
+  Register,
+  RegisterOrg,
+  ResetPassword,
+  SignIn,
+  SignInOrg,
+  SignOut,
+} from "./auth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
 import LandingPageOrg from "./LandingPageOrg"
@@ -74,7 +80,6 @@ function App() {
               <Box mt={1} mb={1}>
                 <Routes>
                   <Route path="/" element={<Start />} />
-                  <Route path="/health" element={<BackendHealth />} />
                   <Route path="/mui" element={<MuiPlayground />} />
                   <Route path="/sign-in" element={<SignIn isOrg={false} />} />
                   <Route path="/sign-out" element={<SignOut />} />
