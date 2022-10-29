@@ -1,5 +1,6 @@
 import EditIcon from "@mui/icons-material/Edit"
 import MessageIcon from "@mui/icons-material/Message"
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Button, Card, Stack } from "@mui/material"
 import React, { useState } from "react"
@@ -8,6 +9,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import ChatService from "src/services/ChatService"
+import userService from "src/services/UserService"
 
 import { PostProvider } from "../posts/PostContext"
 import GenericProfileInfo from "./GenericProfileInfo"
@@ -30,6 +32,12 @@ function GenericProfile({ profile, currentUser }: ProfileProps<User | Club> & Au
     navigate(`/chat/${key}`)
   }
 
+  const block = () => {
+    const blockedUsers = currentUser.blocked
+    blockedUsers?.push(profile.id)
+    userService.updateAttribute(currentUser, { blocked: blockedUsers })
+  }
+
   return (
     <div>
       <Card sx={{ display: "flex" }}>
@@ -43,6 +51,9 @@ function GenericProfile({ profile, currentUser }: ProfileProps<User | Club> & Au
             {/* do not show buttons if it is the own profile */}
             <Button variant="contained" onClick={openChat} startIcon={<MessageIcon />}>
               Schreib mir!
+            </Button>
+            <Button variant="contained" color="error" onClick={block} startIcon={<RemoveCircleOutlineIcon />}>
+              Benutzer blockieren
             </Button>
           </>
         )}

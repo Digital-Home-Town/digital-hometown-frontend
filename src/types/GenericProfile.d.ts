@@ -10,4 +10,5 @@ interface GenericProfile {
   interests?: string[]
   desc?: string
   favoritePosts?: string[]
+  blocked?: string[]
 }
