@@ -66,7 +66,7 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
             )}
           </Stack>
         </Typography>
-        <Stack>
+        <Stack marginTop={2}>
           Beschreibung:
           {editMode ? (
             <Stack direction="row">
