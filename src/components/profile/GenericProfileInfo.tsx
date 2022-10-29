@@ -21,6 +21,9 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
 
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
+  if (interests !== profile?.interests && profile) {
+    setInterests(profile.interests || [])
+  }
   const saveInterests = (list: string[]) => {
     const interests = list.sort()
     userService.updateAttribute(profile, { interests: interests })
