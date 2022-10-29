@@ -80,7 +80,7 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
   const width = 200
 
   return (
-    <Box>
+    <Box marginTop={3} marginLeft={3}>
       <CardMedia
         component="img"
         sx={{ width: width, height: width }}
