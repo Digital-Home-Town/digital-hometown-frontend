@@ -42,30 +42,27 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
         <Typography variant="h6" gutterBottom>
           {profile?.displayName || "Kein Name"}
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        <Stack>
           Interessen:
-          <Stack>
-            {!readOnly && editMode ? (
-              <>
-                <TagSelect
-                  label={"Interessen auswählen"}
-                  placeholder={"Sport / Werkzeug / ..."}
-                  onChange={saveInterests}
-                  onlyTags={true}
-                  values={interests}
-                />
-              </>
-            ) : (
-              <>
-                <Typography variant="body2" gutterBottom>
-                  {interests.map((item, i) => (
-                    <Chip key={i} label={item} />
-                  ))}
-                </Typography>
-              </>
-            )}
-          </Stack>
-        </Typography>
+          <br></br>
+          {!readOnly && editMode ? (
+            <>
+              <TagSelect
+                label={"Interessen auswählen"}
+                placeholder={"Sport / Werkzeug / ..."}
+                onChange={saveInterests}
+                onlyTags={true}
+                values={interests}
+              />
+            </>
+          ) : (
+            <>
+              {interests.length
+                ? interests.map((item, i) => <Chip key={i} label={item} />)
+                : "Keine Interessen ausgewählt..."}
+            </>
+          )}
+        </Stack>
         <Stack marginTop={2}>
           Beschreibung:
           {editMode ? (
