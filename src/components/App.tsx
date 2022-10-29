@@ -25,6 +25,7 @@ import MuiPlayground from "./playground/mui/MuiPlayground"
 import { PostProvider } from "./posts/PostContext"
 import PostList from "./posts/PostList"
 import Start from "./Start"
+import Merkzettel from "./posts/Merkzettel"
 
 toast.configure()
 
@@ -86,6 +87,7 @@ function App() {
                   <Route path="register" element={<RegisterOrg />} />
                   <Route path="LandingPage" element={<LandingPageOrg />} />
                 </Route>
+                <Route path="/merkzettel" element={<Merkzettel />} />
               </Routes>
             </Box>
           </Container>
