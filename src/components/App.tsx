@@ -18,14 +18,7 @@ import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
 import { ThemeContextProvider } from "../contexts/ThemeContext"
-import {
-  Register,
-  RegisterOrg,
-  ResetPassword,
-  SignIn,
-  SignInOrg,
-  SignOut,
-} from "./auth"
+import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
 import BackendHealth from "./BackendHealth"
 import Footer from "./general/Footer"
 import Header from "./general/Header"
