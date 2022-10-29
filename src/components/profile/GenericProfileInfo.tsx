@@ -13,17 +13,11 @@ import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
 
-import { DialogEditInterests } from "./DialogContext"
+import TagSelect from "../general/input/TagSelect"
 
 function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<User | Club> & AuthContextI) {
   // Internal
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
-
-  // Interests
-  const [openInterestsDialog, setOpenInterestsDialog] = React.useState(false)
-  const toggleInterestsDialog = () => {
-    setOpenInterestsDialog(!openInterestsDialog)
-  }
 
   const [interests, setInterests] = useState<string[]>(profile?.interests || [])
 
@@ -31,14 +25,6 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
     const interests = list.sort()
     userService.updateAttribute(profile, { interests: interests })
     setInterests(interests)
-  }
-  const deleteInterest = (id: number) => {
-    // Delete
-    const newList = [...interests]
-    newList.splice(id, 1)
-
-    userService.updateAttribute(profile, { interests: newList })
-    setInterests(newList)
   }
 
   const [desc, setDesc] = useState<string>(profile?.desc || "")
@@ -50,7 +36,6 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
     userService.updateAttribute(profile, { desc: desc })
   }
 
-  // PROFILE
   return (
     <Box sx={{ display: "flex", flexDirection: "column", width: "65%" }}>
       <CardContent sx={{ width: "100%" }}>
@@ -59,35 +44,27 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
         </Typography>
         <Typography variant="body1" gutterBottom>
           Interessen:
-          <Typography variant="body2" gutterBottom>
-            {interests.map((item, i) => (
-              <Chip
-                key={i}
-                label={item}
-                onDelete={
-                  !readOnly
-                    ? (i) => {
-                        deleteInterest(i)
-                      }
-                    : undefined
-                }
-              />
-            ))}
-
-            {!readOnly ? (
+          <Stack>
+            {!readOnly && editMode ? (
               <>
-                <Chip label="Add" variant="outlined" onClick={toggleInterestsDialog} />
-                <DialogEditInterests
-                  open={openInterestsDialog}
-                  handleClose={toggleInterestsDialog}
-                  value={interests}
-                  handleSaveValue={saveInterests}
+                <TagSelect
+                  label={"Interessen auswählen"}
+                  placeholder={"Sport / Werkzeug / ..."}
+                  onChange={saveInterests}
+                  onlyTags={true}
+                  values={interests}
                 />
               </>
             ) : (
-              ""
+              <>
+                <Typography variant="body2" gutterBottom>
+                  {interests.map((item, i) => (
+                    <Chip key={i} label={item} />
+                  ))}
+                </Typography>
+              </>
             )}
-          </Typography>
+          </Stack>
         </Typography>
         <Stack>
           Beschreibung:

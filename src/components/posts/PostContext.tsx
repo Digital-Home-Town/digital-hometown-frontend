@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useState } from "react"
+import React, { createContext, ReactNode, useState } from "react"
 import PostService from "src/services/PostService"
 
 export interface PostContextI {
@@ -14,7 +14,6 @@ export function PostProvider({ children }: { children: ReactNode }) {
   React.useEffect(() => {
     const getPosts = async () => {
       const data = await PostService.getAll()
-      console.log(data)
       if (data) {
         setPosts(data)
       }
