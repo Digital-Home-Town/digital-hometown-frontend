@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import * as React from "react"
 import { NavLink } from "react-router-dom"
 
+import { ColorModeContext } from "../../App"
 import { useThemeContext } from "../../contexts/ThemeContext"
-import { ColorModeContext } from "../App"
 
 export function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
   return (

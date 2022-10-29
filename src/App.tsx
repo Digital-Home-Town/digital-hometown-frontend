@@ -17,16 +17,23 @@ import BlockedPage from "src/pages/settings/BlockedPage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
-import { ThemeContextProvider } from "../contexts/ThemeContext"
-import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./auth"
-import Footer from "./general/Footer"
-import Header from "./general/Header"
-import LandingPageOrg from "./LandingPageOrg"
-import MuiPlayground from "./playground/mui/MuiPlayground"
-import { PostProvider } from "./posts/PostContext"
-import PostList from "./posts/PostList"
-import Start from "./Start"
-import Merkzettel from "./posts/Merkzettel"
+import {
+  Register,
+  RegisterOrg,
+  ResetPassword,
+  SignIn,
+  SignInOrg,
+  SignOut,
+} from "./components/auth"
+import Footer from "./components/general/Footer"
+import Header from "./components/general/Header"
+import MuiPlayground from "./components/playground/mui/MuiPlayground"
+import Merkzettel from "./components/posts/Merkzettel"
+import { PostProvider } from "./components/posts/PostContext"
+import PostList from "./components/posts/PostList"
+import { ThemeContextProvider } from "./contexts/ThemeContext"
+import LandingPageOrg from "./pages/landing/LandingPageOrg"
+import Start from "./pages/Start"
 
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 function Providers({ children }: { children: React.ReactNode }) {

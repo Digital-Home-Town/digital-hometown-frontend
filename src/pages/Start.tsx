@@ -3,7 +3,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
 import Dashboard from "./Dashboard"
-import LandingPage from "./LandingPage"
+import LandingPage from "./landing/LandingPage"
 
 function Start({ currentUser }: AuthContextI) {
   return <div>{currentUser ? <Dashboard /> : <LandingPage isOrg={false} />}</div>
