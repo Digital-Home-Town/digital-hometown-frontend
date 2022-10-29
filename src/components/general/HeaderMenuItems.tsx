@@ -5,6 +5,7 @@ import * as React from "react"
 import { NavLink } from "react-router-dom"
 
 import { useThemeContext } from "../../contexts/ThemeContext"
+import { ColorModeContext } from "../App"
 
 export function CustomMenuItem({ name, url, onClick }: { name: string; url?: string; onClick: () => void }) {
   return (
@@ -26,5 +27,11 @@ export function CustomMenuItem({ name, url, onClick }: { name: string; url?: str
 
 export function ColorModeToggler() {
   const { colorMode, toggleColorMode } = useThemeContext()
-  return <MenuItem onClick={toggleColorMode}>{colorMode === "light" ? <LightMode /> : <DarkMode />}</MenuItem>
+
+  const colorModeContext = React.useContext(ColorModeContext)
+  function handleToggle() {
+    colorModeContext.toggleColorMode()
+    toggleColorMode()
+  }
+  return <MenuItem onClick={handleToggle}>{colorMode === "light" ? <LightMode /> : <DarkMode />}</MenuItem>
 }
