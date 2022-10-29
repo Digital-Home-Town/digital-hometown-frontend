@@ -1,8 +1,8 @@
 import "firebase/compat/storage"
 
-import { Person, PhotoCamera } from "@mui/icons-material"
+import { PhotoCamera } from "@mui/icons-material"
 import ClearIcon from "@mui/icons-material/Clear"
-import { Avatar, Grid, IconButton } from "@mui/material"
+import { Box, CardMedia, IconButton } from "@mui/material"
 import { Stack } from "@mui/system"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import React, { useState } from "react"
@@ -71,15 +71,18 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     setImageUrl(url)
   }
 
+  const width = 200
+
   return (
-    <Grid item xs={4} padding={3}>
-      {/* TODO: url-state-change
-      <ProfilePicture profile={profile || undefined} size={128} /> */}
-      <Avatar alt="profile-picture" src={imageUrl} sx={{ height: 128, width: 128 }} variant="rounded">
-        {!imageUrl && <Person fontSize="large" />}
-      </Avatar>
+    <Box>
+      <CardMedia
+        component="img"
+        sx={{ width: width, height: width }}
+        image={imageUrl || "https://i.stack.imgur.com/l60Hf.png"}
+      ></CardMedia>
+
       {!readOnly ? (
-        <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"center"} width={100} margin={1}>
+        <Stack direction="row" spacing={2} alignItems={"center"} justifyContent={"center"} width={width} margin={1}>
           <IconButton component="label" onSubmit={handleUpload}>
             <input
               hidden
@@ -99,7 +102,7 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
       ) : (
         ""
       )}
-    </Grid>
+    </Box>
   )
 }
 
