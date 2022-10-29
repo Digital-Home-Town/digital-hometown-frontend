@@ -1,12 +1,5 @@
 import { Groups, Person } from "@mui/icons-material"
-import {
-  Avatar,
-  Divider,
-  Icon,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material"
+import { Avatar, Divider, Icon, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import List from "@mui/material/List"
 import { useEffect, useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
