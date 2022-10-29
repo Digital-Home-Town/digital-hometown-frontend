@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Chip, Link, Stack, Typography } from "@mui/material"
+import { Card, CardContent, CardHeader, Chip, Link, Stack } from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -26,7 +26,7 @@ function Post({ currentUser, post }: PostProperties & AuthContextI) {
         action={<BobbelMenu post={post} />}
       />
       <CardContent>
-        <Typography>{post.text}</Typography>
+        <div style={{ whiteSpace: "pre-line" }}>{post.text}</div>
         <Stack direction="row" justifyContent="flex-start" gap={1} marginTop={2}>
           {post.tags.map((category, val) => (
             <Chip key={val} label={category} />
