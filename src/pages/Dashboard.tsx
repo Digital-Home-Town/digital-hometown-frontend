@@ -1,9 +1,8 @@
-import { CalendarToday, Chat, Edit, Group, List } from "@mui/icons-material"
+import { Chat, Edit, List } from "@mui/icons-material"
 import { Button, Grid, SvgIconTypeMap, Typography } from "@mui/material"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 
 import CreatePostDialog from "../components/posts/CreatePostDialog"
@@ -29,16 +28,14 @@ function StartElement({ onClick, text, icon }: StartElementInterface) {
   )
 }
 
-function Dashboard({ currentUser }: AuthContextI) {
+function Dashboard() {
   const [postDialogOpen, setPostDialogOpen] = React.useState(false)
   const navigate = useNavigate()
 
   return (
     <div>
       <Grid container direction="row" alignItems="center" justifyContent="center">
-        <StartElement onClick={() => navigate("/")} text="Gruppen" icon={Group} />
         <StartElement onClick={() => navigate("/chat/first")} text="Chat" icon={Chat} />
-        <StartElement onClick={() => navigate("/")} text="Termin" icon={CalendarToday} />
         <StartElement onClick={() => setPostDialogOpen(true)} text="Neuer Beitrag" icon={Edit} />
         <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />
         <StartElement onClick={() => navigate("/merkzettel")} text="Merkzettel" icon={List} />
@@ -52,4 +49,4 @@ function Dashboard({ currentUser }: AuthContextI) {
   )
 }
 
-export default withAuth(Dashboard)
+export default Dashboard
