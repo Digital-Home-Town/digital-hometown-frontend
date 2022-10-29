@@ -1,4 +1,4 @@
-import { Chip, Stack, Typography } from "@mui/material"
+import { Chip, Grid, Stack, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -48,9 +48,17 @@ function BlockedPage({ currentUser }: AuthContextI) {
             Blockierte Nutzer und Vereine
           </Typography>
 
-          {blocked.length
-            ? blocked.map((item, i) => <Chip key={i} label={item.name} onDelete={() => handleDelete(item)} />)
-            : "Keine Nutzer Blockiert..."}
+          <Grid container spacing={2}>
+            {blocked.length
+              ? blocked.map((item, i) => (
+                  <>
+                    <Grid item xs={6} md={4}>
+                      <Chip key={i} label={item.name} onDelete={() => handleDelete(item)} />
+                    </Grid>
+                  </>
+                ))
+              : "Keine Nutzer Blockiert..."}
+          </Grid>
         </Stack>
       ) : (
         <div>Du hast keinen Zugriff auf diese Seite</div>
