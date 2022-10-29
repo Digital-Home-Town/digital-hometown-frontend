@@ -1,23 +1,13 @@
-import {
-  ChatBubble,
-  DeleteForever,
-  Info,
-  MoreVert,
-  Person,
-} from "@mui/icons-material"
-import {
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material"
+import { ChatBubble, DeleteForever, Info, MoreVert, Person, Star, StarBorder } from "@mui/icons-material"
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import ChatService from "src/services/ChatService"
+import { GenericProfileService } from "src/services/GenericProfileService"
+import userService from "src/services/UserService"
 
 import usePostContext from "./PostContext"
 import ShowDialog from "./ShowDialog"
@@ -31,6 +21,10 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
 
   if (currentUser == null) {
     return <Loader />
+  }
+
+  const togglePostFavorites = async () => {
+    await userService.togglePostFavorites(currentUser, post.id || "")
   }
 
   const messageToAuthor = async () => {
@@ -85,6 +79,27 @@ function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
             </MenuItem>
           </div>
         )}
+        <MenuItem
+          onClick={() => {
+            togglePostFavorites()
+          }}
+        >
+          {currentUser?.favoritePosts?.includes(post.id || "") ? (
+            <>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText> Aus Merkzettel entfernen</ListItemText>
+            </>
+          ) : (
+            <>
+              <ListItemIcon>
+                <Star />
+              </ListItemIcon>
+              <ListItemText> Beitrag in Merkzettel</ListItemText>
+            </>
+          )}
+        </MenuItem>
       </Menu>
       <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
     </div>

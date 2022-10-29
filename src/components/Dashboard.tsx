@@ -41,6 +41,7 @@ function Dashboard({ currentUser }: AuthContextI) {
         <StartElement onClick={() => navigate("/")} text="Termin" icon={CalendarToday} />
         <StartElement onClick={() => setPostDialogOpen(true)} text="Neuer Beitrag" icon={Edit} />
         <StartElement onClick={() => navigate("/posts")} text="Beiträge" icon={List} />
+        <StartElement onClick={() => navigate("/merkzettel")} text="Merkzettel" icon={List} />
       </Grid>
       <h1>Alle Benutzer</h1>
       <UserTable></UserTable>
