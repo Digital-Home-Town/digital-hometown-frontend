@@ -57,9 +57,11 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
             </>
           ) : (
             <>
-              {interests.length
-                ? interests.map((item, i) => <Chip key={i} label={item} />)
-                : "Keine Interessen ausgewählt..."}
+              <Stack direction="row">
+                {interests.length
+                  ? interests.map((item, i) => <Chip key={i} label={item} />)
+                  : "Keine Interessen ausgewählt..."}
+              </Stack>
             </>
           )}
         </Stack>
