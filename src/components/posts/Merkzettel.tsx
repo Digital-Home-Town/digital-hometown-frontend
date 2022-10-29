@@ -28,7 +28,7 @@ function Merkzettel({ currentUser }: AuthContextI) {
       <h1>Merkzettel</h1>
       Hier siehst du alle Beiträge, die du in deinen Merkzettel gespeichert hast.
       <Grid container spacing={2} paddingTop={1}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <List>
             <ListItem button onClick={() => setPostFilter("")} disablePadding>
               <ListItemButton selected={postFilter === ""}>
@@ -53,7 +53,7 @@ function Merkzettel({ currentUser }: AuthContextI) {
             })}
           </List>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <Posts posts={posts} notFoundText="Keine Beiträge im Merkzettel gespeichert." />
         </Grid>
       </Grid>
