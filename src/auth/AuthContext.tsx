@@ -10,14 +10,14 @@ import {
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
-import clubService from "../services/ClubService"
-import userService from "../services/UserService"
 
 import { auth } from "../firebase-config"
+import clubService from "../services/ClubService"
+import userService from "../services/UserService"
 import Loader from "./Loader"
 
 export interface AuthContextI {
-  currentUser: User | undefined | null
+  currentUser: User | Club | undefined | null
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null | undefined>>
   logOut: () => void
   logIn: (email: string, password: string) => void

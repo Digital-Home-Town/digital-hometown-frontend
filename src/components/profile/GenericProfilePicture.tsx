@@ -35,6 +35,9 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
     const url = ""
     userService.updateAttribute(profile, { photoURL: url })
     setImageUrl(url)
+    if (currentUser) {
+      currentUser.photoURL = ""
+    }
 
     // (3) set new state
     setFile(null)
@@ -68,6 +71,9 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
 
     // update profile data
     userService.updateAttribute(profile, { photoURL: url })
+    if (currentUser) {
+      currentUser.photoURL = url
+    }
     setImageUrl(url)
   }
 
