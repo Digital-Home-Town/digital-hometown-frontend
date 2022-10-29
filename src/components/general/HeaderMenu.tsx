@@ -38,6 +38,12 @@ function HeaderMenu({ currentUser }: AuthContextI) {
       },
     },
     {
+      name: "Blockiert",
+      event: () => {
+        return navigate("/blocked")
+      },
+    },
+    {
       name: "Dashboard",
       event: () => {
         navigate("/")
