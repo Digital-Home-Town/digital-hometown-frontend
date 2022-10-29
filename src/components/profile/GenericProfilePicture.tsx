@@ -15,6 +15,9 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
   // Image
   const [imageUrl, setImageUrl] = useState<string>(profile?.photoURL || "")
+  if (imageUrl !== profile?.photoURL && profile) {
+    setImageUrl(profile.photoURL || "")
+  }
   const [_file, setFile] = useState(null)
 
   function deleteImage() {
@@ -80,7 +83,7 @@ function GenericProfilePicture({ profile, currentUser }: ProfileProps<User> & Au
   const width = 200
 
   return (
-    <Box marginTop={3} marginLeft={3}>
+    <Box marginTop={3} marginLeft={3} marginBottom={readOnly ? 3 : 0} marginRight={readOnly ? 3 : 0}>
       <CardMedia
         component="img"
         sx={{ width: width, height: width }}
