@@ -36,6 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
 
+  console.log("currentUser", currentUser)
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       console.log("auth state changed", user)
@@ -49,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userService
           .get(user.uid)
           .then((profile) => {
-            console.log(profile)
+            console.log("firebase profile", profile)
             if (!profile) {
               clubService
                 .get(user.uid)
@@ -62,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   setLoading(false)
                 })
             } else {
-              console.log(profile)
+              console.log("Update user profile", profile)
               setCurrentUser(profile)
               setLoading(false)
             }
@@ -162,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const isProfile = await userService.exists(id)
 
         let service
-        const profile: GenericProfile = {
+        let profile: GenericProfile = {
           id,
           isOrg: false,
           email: user.email || "",
@@ -171,21 +173,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         if (isProfile) {
-          profile.isOrg = false
           service = userService
+          const existing = await service.get(id)
+          profile = { ...profile, ...existing }
+          profile.isOrg = false
         } else if (isClub) {
-          profile.isOrg = true
           service = clubService
+          const existing = await service.get(id)
+          profile = { ...profile, ...existing }
+
+          profile.isOrg = true
         } else {
           profile.isOrg = isOrg
           service = isOrg ? clubService : userService
+          service.update(id, profile).catch((e) => {
+            toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
+            throw e
+          })
         }
-
-        service.update(id, profile).catch((e) => {
-          toast.error(`Fehler beim Speichern des Profils bei der Anmeldung mit ${providerName}.`)
-          throw e
-        })
-        setCurrentUser(profile)
       })
       .catch((err) => {
         toast.error(`Fehler bei der Authentifizierung mit ${providerName}.`)

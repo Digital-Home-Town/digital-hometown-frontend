@@ -6,7 +6,6 @@ import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import ChatService from "src/services/ChatService"
-import { GenericProfileService } from "src/services/GenericProfileService"
 import userService from "src/services/UserService"
 
 import usePostContext from "./PostContext"
