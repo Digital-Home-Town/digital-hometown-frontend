@@ -72,6 +72,12 @@ class ChatService {
     }
   }
 
+  async deleteRoom(roomId: string | undefined | null) {
+    if (roomId) {
+      await remove(ref(realtimeDB, `rooms/${roomId}`))
+    }
+  }
+
   async renameRoom(roomId: string, name: string) {
     await set(ref(realtimeDB, `rooms/${roomId}/name`), name)
   }
