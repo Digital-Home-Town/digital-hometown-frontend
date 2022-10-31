@@ -8,4 +8,6 @@ interface Post {
   created?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
   eventDate?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
   eventLocation?: string
+  validityStart?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
+  validityEnd?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
 }

@@ -9,7 +9,25 @@ import Posts from "./Posts"
 
 function PostList({ currentUser }: AuthContextI) {
   const { posts } = usePostContext()
-  const filteredPosts = posts.filter((post) => !currentUser?.blocked?.includes(post.author.id))
+  const filteredPosts = posts
+    .filter((post) => !currentUser?.blocked?.includes(post.author.id))
+    .filter((post) => {
+      console.log("post", post)
+      // check validity
+      if (currentUser?.id === post.author.id) {
+        return true
+      } else {
+        if (!(post.validityStart && post.validityEnd)) {
+          // no validity set
+          return true
+        }
+        if (post.validityStart <= new Date() && post.validityEnd >= new Date()) {
+          return true
+        } else {
+          return false
+        }
+      }
+    })
   return currentUser ? (
     <Box sx={{ mt: 1 }}>
       <h1>Alle Beiträge</h1>

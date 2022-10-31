@@ -11,9 +11,10 @@ interface DatePickerI {
   format?: string
   mask?: string
   required?: boolean
+  onlyPast?: boolean
 }
 
-function DatePicker({ name, placeholder, initialValue, views, format, mask, required }: DatePickerI) {
+function DatePicker({ name, placeholder, initialValue, views, format, mask, required, onlyPast }: DatePickerI) {
   const [value, setValue] = React.useState<Date | undefined>(initialValue)
 
   useEffect(() => {
@@ -22,7 +23,8 @@ function DatePicker({ name, placeholder, initialValue, views, format, mask, requ
 
   return (
     <DateTimePickerMui
-      disableFuture
+      disableFuture={onlyPast}
+      disablePast={!onlyPast}
       label={placeholder}
       openTo="year"
       views={views}
@@ -42,6 +44,7 @@ DatePicker.defaultProps = {
   format: "dd.MM.yyyy",
   mask: "__.__.____",
   required: false,
+  onlyPast: true,
 }
 
 export default DatePicker

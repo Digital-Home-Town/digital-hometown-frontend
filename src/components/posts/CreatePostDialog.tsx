@@ -26,8 +26,6 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
-  const submit = () => {}
-
   const [postTitle, setPostTitle] = React.useState<string>("")
   const [postText, setPostText] = React.useState<string>("")
   const [postType, setPostType] = React.useState<string | undefined>(undefined)
@@ -37,10 +35,11 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log("Handle submit")
 
     const data = new FormData(event.currentTarget)
     const eventDate = data.get("eventDate")
+    const vadilityStart = data.get("vadilityStart")
+    const vadilityEnd = data.get("vadilityEnd")
 
     if (postType && postText && currentUser && postTitle) {
       setOpen(false)
@@ -51,6 +50,8 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
         author: currentUser,
         title: postTitle,
         tags: postTags,
+        validityStart: vadilityStart,
+        validityEnd: vadilityEnd,
       } as Post
 
       if (postType === "Veranstaltung") {
@@ -78,13 +79,15 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
     setOpen(false)
   }
 
+  const date = new Date()
+
   return (
     <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
       <Box fullWidth required component="form" onSubmit={handleSubmit}>
         <DialogTitle id="responsive-dialog-title">Erstelle einen Beitrag</DialogTitle>
         <DialogContent>
           <Stack spacing={2} style={{ width: 500 }}>
-            <Stack flexDirection="column">
+            <Stack direction="column" spacing={1}>
               <TextField
                 required
                 fullWidth
@@ -106,6 +109,21 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
               />
             </Stack>
 
+            <Stack direction="row" spacing={3}>
+              <DatePicker
+                name="vadilityStart"
+                initialValue={date}
+                placeholder="Gültigkeit ab"
+                onlyPast={false}
+              ></DatePicker>
+              <DatePicker
+                name="vadilityEnd"
+                initialValue={new Date(date.getFullYear() + 1, date.getMonth(), date.getDate())}
+                placeholder="Gültigkeit bis"
+                onlyPast={false}
+              ></DatePicker>
+            </Stack>
+
             <TextField
               required
               fullWidth
@@ -124,9 +142,10 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
             {postType === "Veranstaltung" && (
               <>
                 <DatePicker
+                  onlyPast={false}
                   required={true}
                   name="eventDate"
-                  initialValue={new Date()}
+                  initialValue={date}
                   placeholder="Veranstaltungsdatum"
                   format="dd.MM.yyyy HH:mm"
                   views={["year", "month", "day", "hours", "minutes"]}
