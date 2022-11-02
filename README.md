@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Main branch hosted on [Vercel](http://dahoam.roser.dev/)
 
-Dev branch hostend on [Vercel](http://dahoam.roser.dev/)
+Dev branch hostend on [Vercel](http://dev.dahoam.roser.dev/)
 
 ## React Tutorial
 
