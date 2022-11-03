@@ -20,8 +20,9 @@ function GenericProfileInfo({ profile, currentUser, editMode }: ProfileProps<Use
   }, [profile, currentUser])
 
   const saveInterests = (list: string[]) => {
+    console.log(list)
     const interests = list.sort()
-    userService.updateAttribute(profile, { interests: interests })
+    userService.updateAttribute(profile, { interests })
     setInterests(interests)
   }
 
