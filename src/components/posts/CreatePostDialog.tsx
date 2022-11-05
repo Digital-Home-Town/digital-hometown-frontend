@@ -30,6 +30,8 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
   const [postText, setPostText] = React.useState<string>("")
   const [postType, setPostType] = React.useState<string | undefined>(undefined)
   const [postTags, setPostTags] = React.useState<string[]>([])
+  const [initialDate] = React.useState<Date>(new Date())
+  const [initialFutureDate] = React.useState<Date>(new Date(initialDate.getTime() + 1000 * 60 * 60 * 24 * 365))
 
   const [eventLocation, setEventLocation] = React.useState<string>("")
 
@@ -79,8 +81,6 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
     setOpen(false)
   }
 
-  const date = new Date()
-
   return (
     <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
       <Box fullWidth required component="form" onSubmit={handleSubmit}>
@@ -112,13 +112,13 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
             <Stack direction="row" spacing={3}>
               <DatePicker
                 name="vadilityStart"
-                initialValue={date}
+                initialValue={initialDate}
                 placeholder="Gültigkeit ab"
                 onlyPast={false}
               ></DatePicker>
               <DatePicker
                 name="vadilityEnd"
-                initialValue={new Date(date.getFullYear() + 1, date.getMonth(), date.getDate())}
+                initialValue={initialFutureDate}
                 placeholder="Gültigkeit bis"
                 onlyPast={false}
               ></DatePicker>
@@ -145,7 +145,7 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
                   onlyPast={false}
                   required={true}
                   name="eventDate"
-                  initialValue={date}
+                  initialValue={initialDate}
                   placeholder="Veranstaltungsdatum"
                   format="dd.MM.yyyy HH:mm"
                   views={["year", "month", "day", "hours", "minutes"]}
