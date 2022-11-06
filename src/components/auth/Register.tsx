@@ -66,7 +66,11 @@ function Register(props: AuthProps & AuthContextI) {
   }
 
   return currentUser ? (
-    <Navigate to="/" />
+    isOrg ? (
+      <Navigate to="/club-settings" />
+    ) : (
+      <Navigate to="/user-settings" />
+    )
   ) : (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
