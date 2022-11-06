@@ -8,6 +8,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
+import { useNavigate } from "react-router-dom"
 
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
@@ -17,6 +18,8 @@ function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
   const fullName: string[] = (currentUser?.displayName || "").split(delimiter)
 
   const givenName: string = fullName[0]
+
+  const navigate = useNavigate()
 
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
@@ -105,7 +108,7 @@ function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Input
               name="givenName"
-              placeholder="Vorname"
+              placeholder="Vereinsname"
               initialValue={formValues.givenName.value}
               error={formValues.givenName.error}
               helperText={formValues.givenName.error ? formValues.givenName.errorMessage : ""}
@@ -138,6 +141,7 @@ function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
               <Button variant="contained" color="error" onClick={handleDelete}>
                 Verein löschen
               </Button>
+              <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>
             </Stack>
           </Box>
         </Stack>

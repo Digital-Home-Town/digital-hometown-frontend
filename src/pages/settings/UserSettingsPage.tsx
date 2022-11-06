@@ -8,6 +8,7 @@ import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
+import { useNavigate } from "react-router-dom"
 
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
@@ -18,6 +19,8 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
 
   const givenName: string = fullName[0]
   const surName: string = fullName[1] || ""
+  
+  const navigate = useNavigate()
 
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
@@ -153,6 +156,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
               <Button variant="contained" color="error" onClick={handleDelete}>
                 Benutzer löschen
               </Button>
+              <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>
             </Stack>
           </Box>
         </Stack>
