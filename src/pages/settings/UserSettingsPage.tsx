@@ -19,7 +19,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
 
   const givenName: string = fullName[0]
   const surName: string = fullName[1] || ""
-  
+
   const navigate = useNavigate()
 
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
