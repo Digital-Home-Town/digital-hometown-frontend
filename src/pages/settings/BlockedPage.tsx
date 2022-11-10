@@ -9,7 +9,7 @@ interface BlockerUsers {
   id: string
   name: string
 }
-function BlockedPage({ currentUser }: AuthContextI) {
+function BlockedPage({ currentUser, setCurrentUser }: AuthContextI) {
   const [blocked, setBlocked] = useState<BlockerUsers[]>([])
 
   const [profiles, setProfiles] = React.useState<GenericProfile[]>([])
@@ -35,8 +35,10 @@ function BlockedPage({ currentUser }: AuthContextI) {
 
   const handleDelete = (item: BlockerUsers) => {
     const blockedUsers = blocked.filter((blocked) => blocked.id !== item.id)
-
-    userService.updateAttribute(currentUser, { blocked: blockedUsers.map((user) => user.id) })
+    if (!currentUser) return
+    currentUser.blocked = blockedUsers.map((user) => user.id)
+    userService.updateAttribute(currentUser, { blocked: currentUser?.blocked })
+    setCurrentUser(currentUser)
     setBlocked(blockedUsers)
   }
 
