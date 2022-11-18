@@ -17,14 +17,7 @@ import BlockedPage from "src/pages/settings/BlockedPage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
-import {
-  Register,
-  RegisterOrg,
-  ResetPassword,
-  SignIn,
-  SignInOrg,
-  SignOut,
-} from "./components/auth"
+import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./components/auth"
 import Footer from "./components/general/Footer"
 import Header from "./components/general/Header"
 import MuiPlayground from "./components/playground/mui/MuiPlayground"

@@ -1,19 +1,5 @@
-import {
-  ChatBubble,
-  DeleteForever,
-  Info,
-  MoreVert,
-  Person,
-  Star,
-  StarBorder,
-} from "@mui/icons-material"
-import {
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material"
+import { ChatBubble, DeleteForever, Info, MoreVert, Person, Star, StarBorder } from "@mui/icons-material"
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
