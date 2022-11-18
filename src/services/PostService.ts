@@ -50,7 +50,7 @@ class PostService {
       let post_ = doc.data()
       post_.id = doc.id
       post_.tags = post_.tags || []
-      post_.created = post_?.created.toDate().getTime() || 0
+      post_.created = post_?.created?.toDate().getTime() || 0
       return post_
     })
     return posts

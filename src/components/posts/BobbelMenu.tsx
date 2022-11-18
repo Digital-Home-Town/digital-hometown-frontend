@@ -1,5 +1,19 @@
-import { ChatBubble, DeleteForever, Info, MoreVert, Person, Star, StarBorder } from "@mui/icons-material"
-import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material"
+import {
+  ChatBubble,
+  DeleteForever,
+  Info,
+  MoreVert,
+  Person,
+  Star,
+  StarBorder,
+} from "@mui/icons-material"
+import {
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -8,12 +22,10 @@ import withAuth from "src/auth/withAuth"
 import ChatService from "src/services/ChatService"
 import userService from "src/services/UserService"
 
-import usePostContext from "./PostContext"
 import ShowDialog from "./ShowDialog"
 
-function BobbelMenu({ post, currentUser }: { post: Post } & AuthContextI) {
+function BobbelMenu({ post, currentUser, deletePost }: { post: Post } & AuthContextI) {
   const navigate = useNavigate()
-  const { deletePost } = usePostContext()
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const [openMenu, setOpenMenu] = React.useState(false)
   const [postDialogOpen, setPostDialogOpen] = React.useState(false)

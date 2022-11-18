@@ -17,12 +17,18 @@ import BlockedPage from "src/pages/settings/BlockedPage"
 import ClubSettingsPage from "src/pages/settings/ClubSettingsPage"
 import UserSettingsPage from "src/pages/settings/UserSettingsPage"
 
-import { Register, RegisterOrg, ResetPassword, SignIn, SignInOrg, SignOut } from "./components/auth"
+import {
+  Register,
+  RegisterOrg,
+  ResetPassword,
+  SignIn,
+  SignInOrg,
+  SignOut,
+} from "./components/auth"
 import Footer from "./components/general/Footer"
 import Header from "./components/general/Header"
 import MuiPlayground from "./components/playground/mui/MuiPlayground"
 import Merkzettel from "./components/posts/Merkzettel"
-import { PostProvider } from "./components/posts/PostContext"
 import PostList from "./components/posts/PostList"
 import { ThemeContextProvider } from "./contexts/ThemeContext"
 import LandingPageOrg from "./pages/landing/LandingPageOrg"
@@ -82,14 +88,7 @@ function App() {
                   <Route path="/club-settings" element={<ClubSettingsPage />} />
                   <Route path="/blocked" element={<BlockedPage />} />
                   <Route path="/profile" element={<GenericProfilePage />} />
-                  <Route
-                    path="/posts"
-                    element={
-                      <PostProvider>
-                        <PostList />
-                      </PostProvider>
-                    }
-                  />
+                  <Route path="/posts" element={<PostList />} />
                   <Route path="/profile/:id" element={<GenericProfilePage />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/chat/:id" element={<ChatPage />} />
@@ -98,14 +97,7 @@ function App() {
                     <Route path="register" element={<RegisterOrg />} />
                     <Route path="LandingPage" element={<LandingPageOrg />} />
                   </Route>
-                  <Route
-                    path="/merkzettel"
-                    element={
-                      <PostProvider>
-                        <Merkzettel />
-                      </PostProvider>
-                    }
-                  />
+                  <Route path="/merkzettel" element={<Merkzettel />} />
                 </Routes>
               </Box>
             </Container>

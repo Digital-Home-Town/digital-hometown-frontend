@@ -1,4 +1,9 @@
-import { FormControl as Box, FormHelperText, Stack, TextField } from "@mui/material"
+import {
+  FormControl as Box,
+  FormHelperText,
+  Stack,
+  TextField,
+} from "@mui/material"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -22,7 +27,7 @@ interface CreatePostDialogI {
   setOpen: (open: boolean) => void
 }
 
-function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & AuthContextI) {
+function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDialogI & AuthContextI) {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
@@ -72,6 +77,7 @@ function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & Au
       setEventLocation("")
       setPostType(undefined)
       setPostTags([])
+      getPosts()
     } else {
       toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
     }

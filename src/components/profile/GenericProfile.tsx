@@ -11,7 +11,6 @@ import withAuth from "src/auth/withAuth"
 import ChatService from "src/services/ChatService"
 import userService from "src/services/UserService"
 
-import { PostProvider } from "../posts/PostContext"
 import GenericProfileInfo from "./GenericProfileInfo"
 import GenericProfilePicture from "./GenericProfilePicture"
 import GenericProfilePosts from "./GenericProfilePosts"
@@ -73,9 +72,7 @@ function GenericProfile({ profile, currentUser, setCurrentUser }: ProfileProps<U
           </>
         )}
       </Stack>
-      <PostProvider>
-        <GenericProfilePosts profile={profile} />
-      </PostProvider>
+      <GenericProfilePosts profile={profile} />
     </div>
   )
 }

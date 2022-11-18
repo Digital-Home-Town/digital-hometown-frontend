@@ -34,7 +34,6 @@ function HeaderButtonMenu({ currentUser }: AuthContextI) {
           <Chat />
         </IconButton>
       </Tooltip>
-
       <CreatePostDialog open={postDialogOpen} setOpen={setPostDialogOpen} />
     </>
   )

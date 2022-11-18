@@ -10,6 +10,7 @@ import {
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
+import PostService from "src/services/PostService"
 
 import { auth } from "../firebase-config"
 import clubService from "../services/ClubService"
@@ -24,6 +25,10 @@ export interface AuthContextI {
   signUpWithEmail: (email: string, password: string, displayName: string, isOrg: boolean) => Promise<void>
   signUpOAuth: (providerName: "google" | "facebook", isOrg: boolean) => void
   resetPassword: (email: string) => void
+  posts: Post[]
+  setPosts: React.Dispatch<React.SetStateAction<Post[]>>
+  deletePost: (post: Post) => void
+  getPosts: () => void
 }
 
 export interface AuthProps {
@@ -35,6 +40,7 @@ const AuthContext = createContext<undefined | AuthContextI>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -46,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: auth.currentUser?.email || undefined,
           displayName: auth.currentUser?.displayName || undefined,
         })
+        getPosts()
         userService
           .get(user.uid)
           .then((profile) => {
@@ -76,6 +83,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     })
   }, [])
+
+  const getPosts = async () => {
+    const data = await PostService.getAll()
+    if (data) {
+      setPosts(data)
+    }
+  }
+
+  const deletePost = async (post: Post) => {
+    await PostService.delete(post)
+    setPosts(posts.filter((p) => p.id !== post.id))
+  }
 
   const handleEmailLogIn = (email: string, password: string) => {
     console.log("log in with email", email)
@@ -213,6 +232,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           signUpOAuth: handleOAuthSignIn,
           resetPassword: handlePasswordReset,
           setCurrentUser,
+          setPosts,
+          deletePost,
+          posts,
+          getPosts,
         }}
       >
         {children}
