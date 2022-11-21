@@ -2201,10 +2201,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-data-grid@^5.12.2":
-  version "5.17.9"
-  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.17.9.tgz#6016ba37745793e382eca428d3928bef294c6d16"
-  integrity sha512-D87M4BVmbSR0ZRJoev7JS01YUVk2NQPCwseVb/Su0/UScpCfUpKlukmMXx0jJnd3066pjYSKIIdvVit3nQU/UA==
+"@mui/x-data-grid@^5.17.12":
+  version "5.17.12"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.17.12.tgz#b57c32605f1964c2eb8b25136fe51d7165e22112"
+  integrity sha512-Q7lFxapa9oc8j3LVm3JAS+jmJftcaSLYcvhApYLKYWej9LKMQYov8hUPdIjzSta3E0WTINfiHaTcO1b6W4UMvQ==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/utils" "^5.10.3"
