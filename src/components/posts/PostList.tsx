@@ -1,4 +1,5 @@
 import { Box } from "@mui/material"
+import moment from "moment"
 import * as React from "react"
 import { Navigate } from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -13,20 +14,26 @@ function PostList({ currentUser, posts }: AuthContextI) {
     const filtered = posts
       .filter((post) => !currentUser?.blocked?.includes(post.author.id))
       .filter((post) => {
-        console.log("post", post)
         // check validity
         if (currentUser?.id === post.author.id) {
           return true
+        }
+
+        if (!(post.validityStart && post.validityEnd)) {
+          // no validity set
+          return true
+        }
+        console.log(
+          moment(post.validityStart).toDate().getTime(),
+          moment(post.validityStart).toDate().getTime() <= new Date().getTime(),
+        )
+        if (
+          moment(post.validityStart).toDate().getTime() >= new Date().getTime() &&
+          moment(post.validityEnd).toDate().getTime() <= new Date().getTime()
+        ) {
+          return true
         } else {
-          if (!(post.validityStart && post.validityEnd)) {
-            // no validity set
-            return true
-          }
-          if (post.validityStart <= new Date() && post.validityEnd >= new Date()) {
-            return true
-          } else {
-            return false
-          }
+          return false
         }
       })
     setFilteredPosts(filtered)

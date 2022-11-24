@@ -3,7 +3,6 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  limit,
   orderBy,
   query,
   serverTimestamp,
@@ -43,7 +42,7 @@ class PostService {
   // }
 
   async getAll() {
-    const firebaseQuery = query(this.collection, orderBy("created", "desc"), limit(20))
+    const firebaseQuery = query(this.collection, orderBy("created", "desc"))
 
     const documents = await getDocs(firebaseQuery)
     const posts = documents.docs.map((doc) => {
