@@ -42,7 +42,7 @@ export class GenericProfileService<T extends GenericProfile> {
     }
   }
 
-  updateAttribute(profile: any, attributes: Partial<T>) {
+  updateAttribute(profile: T, attributes: Partial<T>): T {
     // Update
     if (profile) {
       const updatedUser = { ...profile, ...attributes }
@@ -55,7 +55,9 @@ export class GenericProfileService<T extends GenericProfile> {
           toast.error("Dein Profil konnte nicht aktualisiert werden.")
           throw e
         })
+      return updatedUser
     }
+    return profile
   }
 
   async togglePostFavorites(profile: GenericProfile, postId: string) {
