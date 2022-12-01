@@ -7,34 +7,39 @@ import withAuth from "src/auth/withAuth"
 
 import Posts from "./Posts"
 
-function PostList({ currentUser, posts }: AuthContextI) {
+function PostList({ currentUser, posts, getPosts }: AuthContextI) {
   const [filteredPosts, setFilteredPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
-    const filtered = posts
-      .filter((post) => !currentUser?.blocked?.includes(post.author.id))
-      .filter((post) => {
-        // check validity
-        if (currentUser?.id === post.author.id) {
-          return true
-        }
+    async function getFilteredPosts() {
+      await getPosts()
 
-        if (!(post.validityStart && post.validityEnd)) {
-          // no validity set
-          return true
-        }
+      const filtered = posts
+        .filter((post) => !currentUser?.blocked?.includes(post.author.id))
+        .filter((post) => {
+          // check validity
+          if (currentUser?.id === post.author.id) {
+            return true
+          }
 
-        if (
-          moment(post.validityStart).toDate().getTime() >= new Date().getTime() &&
-          moment(post.validityEnd).toDate().getTime() <= new Date().getTime()
-        ) {
-          return true
-        } else {
-          return false
-        }
-      })
-    setFilteredPosts(filtered)
-  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts])
+          if (!(post.validityStart && post.validityEnd)) {
+            // no validity set
+            return true
+          }
+
+          if (
+            moment(post.validityStart).toDate().getTime() >= new Date().getTime() &&
+            moment(post.validityEnd).toDate().getTime() <= new Date().getTime()
+          ) {
+            return true
+          } else {
+            return false
+          }
+        })
+      setFilteredPosts(filtered)
+    }
+    getFilteredPosts()
+  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts, getPosts])
 
   return currentUser ? (
     <Box sx={{ mt: 1 }}>
