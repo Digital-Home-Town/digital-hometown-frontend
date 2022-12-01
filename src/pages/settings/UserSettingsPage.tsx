@@ -3,22 +3,18 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
-import { useNavigate } from "react-router-dom"
 
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
 function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI) {
-  const delimiter: string = " "
-  const fullName: string[] = (currentUser?.displayName || "").split(delimiter)
-
-  const givenName: string = fullName[0]
-  const surName: string = fullName[1] || ""
+  const fullName: string = currentUser?.displayName || ""
 
   const navigate = useNavigate()
 
@@ -26,15 +22,10 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
 
   const [formValues] = useState({
-    givenName: {
-      value: givenName,
+    fullName: {
+      value: fullName || "",
       error: false,
-      errorMessage: "Fehlerhafter Vorname",
-    },
-    surName: {
-      value: surName,
-      error: false,
-      errorMessage: "Fehlerhafter Familienname",
+      errorMessage: "Fehlerhafter Anzeigename",
     },
     email: {
       value: currentUser?.email || "",
@@ -72,9 +63,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
     event.preventDefault()
     const data = new FormData(event.currentTarget)
 
-    const givenName = (data.get("givenName") as string).trim() || ""
-    const surName = (data.get("surName") as string).trim() || ""
-    const fullName = givenName + delimiter + surName
+    const fullName = (data.get("fullName") as string).trim() || ""
 
     const email = (data.get("email") as string).trim() || ""
     const dateOfBirth = parse(data.get("dateOfBirth") as string, "dd.MM.yyyy", new Date()).getTime()
@@ -114,19 +103,11 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Input
-              name="givenName"
-              placeholder="Vorname"
-              initialValue={formValues.givenName.value}
-              error={formValues.givenName.error}
-              helperText={formValues.givenName.error ? formValues.givenName.errorMessage : ""}
-            />
-            <Input
-              name="surName"
-              placeholder="Nachname"
-              optional={true}
-              initialValue={surName}
-              error={formValues.surName.error}
-              helperText={formValues.surName.error ? formValues.surName.errorMessage : ""}
+              name="fullName"
+              placeholder="Anzeigename"
+              initialValue={formValues.fullName.value}
+              error={formValues.fullName.error}
+              helperText={formValues.fullName.error ? formValues.fullName.errorMessage : ""}
             />
             <Input
               name="email"
