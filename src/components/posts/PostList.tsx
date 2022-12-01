@@ -23,10 +23,7 @@ function PostList({ currentUser, posts }: AuthContextI) {
           // no validity set
           return true
         }
-        console.log(
-          moment(post.validityStart).toDate().getTime(),
-          moment(post.validityStart).toDate().getTime() <= new Date().getTime(),
-        )
+
         if (
           moment(post.validityStart).toDate().getTime() >= new Date().getTime() &&
           moment(post.validityEnd).toDate().getTime() <= new Date().getTime()
@@ -37,7 +34,7 @@ function PostList({ currentUser, posts }: AuthContextI) {
         }
       })
     setFilteredPosts(filtered)
-  }, [currentUser?.blocked, currentUser?.id, posts])
+  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts])
 
   return currentUser ? (
     <Box sx={{ mt: 1 }}>

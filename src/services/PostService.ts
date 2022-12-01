@@ -8,7 +8,11 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore"
+import moment from "moment"
+import { toast } from "react-toastify"
 import { postCollection } from "src/firebase-config"
+
+import { requestCount } from "./GenericProfileService"
 
 class PostService {
   private collection: CollectionReference<Post>
@@ -26,6 +30,16 @@ class PostService {
     await setDoc(doc(this.collection), post)
   }
 
+  async update(id: string, post: Post) {
+    console.log(`${this.collection.path}: update ${requestCount}`)
+    try {
+      const userRef = doc(this.collection, id)
+      await setDoc(userRef, post)
+    } catch (error) {
+      toast.error("Fehler beim Speichern des Posts.")
+      throw error
+    }
+  }
   // not needed at the moment to get only one post
   // async get(id: string) {
   //   const resp = await this.getDocument(id)
@@ -49,7 +63,10 @@ class PostService {
       let post_ = doc.data()
       post_.id = doc.id
       post_.tags = post_.tags || []
-      post_.created = post_?.created?.toDate().getTime() || 0
+      post_.created =
+        moment(post_?.created || 0)
+          .toDate()
+          .getTime() || 0
       return post_
     })
     return posts

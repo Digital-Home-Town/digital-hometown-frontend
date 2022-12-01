@@ -1,9 +1,19 @@
-import { CollectionReference, deleteDoc, doc, getDoc, getDocs, query, setDoc } from "@firebase/firestore"
+import {
+  CollectionReference,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+} from "@firebase/firestore"
 import { updateProfile as updateProfileFirebaseAuth } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "src/firebase-config"
 
-let requestCount = 0
+import PostService from "./PostService"
+
+export let requestCount = 0
 export class GenericProfileService<T extends GenericProfile> {
   private collection: CollectionReference<T>
   constructor(collection: CollectionReference<T>) {
@@ -68,6 +78,15 @@ export class GenericProfileService<T extends GenericProfile> {
       const userRef = doc(this.collection, id)
       await setDoc(userRef, profile)
       await this.updateAuth(profile)
+
+      const posts = await PostService.getAll()
+
+      posts.forEach(async (post) => {
+        if (post.author.id === id && post.id) {
+          post.author = profile
+          await PostService.update(post.id, post)
+        }
+      })
     } catch (error) {
       toast.error("Fehler beim Speichern des Profils.")
       throw error

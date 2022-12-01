@@ -82,7 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false)
       }
     })
-  }, [])
+    getPosts()
+  }, [currentUser?.displayName])
 
   const getPosts = async () => {
     const data = await PostService.getAll()

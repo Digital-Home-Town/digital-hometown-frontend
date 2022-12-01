@@ -1,5 +1,12 @@
 import { AllInbox } from "@mui/icons-material"
-import { Grid, IconButton, List, ListItem, ListItemButton, ListItemText } from "@mui/material"
+import {
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -21,7 +28,7 @@ function Merkzettel({ currentUser }: AuthContextI) {
         setPosts(posts)
       }
     })
-  }, [currentUser?.favoritePosts, postFilter])
+  }, [currentUser?.favoritePosts, currentUser?.displayName, postFilter])
 
   return (
     <div>
