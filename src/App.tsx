@@ -22,6 +22,7 @@ import Footer from "./components/general/Footer"
 import Header from "./components/general/Header"
 import MuiPlayground from "./components/playground/mui/MuiPlayground"
 import Merkzettel from "./components/posts/Merkzettel"
+import Marketplace from "./components/posts/Marketplace"
 import PostList from "./components/posts/PostList"
 import { ThemeContextProvider } from "./contexts/ThemeContext"
 import LandingPageOrg from "./pages/landing/LandingPageOrg"
@@ -91,6 +92,7 @@ function App() {
                     <Route path="LandingPage" element={<LandingPageOrg />} />
                   </Route>
                   <Route path="/merkzettel" element={<Merkzettel />} />
+                  <Route path="marketplace" element={<Marketplace />} />
                 </Routes>
               </Box>
             </Container>
