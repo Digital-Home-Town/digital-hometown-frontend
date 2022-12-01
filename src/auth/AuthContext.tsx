@@ -82,6 +82,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false)
       }
     })
+  }, [])
+
+  useEffect(() => {
     getPosts()
   }, [currentUser?.displayName])
 
