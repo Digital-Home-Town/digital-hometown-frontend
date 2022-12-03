@@ -106,47 +106,19 @@ function Marketplace({ currentUser }: AuthContextI) {
   const [creators, setCreator] = React.useState(() => ["person", "club"])
   const [marketAdds, setMarketAdds] = React.useState(() => ["demand", "offer"])
 
-  function changedDate(name: string, newDate: Date | null): void {
-    if (newDate === null) {
-      return
+  // use effect when start date changes
+  React.useEffect(() => {
+    if (postEventEnd < postEventStart) {
+      setPostEventEnd(new Date(postEventStart.getTime()))
     }
+  }, [postEventStart])
 
-    // @Boas 1
-    // TEST-START-----------------
-    console.log("value: ", newDate.getTime())
-    console.log("old: ", postEventStart.getTime(), " : ", postEventEnd.getTime())
-    
-    setPostEventStart(newDate)
-    setPostEventEnd(newDate)
-
-    console.log("new: ", postEventStart.getTime(), " : ", postEventEnd.getTime())
-    // TEST-END-----------------
-
-    // @Boas 2
-    // TEST-START-----------------
-    console.log("cmp: === ", postEventStart.getTime() === postEventEnd.getTime())
-    // TEST-END-----------------
-
-
-    // get check variables
-    if (name === "startDate") {
-      setPostEventStart(newDate)
-
-      if (newDate > postEventEnd) {
-        setPostEventEnd(postEventStart)
-      }
-    } else if (name === "endDate") {
-      setPostEventEnd(newDate)
-
-      if (postEventStart > newDate) {
-        setPostEventStart(postEventEnd)
-      }
-    } else {
-      throw new Error("Wrong key!")
+  // use effect when end date changes
+  React.useEffect(() => {
+    if (postEventStart > postEventEnd) {
+      setPostEventStart(new Date(postEventEnd.getTime()))
     }
-
-    console.log("new: ", postEventStart.getTime(), " : ", postEventEnd.getTime())
-  }
+  }, [postEventEnd])
 
   const handleChange = (evt: React.MouseEvent<HTMLElement>, newChange: string[]) => {
     const seg: string[] = evt.currentTarget.id.split(".")
@@ -253,13 +225,13 @@ function Marketplace({ currentUser }: AuthContextI) {
                 <DatePicker
                   name="startDate"
                   initialValue={postEventStart}
-                  onChange={changedDate}
+                  onChange={(_, newDate) => (newDate != null ? setPostEventStart(newDate) : null)}
                   placeholder="Von"
                 ></DatePicker>
                 <DatePicker
                   name="endDate"
                   initialValue={postEventEnd}
-                  onChange={changedDate}
+                  onChange={(_, newDate) => (newDate != null ? setPostEventEnd(newDate) : null)}
                   placeholder="Bis"
                 ></DatePicker>
               </Box>
