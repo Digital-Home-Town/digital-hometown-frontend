@@ -122,7 +122,10 @@ function ChatRoom_({ loading, currentRoom, messages, rooms }: ChatContextI) {
       <DeleteDialog
         open={showDeleteDialog}
         handleClose={() => toggleShowDeleteDialog()}
-        onConfirm={() => ChatService.deleteRoom(currentRoom?.id)}
+        onConfirm={() => {
+          ChatService.deleteRoom(currentRoom?.id)
+          window.location.reload()
+        }}
       />
       <main style={{ display: "flex", height: "70vh" }}>
         <article style={{ flex: "2 2 12em", overflowY: "scroll" }}>
