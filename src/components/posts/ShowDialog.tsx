@@ -48,10 +48,22 @@ function ShowDialog({ open, setOpen, post }: ShowDialogI) {
               </span>
             }
             title={post.title}
-            action={<BobbelMenu post={post} />}
+            action={<BobbelMenu post={post} details={false} />}
           />
           <CardContent sx={{ paddingX: 0, paddingY: 1 }}>
-            {post.text}
+            <Stack direction="column" spacing={1}>
+              {post.type === "Veranstaltung" && (
+                <>
+                  <span>
+                    <b>Datum:</b> {post.eventDate}
+                  </span>
+                  <span>
+                    <b>Ort:</b> {post.eventLocation}
+                  </span>
+                </>
+              )}
+              <div style={{ whiteSpace: "pre-line" }}>{post.text}</div>
+            </Stack>
             <Stack direction="row" justifyContent="flex-start" gap={1} marginY={1}>
               {post.tags.map((category, val) => (
                 <Chip key={val} label={category} />
