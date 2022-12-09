@@ -10,7 +10,7 @@ import userService from "src/services/UserService"
 
 import ShowDialog from "./ShowDialog"
 
-function BobbelMenu({ post, currentUser, deletePost }: { post: Post } & AuthContextI) {
+function BobbelMenu({ post, details, currentUser, deletePost }: { post: Post; details?: boolean } & AuthContextI) {
   const navigate = useNavigate()
   const anchorRef = React.useRef<HTMLButtonElement>(null)
   const [openMenu, setOpenMenu] = React.useState(false)
@@ -58,12 +58,14 @@ function BobbelMenu({ post, currentUser, deletePost }: { post: Post } & AuthCont
         </MenuItem>
         {currentUser?.id !== post.author.id ? (
           <div>
-            <MenuItem onClick={() => setPostDialogOpen(true)}>
-              <ListItemIcon>
-                <Info />
-              </ListItemIcon>
-              <ListItemText>Details</ListItemText>
-            </MenuItem>
+            {details && (
+              <MenuItem onClick={() => setPostDialogOpen(true)}>
+                <ListItemIcon>
+                  <Info />
+                </ListItemIcon>
+                <ListItemText>Details</ListItemText>
+              </MenuItem>
+            )}
             <MenuItem onClick={() => navigate(`/profile/${post.author.id}`)}>
               <ListItemIcon>
                 <Person />
@@ -83,12 +85,14 @@ function BobbelMenu({ post, currentUser, deletePost }: { post: Post } & AuthCont
           </div>
         ) : (
           <div>
-            <MenuItem onClick={() => setPostDialogOpen(true)}>
-              <ListItemIcon>
-                <Info />
-              </ListItemIcon>
-              <ListItemText>Details</ListItemText>
-            </MenuItem>
+            {details && (
+              <MenuItem onClick={() => setPostDialogOpen(true)}>
+                <ListItemIcon>
+                  <Info />
+                </ListItemIcon>
+                <ListItemText>Details</ListItemText>
+              </MenuItem>
+            )}
             <MenuItem onClick={() => deletePost(post)}>
               <ListItemIcon>
                 <DeleteForever />
@@ -101,6 +105,10 @@ function BobbelMenu({ post, currentUser, deletePost }: { post: Post } & AuthCont
       <ShowDialog open={postDialogOpen} setOpen={setPostDialogOpen} post={post} />
     </div>
   )
+}
+
+BobbelMenu.defaultProps = {
+  details: true,
 }
 
 export default withAuth(BobbelMenu)
