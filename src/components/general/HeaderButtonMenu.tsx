@@ -1,4 +1,4 @@
-import { Chat, Edit, List, Star } from "@mui/icons-material"
+import { Chat, Edit, List, Star, FindInPage } from "@mui/icons-material"
 import IconButton from "@mui/material/IconButton"
 import Tooltip from "@mui/material/Tooltip"
 import * as React from "react"
@@ -34,6 +34,12 @@ function HeaderButtonMenu({ currentUser }: AuthContextI) {
           <Chat />
         </IconButton>
       </Tooltip>
+      <Tooltip title="Marktplatz">
+        <IconButton onClick={() => navigate("/marketplace")} color="inherit">
+          <FindInPage />
+        </IconButton>
+      </Tooltip>
+
       <CreatePostDialog open={postDialogOpen} setOpen={setPostDialogOpen} />
     </>
   )
