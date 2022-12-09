@@ -5,11 +5,10 @@ export const POST_TYPES = ["Anfrage", "Angebot", "Information", "Veranstaltung"]
 export const POST_TYPES_ICONS = [QuestionMark, Percent, Info, Event]
 
 export const TYPE_ICON_MAP = {
-    Anfrage: QuestionMark,
-    Angebot: Percent,
-    Information: Info,
-    Veranstaltung: Event,
-    Ersteller : Group,
-    Markt: Store
-  };
-
+  Anfrage: QuestionMark,
+  Angebot: Percent,
+  Information: Info,
+  Veranstaltung: Event,
+  Ersteller: Group,
+  Markt: Store,
+}

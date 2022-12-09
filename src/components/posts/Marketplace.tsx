@@ -1,7 +1,5 @@
+import moment from "moment"
 import * as React from "react"
-
-// TODO:
-// * Date! -> state isnt working ?, compare Dates with === < > ?
 
 import { ExpandLess, ExpandMore, Event, Info, Store, Group } from "@mui/icons-material"
 import {
@@ -73,13 +71,17 @@ function Marketplace({ currentUser }: AuthContextI) {
       }
       if (postEvent) {
         let tempPosts: Post[] = []
-        //const vadilityStart = data.get("vadilityStart")
-
         tempPosts = allPosts.filter((post) => post?.type === "Veranstaltung")
         //console.log(tempPosts)
+        //console.log(new Date(moment(tempPosts[0].eventDate, "DD.MM.YYYY hh:mm").toDate()) >= postEventStart)
+
+        // eventDate-Format: 24.11.2022 18:01
         tempPosts = tempPosts.filter(
-          (post) => new Date(post.eventDate) >= postEventStart && new Date(post.eventDate) <= postEventEnd,
+          (post) =>
+            new Date(moment(post.eventDate, "DD.MM.YYYY hh:mm").toDate()) >= postEventStart &&
+            new Date(moment(post.eventDate, "DD.MM.YYYY hh:mm").toDate()) <= postEventEnd,
         )
+        //console.log(tempPosts)
         filteredPosts = [...filteredPosts, ...tempPosts]
       }
 
@@ -88,6 +90,11 @@ function Marketplace({ currentUser }: AuthContextI) {
           (post) => post?.tags.filter((tag) => postTagsValue.includes(tag)).length > 0,
         )
       }
+
+      // sort posts by Creation-Date
+      filteredPosts.sort((a: Post, b: Post) => {
+        return a.created - b.created
+      })
 
       setPosts(filteredPosts)
     })
@@ -99,6 +106,8 @@ function Marketplace({ currentUser }: AuthContextI) {
     postMarketDemand,
     postInfo,
     postEvent,
+    postEventStart,
+    postEventEnd,
     postTags,
     postTagsValue,
   ])
@@ -134,7 +143,6 @@ function Marketplace({ currentUser }: AuthContextI) {
           setPostCreatorPerson(!postCreatorPerson)
         }
       }
-      console.log("now: ", creators)
     } else if (grp === "marketAdds") {
       setMarketAdds(newChange)
       if (id === "demand") {
