@@ -36,7 +36,9 @@ function Marketplace({ currentUser }: AuthContextI) {
   const [postInfo, setPostInfo] = React.useState<boolean>(false)
   const [postEvent, setPostEvent] = React.useState<boolean>(false)
   const [postEventStart, setPostEventStart] = React.useState<Date>(new Date())
-  const [postEventEnd, setPostEventEnd] = React.useState<Date>(new Date(postEventStart.getTime() + 1000 * 60 * 60 * 24))
+  const [postEventEnd, setPostEventEnd] = React.useState<Date>(
+    new Date(postEventStart.getTime() + 1000 * 60 * 60 * 24 * 365 * 2),
+  )
   const [postTags, setPostTags] = React.useState<boolean>(false)
   const [postTagsValue, setPostTagsValue] = React.useState<string[]>([])
 
@@ -59,27 +61,22 @@ function Marketplace({ currentUser }: AuthContextI) {
 
         if (postMarketOffer) {
           tempPostsA = allPosts.filter((post) => post?.type === "Angebot")
-        }
-        if (postMarketDemand) {
+        } else if (postMarketDemand) {
           tempPostsB = allPosts.filter((post) => post?.type === "Anfrage")
         }
         filteredPosts = [...filteredPosts, ...tempPostsA, ...tempPostsB]
-      }
-      if (postInfo) {
+      } else if (postInfo) {
         let tempPosts: Post[] = []
         tempPosts = allPosts.filter((post) => post?.type === "Information")
         filteredPosts = [...filteredPosts, ...tempPosts]
-      }
-      if (postEvent) {
+      } else if (postEvent) {
         let tempPosts: Post[] = []
         tempPosts = allPosts.filter((post) => post?.type === "Veranstaltung")
-
-        // eventDate-Format: 24.11.2022 18:01
-        tempPosts = tempPosts.filter(
-          (post) =>
-            new Date(moment(post.eventDate, "DD.MM.YYYY hh:mm").toDate()) >= postEventStart &&
-            new Date(moment(post.eventDate, "DD.MM.YYYY hh:mm").toDate()) <= postEventEnd,
-        )
+        tempPosts = tempPosts.filter((post) => {
+          if (post.eventDate)
+            return post.eventDate >= postEventStart.getTime() && post.eventDate <= postEventEnd.getTime()
+          else return false
+        })
         filteredPosts = [...filteredPosts, ...tempPosts]
       }
       if (!postInfo && !postEvent && !postMarket) {
@@ -263,7 +260,7 @@ function Marketplace({ currentUser }: AuthContextI) {
           </List>
         </Grid>
         <Grid item xs={9}>
-          <Posts posts={posts} notFoundText="Keine Beiträge im Marketplace gespeichert." />
+          <Posts posts={posts} notFoundText="Keine Beiträge im Marktplatz gespeichert." />
         </Grid>
       </Grid>
     </div>
