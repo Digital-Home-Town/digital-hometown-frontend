@@ -1,4 +1,11 @@
-import { Event, ExpandLess, ExpandMore, Group, Info, Store } from "@mui/icons-material"
+import {
+  Event,
+  ExpandLess,
+  ExpandMore,
+  Group,
+  Info,
+  Store,
+} from "@mui/icons-material"
 import {
   Checkbox,
   Collapse,
@@ -12,6 +19,7 @@ import {
   ToggleButtonGroup,
 } from "@mui/material"
 import { Box } from "@mui/system"
+import { orderBy } from "lodash"
 import moment from "moment"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -80,17 +88,16 @@ function Marketplace({ currentUser }: AuthContextI) {
         )
         filteredPosts = [...filteredPosts, ...tempPosts]
       }
-
+      if (!postInfo && !postEvent && !postMarket) {
+        filteredPosts = allPosts
+      }
       if (postTags && postTagsValue.length) {
         filteredPosts = filteredPosts.filter(
           (post) => post?.tags.filter((tag) => postTagsValue.includes(tag)).length > 0,
         )
       }
 
-      // sort posts by Creation-Date
-      filteredPosts.sort((a: Post, b: Post) => {
-        return b.created - a.created
-      })
+      filteredPosts = orderBy(filteredPosts, ["created"], ["desc"])
 
       setPosts(filteredPosts)
     })
@@ -150,8 +157,7 @@ function Marketplace({ currentUser }: AuthContextI) {
 
   return (
     <div>
-      <h1>Marketplace</h1>
-      Hier siehst du alle Beiträge, ...
+      <h1>Marktplatz</h1>
       <Grid container spacing={2} paddingTop={1}>
         <Grid item xs={3}>
           <List component="nav">
