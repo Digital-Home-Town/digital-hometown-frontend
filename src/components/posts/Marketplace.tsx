@@ -45,6 +45,7 @@ function Marketplace({ currentUser }: AuthContextI) {
 
   React.useEffect(() => {
     PostService.getAll().then((allPosts) => {
+      allPosts = allPosts.filter((post) => post?.author?.id !== currentUser?.id)
       if (postCreatorPerson && postCreatorClub) {
       } else {
         allPosts = allPosts.filter((post) => post?.author?.isOrg === !postCreatorPerson)

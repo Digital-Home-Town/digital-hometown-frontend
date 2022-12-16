@@ -12,27 +12,7 @@ function PostList({ currentUser, posts }: AuthContextI) {
   React.useEffect(() => {
     async function getFilteredPosts() {
       const filtered = posts
-        .filter((post) => !currentUser?.blocked?.includes(post.author.id))
-        .filter((post) => {
-          console.log(posts)
-          if (!(post.validityStart && post.validityEnd)) {
-            // no validity set
-            return true
-          }
 
-          if (!post.validityStart && post.validityEnd >= new Date().getTime()) {
-            return true
-          }
-          if (!post.validityEnd && post.validityStart <= new Date().getTime()) {
-            return true
-          }
-
-          if (post.validityStart <= new Date().getTime() && post.validityEnd >= new Date().getTime()) {
-            return true
-          } else {
-            return false
-          }
-        })
       setFilteredPosts(filtered)
     }
     getFilteredPosts()

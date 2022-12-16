@@ -44,14 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     onSnapshot(postCollection, (doc) => {
-      const updatedPosts = PostService.parsePosts(doc.docs)
-      console.log(
-        updatedPosts.map((p) => {
-          return { id: p.id, title: p.title, created: p.created }
-        }),
-      )
+      const updatedPosts = PostService.parsePosts(doc.docs, currentUser)
       if (!isEqual(updatedPosts, posts)) {
-        console.log("Updating posts")
         setPosts(updatedPosts)
       }
     })

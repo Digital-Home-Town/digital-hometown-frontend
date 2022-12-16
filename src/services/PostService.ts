@@ -66,7 +66,7 @@ class PostService {
     return this.parsePosts(documents.docs)
   }
 
-  parsePosts(documentData: QueryDocumentSnapshot<Post>[]): Post[] {
+  parsePosts(documentData: QueryDocumentSnapshot<Post>[], currentUser?: User | Club | undefined | null): Post[] {
     const posts = documentData.map((doc) => {
       let post = doc.data()
       post.id = doc.id
@@ -74,6 +74,35 @@ class PostService {
       return post
     })
     return orderBy(posts, "created", "desc")
+      .filter((post) => !currentUser?.blocked?.includes(post.author.id))
+      .filter((post) => {
+        // display posts of the current user regardless of validity date
+        if (currentUser?.id === post.author.id) {
+          return true
+        }
+
+        // if no validity is set, the post is valid
+        if (!(post.validityStart && post.validityEnd)) {
+          return true
+        }
+
+        // validityStart is not set, check only if validityEnd is valid
+        if (!post.validityStart && post.validityEnd >= new Date().getTime()) {
+          return true
+        }
+
+        // validityEnd is not set, check only if validityStart is valid
+        if (!post.validityEnd && post.validityStart <= new Date().getTime()) {
+          return true
+        }
+
+        // if validity is set, check if it is valid
+        if (post.validityStart <= new Date().getTime() && post.validityEnd >= new Date().getTime()) {
+          return true
+        }
+
+        return false
+      })
   }
 }
 
