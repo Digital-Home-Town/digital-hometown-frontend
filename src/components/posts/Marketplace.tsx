@@ -1,11 +1,4 @@
-import {
-  Event,
-  ExpandLess,
-  ExpandMore,
-  Group,
-  Info,
-  Store,
-} from "@mui/icons-material"
+import { Event, ExpandLess, ExpandMore, Group, Info, Store } from "@mui/icons-material"
 import {
   Checkbox,
   Collapse,
