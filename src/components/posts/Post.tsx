@@ -28,7 +28,7 @@ function Post({ post }: PostProperties) {
           {post.type === "Veranstaltung" && (
             <>
               <span>
-                <b>Datum:</b> {new Date(post.eventDate || new Date()).toLocaleString()}
+                <b>Datum:</b> {new Date(post.eventDate || new Date()).toLocaleDateString()}
               </span>
               <span>
                 <b>Ort:</b> {post.eventLocation}
