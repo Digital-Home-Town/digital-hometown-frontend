@@ -1,4 +1,9 @@
-import { FormControl as Box, FormHelperText, Stack, TextField } from "@mui/material"
+import {
+  FormControl as Box,
+  FormHelperText,
+  Stack,
+  TextField,
+} from "@mui/material"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -6,6 +11,7 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import moment from "moment"
 import * as React from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -22,7 +28,7 @@ interface CreatePostDialogI {
   setOpen: (open: boolean) => void
 }
 
-function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDialogI & AuthContextI) {
+function CreatePostDialog({ open, setOpen, currentUser }: CreatePostDialogI & AuthContextI) {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
@@ -39,9 +45,9 @@ function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDi
     event.preventDefault()
 
     const data = new FormData(event.currentTarget)
-    const eventDate = data.get("eventDate")
-    const vadilityStart = data.get("vadilityStart")
-    const vadilityEnd = data.get("vadilityEnd")
+    const eventDate = data.get("eventDate") as string
+    const validityStart = (data.get("vadilityStart") as string) || initialDate
+    const validityEnd = (data.get("vadilityEnd") as string) || initialFutureDate
 
     if (postType && postText && currentUser && postTitle) {
       setOpen(false)
@@ -52,8 +58,9 @@ function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDi
         author: currentUser,
         title: postTitle,
         tags: postTags,
-        validityStart: vadilityStart,
-        validityEnd: vadilityEnd,
+        created: PostService.getCreated(),
+        validityStart: moment(validityStart, "DD.MM.YYYY").toDate().getTime(),
+        validityEnd: moment(validityEnd, "DD.MM.YYYY").toDate().getTime(),
       } as Post
 
       if (postType === "Veranstaltung") {
@@ -62,7 +69,7 @@ function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDi
           throw Error("Location or date is missing.")
         } else {
           newPost.eventLocation = eventLocation
-          newPost.eventDate = eventDate
+          newPost.eventDate = moment(eventDate, "DD.MM.YYYY").toDate().getTime()
         }
       }
       toast.success("Dein Beitrag geht hinaus in deine Nachbarschaft!")
@@ -72,7 +79,6 @@ function CreatePostDialog({ open, setOpen, currentUser, getPosts }: CreatePostDi
       setEventLocation("")
       setPostType(undefined)
       setPostTags([])
-      getPosts()
     } else {
       toast.warn("Ein Beitrag muss aus einem Title, einer Nachricht und einem Typ bestehen!")
     }

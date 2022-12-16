@@ -1,13 +1,13 @@
 import { onValue, orderByChild, query, ref } from "firebase/database"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
+import { toast } from "react-toastify"
+import clubService from "src/services/ClubService"
 
 import Loader from "../../auth/Loader"
 import { realtimeDB } from "../../firebase-config"
 import ChatService from "../../services/ChatService"
-import { toast } from "react-toastify"
 import UserService from "../../services/UserService"
-import clubService from "src/services/ClubService"
 
 export interface ChatContextI {
   rooms: RoomI[]
@@ -108,7 +108,7 @@ export function ChatProvider({
       setCurrentRoom(rooms.find((room) => room.id === currentRoom.id))
     }
     setLoading(false)
-  }, [rooms])
+  }, [currentRoom, defaultChatId, rooms])
 
   useEffect(() => {
     const func = async () => {
@@ -136,7 +136,7 @@ export function ChatProvider({
     }
 
     func().then()
-  }, [currentRoom])
+  }, [currentRoom, rooms])
 
   const handleCurrentRoom = (roomId: string) => {
     if (rooms != null) setCurrentRoom(rooms.filter((room) => room.id === roomId)[0])

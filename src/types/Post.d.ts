@@ -5,9 +5,9 @@ interface Post {
   text: string
   type: string
   tags: string[]
-  created?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
-  eventDate?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
+  created: number
+  eventDate?: number
   eventLocation?: string
-  validityStart?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
-  validityEnd?: number | firebase.firestore.Timestamp | firebase.firestore.FieldValue
+  validityStart?: number
+  validityEnd?: number
 }

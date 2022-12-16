@@ -7,13 +7,11 @@ import withAuth from "src/auth/withAuth"
 
 import Posts from "./Posts"
 
-function PostList({ currentUser, posts, getPosts }: AuthContextI) {
+function PostList({ currentUser, posts }: AuthContextI) {
   const [filteredPosts, setFilteredPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
     async function getFilteredPosts() {
-      await getPosts()
-
       const filtered = posts
         .filter((post) => !currentUser?.blocked?.includes(post.author.id))
         .filter((post) => {
@@ -39,7 +37,7 @@ function PostList({ currentUser, posts, getPosts }: AuthContextI) {
       setFilteredPosts(filtered)
     }
     getFilteredPosts()
-  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts, getPosts])
+  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts])
 
   return currentUser ? (
     <Box sx={{ mt: 1 }}>

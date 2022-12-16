@@ -39,7 +39,7 @@ function Post({ post }: PostProperties) {
         </Stack>
 
         <Stack direction="row" justifyContent="flex-start" gap={1} marginTop={2}>
-          {post.tags.map((category, val) => (
+          {post.tags?.map((category, val) => (
             <Chip key={val} label={category} />
           ))}
         </Stack>

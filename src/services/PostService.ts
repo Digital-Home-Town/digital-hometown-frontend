@@ -5,10 +5,9 @@ import {
   getDocs,
   orderBy,
   query,
-  serverTimestamp,
+  QueryDocumentSnapshot,
   setDoc,
 } from "firebase/firestore"
-import moment from "moment"
 import { toast } from "react-toastify"
 import { postCollection } from "src/firebase-config"
 
@@ -25,8 +24,11 @@ class PostService {
     deleteDoc(doc(this.collection, post.id))
   }
 
+  getCreated(): number {
+    return new Date().getTime()
+  }
+
   async create(post: Post) {
-    post.created = serverTimestamp()
     await setDoc(doc(this.collection), post)
   }
 
@@ -59,17 +61,19 @@ class PostService {
     const firebaseQuery = query(this.collection, orderBy("created", "desc"))
 
     const documents = await getDocs(firebaseQuery)
-    const posts = documents.docs.map((doc) => {
-      let post_ = doc.data()
-      post_.id = doc.id
-      post_.tags = post_.tags || []
-      post_.created =
-        moment(post_?.created || 0)
-          .toDate()
-          .getTime() || 0
-      return post_
-    })
-    return posts
+
+    return this.parsePosts(documents.docs)
+  }
+
+  parsePosts(documentData: QueryDocumentSnapshot<Post>[]): Post[] {
+    return documentData
+      .map((doc) => {
+        let post = doc.data()
+        post.id = doc.id
+        post.tags = post.tags || []
+        return post
+      })
+      .sort((a, b) => b.created - a.created)
   }
 }
 

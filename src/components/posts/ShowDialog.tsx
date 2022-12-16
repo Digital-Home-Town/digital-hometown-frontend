@@ -65,7 +65,7 @@ function ShowDialog({ open, setOpen, post }: ShowDialogI) {
               <div style={{ whiteSpace: "pre-line" }}>{post.text}</div>
             </Stack>
             <Stack direction="row" justifyContent="flex-start" gap={1} marginY={1}>
-              {post.tags.map((category, val) => (
+              {post.tags?.map((category, val) => (
                 <Chip key={val} label={category} />
               ))}
             </Stack>

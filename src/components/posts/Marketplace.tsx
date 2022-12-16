@@ -1,7 +1,11 @@
-import moment from "moment"
-import * as React from "react"
-
-import { ExpandLess, ExpandMore, Event, Info, Store, Group } from "@mui/icons-material"
+import {
+  Event,
+  ExpandLess,
+  ExpandMore,
+  Group,
+  Info,
+  Store,
+} from "@mui/icons-material"
 import {
   Checkbox,
   Collapse,
@@ -14,14 +18,16 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material"
-
 import { Box } from "@mui/system"
+import moment from "moment"
+import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import PostService from "src/services/PostService"
-import Posts from "./Posts"
+
 import DatePicker from "../general/input/DatePicker2"
 import TagSelect from "../general/input/TagSelect"
+import Posts from "./Posts"
 
 function Marketplace({ currentUser }: AuthContextI) {
   // Settings
@@ -117,14 +123,11 @@ function Marketplace({ currentUser }: AuthContextI) {
     if (postEventEnd < postEventStart) {
       setPostEventEnd(new Date(postEventStart.getTime()))
     }
-  }, [postEventStart])
 
-  // use effect when end date changes
-  React.useEffect(() => {
     if (postEventStart > postEventEnd) {
       setPostEventStart(new Date(postEventEnd.getTime()))
     }
-  }, [postEventEnd])
+  }, [postEventStart, postEventEnd])
 
   const handleChange = (evt: React.MouseEvent<HTMLElement>, newChange: string[]) => {
     const seg: string[] = evt.currentTarget.id.split(".")
