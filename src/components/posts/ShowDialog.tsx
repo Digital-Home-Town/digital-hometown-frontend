@@ -55,7 +55,7 @@ function ShowDialog({ open, setOpen, post }: ShowDialogI) {
               {post.type === "Veranstaltung" && (
                 <>
                   <span>
-                    <b>Datum:</b> {post.eventDate}
+                    <b>Datum:</b> {new Date(post.eventDate || new Date()).toLocaleString()}
                   </span>
                   <span>
                     <b>Ort:</b> {post.eventLocation}
