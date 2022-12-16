@@ -3,11 +3,12 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  orderBy,
+  orderBy as fOrderBy,
   query,
   QueryDocumentSnapshot,
   setDoc,
 } from "firebase/firestore"
+import { orderBy } from "lodash"
 import { toast } from "react-toastify"
 import { postCollection } from "src/firebase-config"
 
@@ -58,7 +59,7 @@ class PostService {
   // }
 
   async getAll() {
-    const firebaseQuery = query(this.collection, orderBy("created", "desc"))
+    const firebaseQuery = query(this.collection, fOrderBy("created", "desc"))
 
     const documents = await getDocs(firebaseQuery)
 
@@ -66,14 +67,13 @@ class PostService {
   }
 
   parsePosts(documentData: QueryDocumentSnapshot<Post>[]): Post[] {
-    return documentData
-      .map((doc) => {
-        let post = doc.data()
-        post.id = doc.id
-        post.tags = post.tags || []
-        return post
-      })
-      .sort((a, b) => b.created - a.created)
+    const posts = documentData.map((doc) => {
+      let post = doc.data()
+      post.id = doc.id
+      post.tags = post.tags || []
+      return post
+    })
+    return orderBy(posts, "created", "desc")
   }
 }
 
