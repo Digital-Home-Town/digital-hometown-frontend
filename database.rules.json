@@ -1,0 +1,22 @@
+{
+  "rules": {
+    "rooms": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": "lastMessageSendAt",
+      "$roomUid": {
+        ".write": "root.child('rooms/'+$roomUid+'/members/' + auth.uid + '/role').val() === 'admin'"
+      }
+    },
+
+    "messages": {
+      "$roomUid": {
+        ".read": "root.child('rooms/'+$roomUid+'/members').hasChild(auth.uid)",
+        ".write": "root.child('rooms/'+$roomUid+'/members').hasChild(auth.uid)"
+      },
+      "messages": {
+        ".indexOn": "sendAt"
+      }
+    }
+  }
+}
