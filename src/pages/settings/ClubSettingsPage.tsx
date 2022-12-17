@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useReducer } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -10,8 +10,9 @@ import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
 
-import DatePicker from "../../components/general/input/DatePicker"
-import Input from "../../components/general/input/Input"
+import DatePicker from "src/components/general/input/DatePicker"
+import Input from "src/components/general/input/Input"
+import DeleteDialog from "src/components/dialogs/DeleteDialog"
 
 function ClubSettingsPage({
   currentUser,
@@ -23,6 +24,8 @@ function ClubSettingsPage({
   useEffect(() => {
     setFirstLogin(firstLoginProp)
   }, [])
+
+  const [showDeleteDialog, toggleShowDeleteDialog] = useReducer((state: boolean) => !state, false)
 
   const navigate = useNavigate()
 
@@ -128,6 +131,16 @@ function ClubSettingsPage({
             Vervollständige euer Vereinsprofil
           </Typography>
 
+          <DeleteDialog
+            open={showDeleteDialog}
+            text="Bist du dir sicher, dass du euer Vereinsprofil löschen möchtest?"
+            title="Vereinsprofil löschen?"
+            handleClose={() => toggleShowDeleteDialog()}
+            onConfirm={() => {
+              handleDelete()
+            }}
+          />
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <Input
               name="givenName"
@@ -161,7 +174,7 @@ function ClubSettingsPage({
               <Button type="submit" variant="contained" color="success">
                 Speichern
               </Button>
-              <Button variant="contained" color="error" onClick={handleDelete}>
+              <Button variant="contained" color="error" onClick={toggleShowDeleteDialog}>
                 Verein löschen
               </Button>
               <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>

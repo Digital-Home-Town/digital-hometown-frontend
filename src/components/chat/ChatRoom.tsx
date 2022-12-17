@@ -1,61 +1,13 @@
 import React, { useEffect, useReducer, useRef } from "react"
 import ChatMessage from "./ChatMessage"
 import { ChatContextI, withChat } from "./ChatContext"
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  IconButton,
-  ListItem,
-} from "@mui/material"
+import { Divider, Grid, IconButton, ListItem } from "@mui/material"
 import { DeleteForever, Edit } from "@mui/icons-material"
 import ChatEdit from "./ChatEdit"
 import ChatService from "../../services/ChatService"
 import { toast } from "react-toastify"
 import SendMessage from "./SendMessage"
-
-interface DeleteDialogProps {
-  open: boolean
-  handleClose: () => void
-  onConfirm: () => void
-}
-
-function DeleteDialog({ open, handleClose, onConfirm }: DeleteDialogProps) {
-  return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">Chat wirklich löschen?</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Wenn du den Chat löscht, kann er nicht wiederhergestellt werden.
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} autoFocus>
-          Abbruch
-        </Button>
-        <Button
-          onClick={() => {
-            handleClose()
-            onConfirm()
-          }}
-          color="error"
-        >
-          Endgültig löschen
-        </Button>
-      </DialogActions>
-    </Dialog>
-  )
-}
+import DeleteDialog from "../dialogs/DeleteDialog"
 
 function ChatRoom_({ loading, currentRoom, messages, rooms }: ChatContextI) {
   const endMsgRef = useRef<HTMLDivElement | null>(null)
@@ -121,6 +73,8 @@ function ChatRoom_({ loading, currentRoom, messages, rooms }: ChatContextI) {
       </header>
       <DeleteDialog
         open={showDeleteDialog}
+        text="Bist du dir sicher, dass du diesen Chat löschen möchtest?"
+        title="Chat löschen?"
         handleClose={() => toggleShowDeleteDialog()}
         onConfirm={() => {
           ChatService.deleteRoom(currentRoom?.id)
