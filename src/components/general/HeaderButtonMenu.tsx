@@ -19,14 +19,14 @@ function HeaderButtonMenu({ currentUser }: AuthContextI) {
           Merkzettel
         </Button>
       </Tooltip>
-      <Tooltip title="Beiträge">
+      <Tooltip title="Alle Beiträge">
         <Button variant="text" onClick={() => navigate("/posts")} color="inherit" startIcon={<List />}>
           Alle Beiträge
         </Button>
       </Tooltip>
       <Tooltip title="Beitrag erstellen">
         <Button variant="text" onClick={() => setPostDialogOpen(true)} color="inherit" startIcon={<Edit />}>
-          Erstellen
+          Beiträge erstellen
         </Button>
       </Tooltip>
       <Tooltip title="Chat">
