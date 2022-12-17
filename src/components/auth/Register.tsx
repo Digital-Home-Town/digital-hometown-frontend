@@ -67,9 +67,9 @@ function Register(props: AuthProps & AuthContextI) {
 
   return currentUser ? (
     isOrg ? (
-      <Navigate to="/club-settings-first" />
+      <Navigate to="/club-settings/first" />
     ) : (
-      <Navigate to="/user-settings-first" />
+      <Navigate to="/user-settings/first" />
     )
   ) : (
     <Container component="main" maxWidth="sm">

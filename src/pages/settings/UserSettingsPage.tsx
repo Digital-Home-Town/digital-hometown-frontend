@@ -62,6 +62,7 @@ function UserSettingsPage({
       .then(() => {
         logOut()
         toast.success("Dein Profil wurde gelöscht.")
+        navigate("/")
       })
       .catch((e) => {
         toast.error("Dein Profil konnte nicht gelöscht werden.")
