@@ -1,4 +1,11 @@
-import { Event, ExpandLess, ExpandMore, Group, Info, Store } from "@mui/icons-material"
+import {
+  Event,
+  ExpandLess,
+  ExpandMore,
+  Group,
+  Info,
+  Store,
+} from "@mui/icons-material"
 import {
   Checkbox,
   Collapse,
@@ -13,7 +20,6 @@ import {
 } from "@mui/material"
 import { Box } from "@mui/system"
 import { orderBy } from "lodash"
-import moment from "moment"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -46,7 +52,7 @@ function Marketplace({ currentUser }: AuthContextI) {
   const [posts, setPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
-    PostService.getAll().then((allPosts) => {
+    PostService.getAll(currentUser).then((allPosts) => {
       allPosts = allPosts.filter((post) => post?.author?.id !== currentUser?.id)
       if (postCreatorPerson && postCreatorClub) {
       } else {
@@ -93,6 +99,7 @@ function Marketplace({ currentUser }: AuthContextI) {
       setPosts(filteredPosts)
     })
   }, [
+    currentUser,
     postCreatorPerson,
     postCreatorClub,
     postMarket,
