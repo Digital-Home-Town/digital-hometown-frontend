@@ -16,10 +16,16 @@ import HeaderButtonMenu from "./HeaderButtonMenu"
 import HeaderMenu from "./HeaderMenu"
 import { ColorModeToggler } from "./HeaderMenuItems"
 
-function Logo({ toDashboard }: { toDashboard: boolean }) {
+function Logo({ linkEnabled }: { linkEnabled: boolean }) {
   return (
     <Box>
-      <NavLink to={toDashboard ? "/" : ""} style={{ textDecoration: "none" }}>
+      <NavLink
+        to={"/"}
+        onClick={(e) => {
+          if (!linkEnabled) e.preventDefault()
+        }}
+        style={{ textDecoration: "none" }}
+      >
         <Button variant="text" color="inherit">
           <Avatar src={logo} style={{ margin: 5 }} />
           <Typography color="white">Digital Dahoam</Typography>
@@ -93,12 +99,12 @@ function Header({ currentUser, firstLogin }: AuthContextI) {
           <>
             {firstLogin ? (
               <Toolbar>
-                <Logo toDashboard={false} />
+                <Logo linkEnabled={false} />
               </Toolbar>
             ) : (
               <Toolbar disableGutters>
                 <Stack direction="row" style={{ flexGrow: 1 }}>
-                  <Logo toDashboard={true} />
+                  <Logo linkEnabled={true} />
                   <HeaderButtonMenu />
                 </Stack>
                 <HeaderMenu />
