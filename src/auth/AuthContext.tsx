@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updatePassword,
 } from "firebase/auth"
 import { onSnapshot } from "firebase/firestore"
 import { isEqual } from "lodash"
@@ -31,6 +32,7 @@ export interface AuthContextI {
   deletePost: (post: Post) => void
   firstLogin: boolean
   setFirstLogin: (firstLogin: boolean) => void
+  deleteUser: () => Promise<void>
 }
 
 export interface AuthProps {
@@ -157,10 +159,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       profile.isOrg = isOrg
       service = isOrg ? clubService : userService
     }
-    setCurrentUser(profile)
     await service.update(id, profile).catch(() => {
       toast.error("Fehler beim Speichern des Profils.")
     })
+
+    setCurrentUser(profile)
   }
 
   function handleOAuthSignIn(providerName: "google" | "facebook", isOrg: boolean) {
@@ -221,6 +224,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.error("Fehler beim Passwort zurücksetzen. Ist deine Mail richtig geschrieben?")
       })
   }
+  const deleteUser = async () => {
+    if (!currentUser?.email || !auth.currentUser) return
+    const service = currentUser.isOrg ? clubService : userService
+    try {
+      /* To check if reauthentication is needed
+       * (if it is not needed, user is deleted afterwards)
+       * So it does not matter, that the users password is not his email.
+       * If reauthentication is needed, users password is not updated, so he can just login.
+       */
+      await updatePassword(auth.currentUser, currentUser.email)
+      const id = currentUser.id
+      await PostService.removePostsFromUser(id)
+
+      await service.delete(id)
+      await auth.currentUser?.delete()
+      setCurrentUser(null)
+      toast.info("Dein Profil wurde gelöscht")
+    } catch (exception) {
+      toast.error("Bitte mel  de dich erneut an, um dein Konto zu löschen.")
+      signOut(auth)
+      setCurrentUser(null)
+    }
+  }
 
   return (
     <ReactPlaceholder ready={!loading} customPlaceholder={<Loader />}>
@@ -234,6 +260,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           resetPassword: handlePasswordReset,
           setCurrentUser,
           deletePost,
+          deleteUser,
           posts,
           firstLogin,
           setFirstLogin,

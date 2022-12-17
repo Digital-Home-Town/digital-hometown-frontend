@@ -2,13 +2,13 @@ import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
 import userService from "src/services/UserService"
-import { useNavigate } from "react-router-dom"
 
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
@@ -16,15 +16,10 @@ import Input from "../../components/general/input/Input"
 function ClubSettingsPage({
   currentUser,
   setCurrentUser,
-  logOut,
+  deleteUser,
   setFirstLogin,
   firstLoginProp,
 }: AuthContextI & { firstLoginProp: boolean }) {
-  const delimiter: string = " "
-  const fullName: string[] = (currentUser?.displayName || "").split(delimiter)
-
-  const givenName: string = fullName[0]
-
   useEffect(() => {
     setFirstLogin(firstLoginProp)
   }, [])
@@ -34,9 +29,9 @@ function ClubSettingsPage({
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
 
-  const [formValues] = useState({
+  let [formValues, setFormValues] = useState({
     givenName: {
-      value: givenName,
+      value: currentUser?.displayName || "",
       error: false,
       errorMessage: "Fehlerhafter Name",
     },
@@ -51,26 +46,44 @@ function ClubSettingsPage({
       errorMessage: "Fehlerhaftes Gründungsdatum",
     },
     postCode: {
-      value: "postCode",
+      value: currentUser?.postCode + "" || "",
       error: false,
       errorMessage: "Fehlerhafte PLZ",
     },
   })
 
+  useEffect(() => {
+    if (!currentUser) return
+    setFormValues({
+      givenName: {
+        value: currentUser?.displayName || "",
+        error: false,
+        errorMessage: "Fehlerhafter Anzeigename",
+      },
+      email: {
+        value: currentUser?.email || "",
+        error: false,
+        errorMessage: "Fehlerhafte Email",
+      },
+      dateOfBirth: {
+        value: currentUser?.dateOfBirth || "",
+        error: false,
+        errorMessage: "Fehlerhaftes Geburtsdatum",
+      },
+      postCode: {
+        value: currentUser?.postCode + "" || "",
+        error: false,
+        errorMessage: "Fehlerhafte PLZ",
+      },
+    })
+  }, [currentUser])
+
   if (currentUser == null) {
     return <Loader />
   }
-  const handleDelete = () => {
-    userService
-      .delete(currentUser.id)
-      .then(() => {
-        logOut()
-        toast.success("Dein Profil wurde gelöscht.")
-      })
-      .catch((e) => {
-        toast.error("Dein Profil konnte nicht gelöscht werden.")
-        throw e
-      })
+  const handleDelete = async () => {
+    await deleteUser()
+    navigate("/")
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

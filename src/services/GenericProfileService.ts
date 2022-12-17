@@ -1,4 +1,12 @@
-import { CollectionReference, deleteDoc, doc, getDoc, getDocs, query, setDoc } from "@firebase/firestore"
+import {
+  CollectionReference,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+} from "@firebase/firestore"
 import { updateProfile as updateProfileFirebaseAuth } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "src/firebase-config"
@@ -98,7 +106,7 @@ export class GenericProfileService<T extends GenericProfile> {
     requestCount++
     console.log(`${this.collection.path}: getDocument ${requestCount}`)
     const userRef = doc(this.collection, id)
-    return await deleteDoc(userRef)
+    await deleteDoc(userRef)
   }
 
   async get(id: string) {

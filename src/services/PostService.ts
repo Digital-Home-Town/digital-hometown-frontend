@@ -58,6 +58,16 @@ class PostService {
   //   return await getDoc(userRef)
   // }
 
+  async removePostsFromUser(userId: string) {
+    const posts = await this.getAll()
+
+    for (let post of posts) {
+      if (post.author.id === userId) {
+        this.delete(post)
+      }
+    }
+  }
+
   async getAll() {
     const firebaseQuery = query(this.collection, fOrderBy("created", "desc"))
 
