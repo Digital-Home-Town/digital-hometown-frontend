@@ -1,9 +1,10 @@
+import React, { createContext, ReactNode, useContext, useMemo, useState } from "react"
+
 import { PaletteMode } from "@mui/material"
 import { deDE as coreDeDE } from "@mui/material/locale"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { deDE } from "@mui/x-data-grid"
 import { deDE as pickersDeDE } from "@mui/x-date-pickers"
-import React, { createContext, ReactNode, useContext, useMemo, useState } from "react"
 
 interface ThemeContextType {
   colorMode: PaletteMode

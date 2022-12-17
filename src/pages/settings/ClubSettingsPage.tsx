@@ -23,7 +23,7 @@ function ClubSettingsPage({
 }: AuthContextI & { firstLoginProp: boolean }) {
   useEffect(() => {
     setFirstLogin(firstLoginProp)
-  }, [])
+  })
 
   const [showDeleteDialog, toggleShowDeleteDialog] = useReducer((state: boolean) => !state, false)
 

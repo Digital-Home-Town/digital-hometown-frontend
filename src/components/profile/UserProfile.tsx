@@ -4,7 +4,7 @@ import withAuth from "src/auth/withAuth"
 
 import GenericProfile from "./GenericProfile"
 
-function UserProfile({ profile, currentUser }: ProfileProps<User> & AuthContextI) {
+function UserProfile({ profile }: ProfileProps<User> & AuthContextI) {
   return <GenericProfile profile={profile} />
 }
 

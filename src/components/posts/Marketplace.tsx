@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react"
+
 import { Event, ExpandLess, ExpandMore, Group, Info, Store, Tag } from "@mui/icons-material"
 import {
   Checkbox,
@@ -13,37 +15,36 @@ import {
 } from "@mui/material"
 import { Box } from "@mui/system"
 import { orderBy } from "lodash"
-import * as React from "react"
+
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-
 import DatePicker from "../general/input/DatePicker2"
 import TagSelect from "../general/input/TagSelect"
 import Posts from "./Posts"
 
 function Marketplace({ currentUser, posts }: AuthContextI) {
   // Settings
-  const [openCreator, setOpenCreator] = React.useState(false)
-  const [postCreatorPerson, setPostCreatorPerson] = React.useState<boolean>(true)
-  const [postCreatorClub, setPostCreatorClub] = React.useState<boolean>(true)
+  const [openCreator, setOpenCreator] = useState(false)
+  const [postCreatorPerson, setPostCreatorPerson] = useState<boolean>(true)
+  const [postCreatorClub, setPostCreatorClub] = useState<boolean>(true)
 
-  const [postMarket, setPostMarket] = React.useState<boolean>(false)
-  const [postMarketOffer, setPostMarketOffer] = React.useState<boolean>(true)
-  const [postMarketDemand, setPostMarketDemand] = React.useState<boolean>(true)
+  const [postMarket, setPostMarket] = useState<boolean>(false)
+  const [postMarketOffer, setPostMarketOffer] = useState<boolean>(true)
+  const [postMarketDemand, setPostMarketDemand] = useState<boolean>(true)
 
-  const [postInfo, setPostInfo] = React.useState<boolean>(false)
-  const [postEvent, setPostEvent] = React.useState<boolean>(false)
-  const [postEventStart, setPostEventStart] = React.useState<Date>(new Date())
-  const [postEventEnd, setPostEventEnd] = React.useState<Date>(
+  const [postInfo, setPostInfo] = useState<boolean>(false)
+  const [postEvent, setPostEvent] = useState<boolean>(false)
+  const [postEventStart, setPostEventStart] = useState<Date>(new Date())
+  const [postEventEnd, setPostEventEnd] = useState<Date>(
     new Date(postEventStart.getTime() + 1000 * 60 * 60 * 24 * 365 * 2),
   )
-  const [postTags, setPostTags] = React.useState<boolean>(false)
-  const [postTagsValue, setPostTagsValue] = React.useState<string[]>([])
+  const [postTags, setPostTags] = useState<boolean>(false)
+  const [postTagsValue, setPostTagsValue] = useState<string[]>([])
 
   // Filter
-  const [filteredPosts, setFilteredPosts] = React.useState<Post[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     let allPosts = posts.filter((post) => post?.author?.id !== currentUser?.id)
     if (postCreatorPerson && postCreatorClub) {
     } else {
