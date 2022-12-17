@@ -83,7 +83,6 @@ function UserSettingsPage({
   }
   const handleDelete = async () => {
     await deleteUser()
-    toast.success("Dein Profil wurde gelöscht.")
     navigate("/")
   }
 
