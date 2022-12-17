@@ -13,7 +13,7 @@ function Post({ post }: PostProperties) {
   return (
     <Card
       sx={{
-        bgcolor: isOutdated ? "background.paper" : "",
+        bgcolor: isOutdated ? "lightgray" : "",
       }}
     >
       <CardHeader
