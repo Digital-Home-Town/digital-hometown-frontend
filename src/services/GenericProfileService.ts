@@ -81,7 +81,7 @@ export class GenericProfileService<T extends GenericProfile> {
       await setDoc(userRef, profile)
       await this.updateAuth(profile)
 
-      const posts = await PostService.getAll()
+      const posts = await PostService.getAll(profile)
 
       posts.forEach(async (post) => {
         if (post.author.id === id && post.id) {
