@@ -9,8 +9,13 @@ interface PostProperties {
 }
 function Post({ post }: PostProperties) {
   const navigate = useNavigate()
+  const [isOutdated] = React.useState(post.validityEnd && post.validityEnd <= new Date().getTime())
   return (
-    <Card>
+    <Card
+      sx={{
+        bgcolor: isOutdated ? "lightgray" : "",
+      }}
+    >
       <CardHeader
         subheader={
           <span>

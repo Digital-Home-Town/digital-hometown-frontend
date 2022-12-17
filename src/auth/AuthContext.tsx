@@ -51,9 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     onSnapshot(postCollection, (doc) => {
       const updatedPosts = PostService.parsePosts(doc.docs, currentUser)
       if (!isEqual(updatedPosts, posts)) {
+        console.log("Updated Posts", updatedPosts)
         setPosts(updatedPosts)
       }
     })
+  }, [currentUser])
+
+  useEffect(() => {
     auth.onAuthStateChanged((user) => {
       console.log("auth state changed", user)
       if (user != null) {

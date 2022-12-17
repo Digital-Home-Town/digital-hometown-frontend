@@ -1,5 +1,12 @@
 import { AllInbox } from "@mui/icons-material"
-import { Grid, IconButton, List, ListItem, ListItemButton, ListItemText } from "@mui/material"
+import {
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
@@ -13,7 +20,7 @@ function Merkzettel({ currentUser }: AuthContextI) {
   const [posts, setPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
-    PostService.getAll().then((posts) => {
+    PostService.getAll(currentUser).then((posts) => {
       posts = posts.filter((post) => currentUser?.favoritePosts?.includes(post.id || ""))
       if (postFilter) {
         setPosts(posts.filter((post) => post.type === postFilter))
@@ -21,7 +28,7 @@ function Merkzettel({ currentUser }: AuthContextI) {
         setPosts(posts)
       }
     })
-  }, [currentUser?.favoritePosts, currentUser?.displayName, postFilter])
+  }, [currentUser, currentUser?.favoritePosts, currentUser?.displayName, postFilter])
 
   return (
     <div>

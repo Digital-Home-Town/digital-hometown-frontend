@@ -68,12 +68,12 @@ class PostService {
     }
   }
 
-  async getAll() {
+  async getAll(currentUser?: User | Club | undefined | null) {
     const firebaseQuery = query(this.collection, fOrderBy("created", "desc"))
 
     const documents = await getDocs(firebaseQuery)
 
-    return this.parsePosts(documents.docs)
+    return this.parsePosts(documents.docs, currentUser)
   }
 
   parsePosts(documentData: QueryDocumentSnapshot<Post>[], currentUser?: User | Club | undefined | null): Post[] {
@@ -86,6 +86,7 @@ class PostService {
     return orderBy(posts, "created", "desc")
       .filter((post) => !currentUser?.blocked?.includes(post.author.id))
       .filter((post) => {
+        console.log(currentUser?.id === post.author.id, currentUser?.id, post.author.id)
         // display posts of the current user regardless of validity date
         if (currentUser?.id === post.author.id) {
           return true

@@ -7,16 +7,7 @@ import withAuth from "src/auth/withAuth"
 import Posts from "./Posts"
 
 function PostList({ currentUser, posts }: AuthContextI) {
-  const [filteredPosts, setFilteredPosts] = React.useState<Post[]>([])
-
-  React.useEffect(() => {
-    async function getFilteredPosts() {
-      const filtered = posts
-
-      setFilteredPosts(filtered)
-    }
-    getFilteredPosts()
-  }, [currentUser?.blocked, currentUser?.id, currentUser?.displayName, posts])
+  const filteredPosts = posts.filter((post) => post.validityEnd && post.validityEnd >= new Date().getTime())
 
   return currentUser ? (
     <Box sx={{ mt: 1 }}>
