@@ -175,7 +175,7 @@ function ClubSettingsPage({
                 Speichern
               </Button>
               <Button variant="contained" color="error" onClick={toggleShowDeleteDialog}>
-                Verein löschen
+                Vereinsaccount löschen
               </Button>
               <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>
             </Stack>

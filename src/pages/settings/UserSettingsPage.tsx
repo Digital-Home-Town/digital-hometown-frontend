@@ -179,7 +179,7 @@ function UserSettingsPage({
                 Speichern
               </Button>
               <Button variant="contained" color="error" onClick={toggleShowDeleteDialog}>
-                Benutzer löschen
+                Account löschen
               </Button>
               {!firstLoginProp && <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>}
             </Stack>
