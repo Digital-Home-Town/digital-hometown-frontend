@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -16,12 +16,10 @@ import Input from "../../components/general/input/Input"
 function UserSettingsPage({
   currentUser,
   setCurrentUser,
-  logOut,
+  deleteUser,
   setFirstLogin,
   firstLoginProp,
 }: AuthContextI & { firstLoginProp: boolean }) {
-  const fullName: string = currentUser?.displayName || ""
-
   useEffect(() => {
     setFirstLogin(firstLoginProp)
   }, [])
@@ -31,9 +29,9 @@ function UserSettingsPage({
   // https://www.geeksforgeeks.org/react-mui-textfield-api/
   // https://dev.to/omardiaa48/how-to-make-a-robust-form-validation-in-react-with-material-ui-fields-1kb0
 
-  const [formValues] = useState({
+  const [formValues, setFormValues] = useState({
     fullName: {
-      value: fullName || "",
+      value: currentUser?.displayName || "",
       error: false,
       errorMessage: "Fehlerhafter Anzeigename",
     },
@@ -48,26 +46,45 @@ function UserSettingsPage({
       errorMessage: "Fehlerhaftes Geburtsdatum",
     },
     postCode: {
-      value: "postCode",
+      value: currentUser?.postCode + "" || "",
       error: false,
       errorMessage: "Fehlerhafte PLZ",
     },
   })
+
+  useEffect(() => {
+    if (!currentUser) return
+    setFormValues({
+      fullName: {
+        value: currentUser?.displayName || "",
+        error: false,
+        errorMessage: "Fehlerhafter Anzeigename",
+      },
+      email: {
+        value: currentUser?.email || "",
+        error: false,
+        errorMessage: "Fehlerhafte Email",
+      },
+      dateOfBirth: {
+        value: currentUser?.dateOfBirth || "",
+        error: false,
+        errorMessage: "Fehlerhaftes Geburtsdatum",
+      },
+      postCode: {
+        value: currentUser?.postCode + "" || "",
+        error: false,
+        errorMessage: "Fehlerhafte PLZ",
+      },
+    })
+  }, [currentUser])
+
   if (currentUser == null) {
     return <Loader />
   }
-  const handleDelete = () => {
-    userService
-      .delete(currentUser.id)
-      .then(() => {
-        logOut()
-        toast.success("Dein Profil wurde gelöscht.")
-        navigate("/")
-      })
-      .catch((e) => {
-        toast.error("Dein Profil konnte nicht gelöscht werden.")
-        throw e
-      })
+  const handleDelete = async () => {
+    await deleteUser()
+    toast.success("Dein Profil wurde gelöscht.")
+    navigate("/")
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
