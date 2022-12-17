@@ -23,13 +23,12 @@ import { orderBy } from "lodash"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import PostService from "src/services/PostService"
 
 import DatePicker from "../general/input/DatePicker2"
 import TagSelect from "../general/input/TagSelect"
 import Posts from "./Posts"
 
-function Marketplace({ currentUser }: AuthContextI) {
+function Marketplace({ currentUser, posts }: AuthContextI) {
   // Settings
   const [openCreator, setOpenCreator] = React.useState(false)
   const [postCreatorPerson, setPostCreatorPerson] = React.useState<boolean>(true)
@@ -49,56 +48,53 @@ function Marketplace({ currentUser }: AuthContextI) {
   const [postTagsValue, setPostTagsValue] = React.useState<string[]>([])
 
   // Filter
-  const [posts, setPosts] = React.useState<Post[]>([])
+  const [filteredPosts, setFilteredPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
-    PostService.getAll(currentUser).then((allPosts) => {
-      allPosts = allPosts.filter((post) => post?.author?.id !== currentUser?.id)
-      if (postCreatorPerson && postCreatorClub) {
-      } else {
-        allPosts = allPosts.filter((post) => post?.author?.isOrg === !postCreatorPerson)
+    let allPosts = posts.filter((post) => post?.author?.id !== currentUser?.id)
+    if (postCreatorPerson && postCreatorClub) {
+    } else {
+      allPosts = allPosts.filter((post) => post?.author?.isOrg === !postCreatorPerson)
+    }
+
+    var filteredPosts: Post[] = []
+
+    if (postMarket) {
+      let tempPostsA: Post[] = []
+      let tempPostsB: Post[] = []
+
+      if (postMarketOffer) {
+        tempPostsA = allPosts.filter((post) => post?.type === "Angebot")
+      } else if (postMarketDemand) {
+        tempPostsB = allPosts.filter((post) => post?.type === "Anfrage")
       }
+      filteredPosts = [...filteredPosts, ...tempPostsA, ...tempPostsB]
+    } else if (postInfo) {
+      let tempPosts: Post[] = []
+      tempPosts = allPosts.filter((post) => post?.type === "Information")
+      filteredPosts = [...filteredPosts, ...tempPosts]
+    } else if (postEvent) {
+      let tempPosts: Post[] = []
+      tempPosts = allPosts.filter((post) => post?.type === "Veranstaltung")
+      tempPosts = tempPosts.filter((post) => {
+        if (post.eventDate)
+          return post.eventDate >= postEventStart.getTime() && post.eventDate <= postEventEnd.getTime()
+        else return false
+      })
+      filteredPosts = [...filteredPosts, ...tempPosts]
+    }
+    if (!postInfo && !postEvent && !postMarket) {
+      filteredPosts = allPosts
+    }
+    if (postTags && postTagsValue.length) {
+      filteredPosts = filteredPosts.filter((post) => post?.tags.filter((tag) => postTagsValue.includes(tag)).length > 0)
+    }
 
-      var filteredPosts: Post[] = []
+    filteredPosts = orderBy(filteredPosts, ["created"], ["desc"])
 
-      if (postMarket) {
-        let tempPostsA: Post[] = []
-        let tempPostsB: Post[] = []
-
-        if (postMarketOffer) {
-          tempPostsA = allPosts.filter((post) => post?.type === "Angebot")
-        } else if (postMarketDemand) {
-          tempPostsB = allPosts.filter((post) => post?.type === "Anfrage")
-        }
-        filteredPosts = [...filteredPosts, ...tempPostsA, ...tempPostsB]
-      } else if (postInfo) {
-        let tempPosts: Post[] = []
-        tempPosts = allPosts.filter((post) => post?.type === "Information")
-        filteredPosts = [...filteredPosts, ...tempPosts]
-      } else if (postEvent) {
-        let tempPosts: Post[] = []
-        tempPosts = allPosts.filter((post) => post?.type === "Veranstaltung")
-        tempPosts = tempPosts.filter((post) => {
-          if (post.eventDate)
-            return post.eventDate >= postEventStart.getTime() && post.eventDate <= postEventEnd.getTime()
-          else return false
-        })
-        filteredPosts = [...filteredPosts, ...tempPosts]
-      }
-      if (!postInfo && !postEvent && !postMarket) {
-        filteredPosts = allPosts
-      }
-      if (postTags && postTagsValue.length) {
-        filteredPosts = filteredPosts.filter(
-          (post) => post?.tags.filter((tag) => postTagsValue.includes(tag)).length > 0,
-        )
-      }
-
-      filteredPosts = orderBy(filteredPosts, ["created"], ["desc"])
-
-      setPosts(filteredPosts)
-    })
+    setFilteredPosts(filteredPosts)
   }, [
+    posts,
     currentUser,
     postCreatorPerson,
     postCreatorClub,
@@ -267,7 +263,7 @@ function Marketplace({ currentUser }: AuthContextI) {
           </List>
         </Grid>
         <Grid item xs={9}>
-          <Posts posts={posts} notFoundText="Keine Beiträge im Marktplatz gespeichert." />
+          <Posts posts={filteredPosts} notFoundText="Keine Beiträge im Marktplatz für deine aktuellen Filter." />
         </Grid>
       </Grid>
     </div>
