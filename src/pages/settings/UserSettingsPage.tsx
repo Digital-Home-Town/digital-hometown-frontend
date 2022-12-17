@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
@@ -13,8 +13,18 @@ import userService from "src/services/UserService"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI) {
+function UserSettingsPage({
+  currentUser,
+  setCurrentUser,
+  logOut,
+  setFirstLogin,
+  firstLoginProp,
+}: AuthContextI & { firstLoginProp: boolean }) {
   const fullName: string = currentUser?.displayName || ""
+
+  useEffect(() => {
+    setFirstLogin(firstLoginProp)
+  }, [])
 
   const navigate = useNavigate()
 
@@ -82,7 +92,11 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
         .update(currentUser.id, profile)
         .then(() => {
           setCurrentUser(profile)
+          setFirstLogin(false)
           toast.success("Dein Profil wurde aktualisiert.")
+          if (firstLoginProp) {
+            navigate("/profile/")
+          }
         })
         .catch((e) => {
           toast.error("Dein Profil konnte nicht aktualisiert werden.")
@@ -98,7 +112,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
       {currentUser ? (
         <Stack spacing={0.5}>
           <Typography variant="h6" gutterBottom>
-            Account-Einstellungen
+            Vervollständige dein Profil
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -125,7 +139,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
               name="postCode"
               placeholder="Postleitzahl"
               optional={true}
-              initialValue={currentUser?.postCode || 0}
+              initialValue={currentUser?.postCode || ""}
               error={formValues.postCode.error}
               helperText={formValues.postCode.error ? formValues.postCode.errorMessage : ""}
               settings={{ min: "1", max: "99999" }}
@@ -137,7 +151,7 @@ function UserSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
               <Button variant="contained" color="error" onClick={handleDelete}>
                 Benutzer löschen
               </Button>
-              <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>
+              {!firstLoginProp && <Button onClick={() => navigate("/profile/")}>Zeige meine Profilseite</Button>}
             </Stack>
           </Box>
         </Stack>

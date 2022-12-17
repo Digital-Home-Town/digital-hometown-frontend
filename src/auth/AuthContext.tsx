@@ -29,6 +29,8 @@ export interface AuthContextI {
   resetPassword: (email: string) => void
   posts: Post[]
   deletePost: (post: Post) => void
+  firstLogin: boolean
+  setFirstLogin: (firstLogin: boolean) => void
 }
 
 export interface AuthProps {
@@ -41,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null | undefined>(undefined)
   const [loading, setLoading] = useState(true)
   const [posts, setPosts] = useState<Post[]>([])
+  const [firstLogin, setFirstLogin] = useState(false)
 
   useEffect(() => {
     onSnapshot(postCollection, (doc) => {
@@ -232,6 +235,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setCurrentUser,
           deletePost,
           posts,
+          firstLogin,
+          setFirstLogin,
         }}
       >
         {children}

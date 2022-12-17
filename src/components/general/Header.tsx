@@ -84,18 +84,27 @@ function HeaderNotLoggedIn() {
   )
 }
 
-function Header({ currentUser }: AuthContextI) {
+function Header({ currentUser, firstLogin }: AuthContextI) {
+  console.log("Header", firstLogin)
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         {currentUser ? (
-          <Toolbar disableGutters>
-            <Stack direction="row" style={{ flexGrow: 1 }}>
-              <Logo />
-              <HeaderButtonMenu />
-            </Stack>
-            <HeaderMenu />
-          </Toolbar>
+          <>
+            {firstLogin ? (
+              <Toolbar>
+                <Logo />
+              </Toolbar>
+            ) : (
+              <Toolbar disableGutters>
+                <Stack direction="row" style={{ flexGrow: 1 }}>
+                  <Logo />
+                  <HeaderButtonMenu />
+                </Stack>
+                <HeaderMenu />
+              </Toolbar>
+            )}
+          </>
         ) : (
           <HeaderNotLoggedIn />
         )}

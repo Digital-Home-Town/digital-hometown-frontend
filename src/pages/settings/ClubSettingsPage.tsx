@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import parse from "date-fns/parse"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
@@ -13,11 +13,21 @@ import { useNavigate } from "react-router-dom"
 import DatePicker from "../../components/general/input/DatePicker"
 import Input from "../../components/general/input/Input"
 
-function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI) {
+function ClubSettingsPage({
+  currentUser,
+  setCurrentUser,
+  logOut,
+  setFirstLogin,
+  firstLoginProp,
+}: AuthContextI & { firstLoginProp: boolean }) {
   const delimiter: string = " "
   const fullName: string[] = (currentUser?.displayName || "").split(delimiter)
 
   const givenName: string = fullName[0]
+
+  useEffect(() => {
+    setFirstLogin(firstLoginProp)
+  }, [])
 
   const navigate = useNavigate()
 
@@ -102,7 +112,7 @@ function ClubSettingsPage({ currentUser, setCurrentUser, logOut }: AuthContextI)
       {currentUser ? (
         <Stack spacing={0.5}>
           <Typography variant="h6" gutterBottom>
-            Account-Einstellungen
+            Vervollständige euer Vereinsprofil
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>

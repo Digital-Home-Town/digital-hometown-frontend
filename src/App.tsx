@@ -78,8 +78,10 @@ function App() {
                   <Route path="/sign-in" element={<SignIn isOrg={false} />} />
                   <Route path="/sign-out" element={<SignOut />} />
                   <Route path="/register" element={<Register isOrg={false} />} />
-                  <Route path="/user-settings" element={<UserSettingsPage />} />
-                  <Route path="/club-settings" element={<ClubSettingsPage />} />
+                  <Route path="/user-settings" element={<UserSettingsPage firstLoginProp={false} />} />
+                  <Route path="/user-settings/first" element={<UserSettingsPage firstLoginProp={true} />} />
+                  <Route path="/club-settings" element={<ClubSettingsPage firstLoginProp={false} />} />
+                  <Route path="/club-settings/first" element={<ClubSettingsPage firstLoginProp={true} />} />
                   <Route path="/blocked" element={<BlockedPage />} />
                   <Route path="/profile" element={<GenericProfilePage />} />
                   <Route path="/posts" element={<PostList />} />
