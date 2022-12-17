@@ -1,5 +1,5 @@
 import { Chat, Edit, List, Star, FindInPage } from "@mui/icons-material"
-import IconButton from "@mui/material/IconButton"
+import { Button, IconButton } from "@mui/material"
 import Tooltip from "@mui/material/Tooltip"
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
@@ -15,29 +15,29 @@ function HeaderButtonMenu({ currentUser }: AuthContextI) {
   return (
     <>
       <Tooltip title="Merkzettel">
-        <IconButton onClick={() => navigate("/merkzettel")} color="inherit">
-          <Star />
-        </IconButton>
+        <Button variant="text" onClick={() => navigate("/merkzettel")} color="inherit" startIcon={<Star />}>
+          Merkzettel
+        </Button>
       </Tooltip>
       <Tooltip title="Beiträge">
-        <IconButton onClick={() => navigate("/posts")} color="inherit">
-          <List />
-        </IconButton>
+        <Button variant="text" onClick={() => navigate("/posts")} color="inherit" startIcon={<List />}>
+          Alle Beiträge
+        </Button>
       </Tooltip>
       <Tooltip title="Beitrag erstellen">
-        <IconButton onClick={() => setPostDialogOpen(true)} color="inherit">
-          <Edit />
-        </IconButton>
+        <Button variant="text" onClick={() => setPostDialogOpen(true)} color="inherit" startIcon={<Edit />}>
+          Erstellen
+        </Button>
       </Tooltip>
       <Tooltip title="Chat">
-        <IconButton onClick={() => navigate("/chat/first")} color="inherit">
-          <Chat />
-        </IconButton>
+        <Button variant="text" onClick={() => navigate("/chat/first")} color="inherit" startIcon={<Chat />}>
+          Chat
+        </Button>
       </Tooltip>
       <Tooltip title="Marktplatz">
-        <IconButton onClick={() => navigate("/marketplace")} color="inherit">
-          <FindInPage />
-        </IconButton>
+        <Button variant="text" onClick={() => navigate("/marketplace")} color="inherit" startIcon={<FindInPage />}>
+          Marktplatz
+        </Button>
       </Tooltip>
 
       <CreatePostDialog open={postDialogOpen} setOpen={setPostDialogOpen} />

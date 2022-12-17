@@ -103,7 +103,7 @@ function Header({ currentUser, firstLogin }: AuthContextI) {
               </Toolbar>
             ) : (
               <Toolbar disableGutters>
-                <Stack direction="row" style={{ flexGrow: 1 }}>
+                <Stack direction="row" style={{ flexGrow: 1 }} spacing={3}>
                   <Logo linkEnabled={true} />
                   <HeaderButtonMenu />
                 </Stack>
