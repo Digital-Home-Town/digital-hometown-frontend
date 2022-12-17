@@ -25,7 +25,7 @@ function UserSettingsPage({
 
   useEffect(() => {
     setFirstLogin(firstLoginProp)
-  }, [])
+  })
 
   const navigate = useNavigate()
 

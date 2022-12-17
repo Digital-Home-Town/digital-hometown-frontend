@@ -1,5 +1,5 @@
+import React from "react"
 import "moment/locale/de"
-
 import {
   Button,
   Card,
@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@mui/material"
 import moment from "moment"
-import React from "react"
 import { useNavigate } from "react-router"
 
 import BobbelMenu from "./BobbelMenu"

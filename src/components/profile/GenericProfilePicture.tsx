@@ -1,15 +1,17 @@
-import "firebase/compat/storage"
+import React, { useEffect, useState } from "react"
 
 import { PhotoCamera } from "@mui/icons-material"
 import ClearIcon from "@mui/icons-material/Clear"
 import { Box, CardMedia, IconButton } from "@mui/material"
 import { Stack } from "@mui/system"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
-import React, { useEffect, useState } from "react"
+
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
 import { storage } from "src/firebase-config"
 import userService from "src/services/UserService"
+
+import "firebase/compat/storage"
 
 function GenericProfilePicture({ profile, currentUser, setCurrentUser }: ProfileProps<User> & AuthContextI) {
   const readOnly: boolean = currentUser == null || currentUser.id !== profile?.id
@@ -20,8 +22,6 @@ function GenericProfilePicture({ profile, currentUser, setCurrentUser }: Profile
     setImageUrl(profile.photoURL || "")
   }, [profile, currentUser])
 
-  const [_file, setFile] = useState(null)
-
   function deleteImage() {
     const url = ""
     userService.updateAttribute(profile, { photoURL: url })
@@ -30,8 +30,6 @@ function GenericProfilePicture({ profile, currentUser, setCurrentUser }: Profile
       currentUser.photoURL = ""
       setCurrentUser(currentUser)
     }
-
-    setFile(null)
   }
 
   function addImage(e: any) {

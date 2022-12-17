@@ -43,20 +43,6 @@ class PostService {
       throw error
     }
   }
-  // not needed at the moment to get only one post
-  // async get(id: string) {
-  //   const resp = await this.getDocument(id)
-  //   const post = resp.data()
-  //   if (post) {
-  //     post.tags = post.tags || []
-  //     post.created = post?.created.toDate().getTime() || 0
-  //   }
-  //   return post
-  // }
-  // async getDocument(id: string) {
-  //   const userRef = doc(this.collection, id)
-  //   return await getDoc(userRef)
-  // }
 
   async removePostsFromUser(userId: string) {
     const posts = await this.getAll()

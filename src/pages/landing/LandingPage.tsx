@@ -1,15 +1,4 @@
-import { Check } from "@mui/icons-material"
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material"
+import { Button, Card, CardContent, CardHeader, CardMedia, Grid, Typography } from "@mui/material"
 import { useNavigate } from "react-router"
 import { AuthProps } from "src/auth/AuthContext"
 
@@ -136,7 +125,6 @@ function SwitchLandingPageType(props: AuthProps) {
 }
 
 function ControlElements(props: AuthProps) {
-  const GRID_SIZE = 110
   const { isOrg } = props
 
   return (
@@ -147,9 +135,7 @@ function ControlElements(props: AuthProps) {
       style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
       <Grid item textAlign={"center"}>
-        {/* <Card sx={{ height: GRID_SIZE, padding: 1 }}> */}
         {isOrg ? <SwitchLandingPageType isOrg={true} /> : <SwitchLandingPageType isOrg={false} />}
-        {/* </Card> */}
       </Grid>
     </Grid>
   )
