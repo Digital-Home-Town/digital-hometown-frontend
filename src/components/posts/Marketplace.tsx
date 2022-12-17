@@ -1,4 +1,4 @@
-import { Event, ExpandLess, ExpandMore, Group, Info, Store } from "@mui/icons-material"
+import { Event, ExpandLess, ExpandMore, Group, Info, Store, Tag } from "@mui/icons-material"
 import {
   Checkbox,
   Collapse,
@@ -237,7 +237,7 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
             >
               <ListItemButton onClick={() => setPostTags(!postTags)}>
                 <IconButton>
-                  <Event />
+                  <Tag />
                 </IconButton>
                 <ListItemText primary="Kategorien" />
               </ListItemButton>
