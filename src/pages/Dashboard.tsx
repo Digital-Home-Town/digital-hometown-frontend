@@ -1,17 +1,41 @@
-import React from "react"
+import { AllInbox } from "@mui/icons-material"
+import { Grid, IconButton, List, ListItem, ListItemButton, ListItemText } from "@mui/material"
+import * as React from "react"
+import { AuthContextI } from "src/auth/AuthContext"
+import withAuth from "src/auth/withAuth"
+import { POST_TYPES, POST_TYPES_ICONS } from "src/global"
+import PostService from "src/services/PostService"
+import Posts from "src/components/posts/Posts"
 
-import ClubTable from "../components/table/ClubTable"
-import UserTable from "../components/table/UserTable"
+function Dashboard({ currentUser }: AuthContextI) {
+  const [veranstaltungen, setVeranstaltungen] = React.useState<Post[]>([])
+  const [posts, setPosts] = React.useState<Post[]>([])
 
-function Dashboard() {
+  React.useEffect(() => {
+    PostService.getAll().then((posts) => {
+      setPosts(posts.filter((post) => post?.author?.id !== currentUser?.id))
+    })
+    PostService.getAll().then((veranstaltungen) => {
+      veranstaltungen = veranstaltungen.filter((post) => currentUser?.favoritePosts?.includes(post.id || ""))
+      setVeranstaltungen(veranstaltungen.filter((post) => post.type === "Veranstaltung"))
+    })
+  })
+
   return (
     <div>
-      <h1>Alle Benutzer</h1>
-      <UserTable></UserTable>
-      <h1>Alle Vereine</h1>
-      <ClubTable></ClubTable>
+      <Grid container spacing={2} paddingTop={1}>
+        <Grid item xs={5}>
+          <h1>Beiträge aus deiner Nähe</h1>
+          <Posts posts={posts} notFoundText="Keine Beiträge in deiner Umgebung gefunden." />
+        </Grid>
+
+        <Grid item xs={5}>
+          <h1>Anstehende Veranstaltungen</h1>
+          <Posts posts={veranstaltungen} notFoundText="Keine anstehenden Veranstaltungen in deinem Merkzettel." />
+        </Grid>
+      </Grid>
     </div>
   )
 }
 
-export default Dashboard
+export default withAuth(Dashboard)
