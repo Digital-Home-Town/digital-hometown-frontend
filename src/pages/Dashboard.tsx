@@ -1,9 +1,7 @@
-import { AllInbox } from "@mui/icons-material"
-import { Grid, IconButton, List, ListItem, ListItemButton, ListItemText } from "@mui/material"
+import { Grid } from "@mui/material"
 import * as React from "react"
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import { POST_TYPES, POST_TYPES_ICONS } from "src/global"
 import PostService from "src/services/PostService"
 import Posts from "src/components/posts/Posts"
 
