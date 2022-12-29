@@ -2288,10 +2288,10 @@
     prop-types "^15.8.1"
     reselect "^4.1.6"
 
-"@mui/x-date-pickers@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.npmjs.org/@mui/x-date-pickers/-/x-date-pickers-5.0.7.tgz"
-  integrity sha512-NhxG4tGj+NabxTCQxw4d5RVYl8yzBycHw3YbfawaPVRAsBk/1p3ktSdTbiEi/j+8IUrT8C7Kh/XMNNnOwub/3Q==
+"@mui/x-date-pickers@^5.0.12":
+  version "5.0.12"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-5.0.12.tgz#f80e742aa8045b214f40a72e782fd871fb18ec89"
+  integrity sha512-HpiPE4nkqlklilKAxUQpf3tecJEDaTIBRRVTGk9GMgpkwli7Cv+5OGn6aSxG5ckMZdiQ/NT1L9kOcm0Bi9Gqjw==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@date-io/core" "^2.15.0"
