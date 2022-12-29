@@ -77,7 +77,7 @@
     "react-placeholder": "^4.1.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
-    "react-spinners": "^0.13.6",
+    "react-spinners": "^0.13.7",
     "react-test-renderer": "^18.2.0",
     "react-toastify": "^9.1.1",
     "tsx": "^3.11.0",
