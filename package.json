@@ -65,7 +65,7 @@
     "axios": "^1.2.1",
     "axios-mock-adapter": "^1.20.0",
     "date-fns": "^2.28.0",
-    "emoji-picker-react": "^4.4.4",
+    "emoji-picker-react": "^4.4.7",
     "firebase": "^9.15.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",

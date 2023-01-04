@@ -5495,10 +5495,10 @@ emittery@^0.8.1:
   resolved "https://registry.npmjs.org/emittery/-/emittery-0.8.1.tgz"
   integrity sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==
 
-emoji-picker-react@^4.4.4:
-  version "4.4.4"
-  resolved "https://registry.npmjs.org/emoji-picker-react/-/emoji-picker-react-4.4.4.tgz"
-  integrity sha512-FA15/5AWh7LxWUT3flTiquLt7pbzZxny07gQbmyErzEi0AT7qo7hSbEz10C2oiXOAPGUAskESdudbmDiLVSVgQ==
+emoji-picker-react@^4.4.7:
+  version "4.4.7"
+  resolved "https://registry.yarnpkg.com/emoji-picker-react/-/emoji-picker-react-4.4.7.tgz#faff798cf7acad41c5eb6b103c93480e777f2222"
+  integrity sha512-HcB1Fr57W6M+gLLm/W4YhbAnUQqYBUAhZBOHmPlSQODLtsDI8vecyqNIF9RrStZHfZwzUSLlpZMfY07AA6gxmA==
   dependencies:
     clsx "^1.2.1"
 
