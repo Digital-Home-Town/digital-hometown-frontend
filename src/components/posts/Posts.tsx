@@ -1,5 +1,6 @@
-import { Stack } from "@mui/material"
 import * as React from "react"
+
+import { Stack } from "@mui/material"
 
 import Post from "./Post"
 
@@ -21,7 +22,7 @@ function Posts(props: PostsProperties) {
 }
 
 Posts.defaultProps = {
-  notFoundText: "Leider keine Beiträge abgeben",
+  notFoundText: "Leider keine Beiträge gefunden.",
 }
 
 export default Posts
