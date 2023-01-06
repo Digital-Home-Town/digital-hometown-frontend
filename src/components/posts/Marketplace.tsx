@@ -53,8 +53,7 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
   useEffect(() => {
     if (searchPosts) {
       let allPosts = posts.filter((post) => post?.author?.id !== currentUser?.id)
-      if (postCreatorPerson && postCreatorClub) {
-      } else {
+      if (!(postCreatorPerson && postCreatorClub)) {
         allPosts = allPosts.filter((post) => post?.author?.isOrg === !postCreatorPerson)
       }
       var filteredPosts: Post[] = []
@@ -134,6 +133,7 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
     postEventEnd,
     itemTags,
     itemTagsValue,
+    users,
   ])
 
   const [searchTypes, setSearchTypes] = React.useState(() => ["posts"])
@@ -141,7 +141,7 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
   const [marketAdds, setMarketAdds] = React.useState(() => ["demand", "offer"])
 
   // use effect when start date changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (postEventEnd < postEventStart) {
       setPostEventEnd(new Date(postEventStart.getTime()))
     }
@@ -158,7 +158,7 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
 
     if (grp === "searchtype") {
       if (newChange !== null && newChange.length) {
-        console.log(newChange)
+        setFilteredItems([])
         if (id === "posts") {
           setSearchPosts(true)
         } else if (id === "people") {
@@ -323,8 +323,9 @@ function Marketplace({ currentUser, posts }: AuthContextI) {
             />
           ) : (
             <Users
-            users={filteredItems as User[]}
-            notFoundText="Keine Mitglieder im Marktplatz für deine aktuellen Filter." />
+              users={filteredItems as User[]}
+              notFoundText="Keine Mitglieder im Marktplatz für deine aktuellen Filter."
+            />
           )}
         </Grid>
       </Grid>
