@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Chip, Link, Stack } from "@mui/material"
+import { Card, CardContent, CardHeader, Chip, Stack } from "@mui/material"
 import * as React from "react"
 import { useNavigate } from "react-router"
 
@@ -8,15 +8,33 @@ interface UserProperties {
 
 function User({ user }: UserProperties) {
   const navigate = useNavigate()
+  //const [color, setColor] = React.useState("background.default")
+  const [cursor, setCursor] = React.useState("auto")
+  const [borderColor, setBorderColor] = React.useState("transparent")
+
   return (
-    <Card>
+    <Card
+      onMouseOver={() => {
+        //setColor("lightgrey")
+        setCursor("pointer")
+        setBorderColor("primary")
+      }}
+      onMouseLeave={() => {
+        //setColor("background.default")
+        setCursor("auto")
+        setBorderColor("transparent")
+      }}
+      onClick={() => navigate(`/profile/${user.id}`)}
+      sx={{ border: 1, borderColor: borderColor, /*bgcolor: color,*/ cursor: cursor }}
+    >
       <CardHeader
         title={
-          <span>
-            <Link component="button" color="inherit" onClick={() => navigate(`/profile/${user.id}`)}>
-              <h2>{user?.displayName}</h2>
-            </Link>
-          </span>
+          user?.displayName
+          // <span>
+          //   <Link component="button" color="inherit" onClick={() => navigate(`/profile/${user.id}`)}>
+          //     {}
+          //   </Link>
+          // </span>
         }
       />
       <CardContent style={{ paddingTop: 0 }}>
