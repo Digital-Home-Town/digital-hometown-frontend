@@ -1,23 +1,25 @@
-import { Grid } from "@mui/material"
 import * as React from "react"
+
 import { AuthContextI } from "src/auth/AuthContext"
 import withAuth from "src/auth/withAuth"
-import PostService from "src/services/PostService"
 import Posts from "src/components/posts/Posts"
+import PostService from "src/services/PostService"
+
+import { Grid } from "@mui/material"
 
 function Dashboard({ currentUser }: AuthContextI) {
-  const [veranstaltungen, setVeranstaltungen] = React.useState<Post[]>([])
+  const [events, setEvents] = React.useState<Post[]>([])
   const [posts, setPosts] = React.useState<Post[]>([])
 
   React.useEffect(() => {
     PostService.getAll().then((posts) => {
       setPosts(posts.filter((post) => post?.author?.id !== currentUser?.id))
     })
-    PostService.getAll().then((veranstaltungen) => {
-      veranstaltungen = veranstaltungen.filter((post) => currentUser?.favoritePosts?.includes(post.id || ""))
-      setVeranstaltungen(veranstaltungen.filter((post) => post.type === "Veranstaltung"))
+    PostService.getAll().then((events) => {
+      events = events.filter((post) => currentUser?.favoritePosts?.includes(post.id || ""))
+      setEvents(events.filter((post) => post.type === "Veranstaltung"))
     })
-  })
+  }, [currentUser])
 
   return (
     <div>
@@ -29,7 +31,7 @@ function Dashboard({ currentUser }: AuthContextI) {
 
         <Grid item xs={5}>
           <h1>Anstehende Veranstaltungen</h1>
-          <Posts posts={veranstaltungen} notFoundText="Keine anstehenden Veranstaltungen in deinem Merkzettel." />
+          <Posts posts={events} notFoundText="Keine anstehenden Veranstaltungen in deinem Merkzettel." />
         </Grid>
       </Grid>
     </div>
