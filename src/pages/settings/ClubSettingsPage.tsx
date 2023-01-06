@@ -1,18 +1,26 @@
-import { Stack, Typography } from "@mui/material"
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
+import React, {
+  useEffect,
+  useReducer,
+  useState,
+} from "react"
+
 import parse from "date-fns/parse"
-import React, { useEffect, useState, useReducer } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AuthContextI } from "src/auth/AuthContext"
 import Loader from "src/auth/Loader"
 import withAuth from "src/auth/withAuth"
-import userService from "src/services/UserService"
-
+import DeleteDialog from "src/components/dialogs/DeleteDialog"
 import DatePicker from "src/components/general/input/DatePicker"
 import Input from "src/components/general/input/Input"
-import DeleteDialog from "src/components/dialogs/DeleteDialog"
+import userService from "src/services/UserService"
+
+import {
+  Stack,
+  Typography,
+} from "@mui/material"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 
 function ClubSettingsPage({
   currentUser,
@@ -111,6 +119,7 @@ function ClubSettingsPage({
       userService
         .update(currentUser.id, profile)
         .then(() => {
+          setFirstLogin(false)
           setCurrentUser(profile)
           toast.success("Dein Profil wurde aktualisiert.")
         })

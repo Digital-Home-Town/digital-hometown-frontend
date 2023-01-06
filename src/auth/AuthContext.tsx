@@ -1,3 +1,10 @@
+import React, {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react"
+
 import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
@@ -10,12 +17,14 @@ import {
 } from "firebase/auth"
 import { onSnapshot } from "firebase/firestore"
 import { isEqual } from "lodash"
-import React, { createContext, ReactNode, useEffect, useState } from "react"
 import ReactPlaceholder from "react-placeholder"
 import { toast } from "react-toastify"
 import PostService from "src/services/PostService"
 
-import { auth, postCollection } from "../firebase-config"
+import {
+  auth,
+  postCollection,
+} from "../firebase-config"
 import clubService from "../services/ClubService"
 import userService from "../services/UserService"
 import Loader from "./Loader"
@@ -51,7 +60,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     onSnapshot(postCollection, (doc) => {
       const updatedPosts = PostService.parsePosts(doc.docs, currentUser)
       if (!isEqual(updatedPosts, posts)) {
-        console.log("Updated Posts", updatedPosts)
         setPosts(updatedPosts)
       }
     })
@@ -59,7 +67,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      console.log("auth state changed", user)
       if (user != null) {
         setCurrentUser({
           id: auth.currentUser?.uid || "",
@@ -70,7 +77,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         userService
           .get(user.uid)
           .then((profile) => {
-            console.log("firebase profile", profile)
             if (!profile) {
               clubService
                 .get(user.uid)
@@ -83,7 +89,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   setLoading(false)
                 })
             } else {
-              console.log("Update user profile", profile)
               setCurrentUser(profile)
               setLoading(false)
             }
@@ -246,7 +251,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setCurrentUser(null)
       toast.info("Dein Profil wurde gelöscht")
     } catch (exception) {
-      toast.error("Bitte mel  de dich erneut an, um dein Konto zu löschen.")
+      toast.error("Bitte melde dich erneut an, um dein Konto zu löschen.")
       signOut(auth)
       setCurrentUser(null)
     }
