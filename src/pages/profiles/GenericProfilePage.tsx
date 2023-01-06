@@ -1,7 +1,11 @@
 import * as React from "react"
 import { useEffect } from "react"
+
 import ReactPlaceholder from "react-placeholder"
-import { useNavigate, useParams } from "react-router"
+import {
+  useNavigate,
+  useParams,
+} from "react-router"
 import { AuthContextI } from "src/auth/AuthContext"
 import ClubProfile from "src/components/profile/ClubProfile"
 import UserProfile from "src/components/profile/UserProfile"
@@ -10,9 +14,16 @@ import userService from "src/services/UserService"
 
 import withAuth from "../../auth/withAuth"
 
-function GenericProfilePage({ currentUser }: AuthContextI) {
+function GenericProfilePage({ currentUser, firstLogin, setFirstLogin }: AuthContextI) {
   const navigate = useNavigate()
   const { id } = useParams()
+
+  useEffect(() => {
+    // after saving account settings for the first time, redirect to profile with firstLogin set to true (=> no navigation), therefore set firstLogin to false
+    if (firstLogin) {
+      setFirstLogin(false)
+    }
+  })
 
   if (id && currentUser?.blocked?.includes(id)) {
     // toast.warn("Du hast den Nutzer blockiert")
