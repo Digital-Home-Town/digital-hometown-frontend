@@ -2275,10 +2275,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-data-grid@^5.17.14":
-  version "5.17.17"
-  resolved "https://registry.npmjs.org/@mui/x-data-grid/-/x-data-grid-5.17.17.tgz"
-  integrity sha512-03XwKeZ5q93CUf7EdJTBfqf3y3cd0vOEH1dXnusk0NaNROW/uBcnwTix9/1D7hhlCNs+Unq98Qffe2W/sR++Xg==
+"@mui/x-data-grid@^5.17.24":
+  version "5.17.24"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.17.24.tgz#271ce9b29702aa7f795d0b58c51ae640102391bb"
+  integrity sha512-2QjHlc3tEcPKatTIqQnzEvEj1+rJ33xZyOCbUXcsptjzN61DWWlWoIxXe8BW7Lp41TjqchSeUW6kBCdkJfoh8w==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@mui/utils" "^5.10.3"
