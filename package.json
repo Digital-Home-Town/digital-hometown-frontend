@@ -41,7 +41,7 @@
     "@babel/preset-env": "^7.19.4",
     "@types/lodash": "^4.14.191",
     "cross-env": "^7.0.3",
-    "firebase-tools": "^11.18.0"
+    "firebase-tools": "^11.22.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
